@@ -38,7 +38,7 @@ public class CartFlow {
         if (cartPojo.getQuantity() > inventoryPojo.getQuantity()) {
             throw new ApiException("Item can't be added to cart as it exceeds the inventory. Present inventory count : " + inventoryPojo.getQuantity());
         }
-        cartService.add(cartPojo,inventoryPojo);
+        cartService.add(cartPojo,inventoryPojo.getQuantity());
     }
 
     @Transactional(rollbackOn  = ApiException.class)

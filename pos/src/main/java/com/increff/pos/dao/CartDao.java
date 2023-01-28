@@ -12,6 +12,7 @@ public class CartDao {
     private static String select_cartPojo_by_id = "select p from CartPojo p where cartItemId=:id";
     private static String select_cartPojo_by_ProductId_and_counterId = "select p from CartPojo p where productId=:productId and counterId=:counterId";
     private static String select_all_cartPojo_by_counterId = "select p from CartPojo p where counterId=:counterId";
+    private static String select_all_cartPojo = "select p from CartPojo p";
 
     @PersistenceContext
     EntityManager em;
@@ -54,6 +55,12 @@ public class CartDao {
     public List<CartPojo> selectAll(int counterId) {
         TypedQuery<CartPojo> query = getQuery(select_all_cartPojo_by_counterId);
         query.setParameter("counterId", counterId);
+        return query.getResultList();
+    }
+
+    public List<CartPojo> selectAll() {
+        TypedQuery<CartPojo> query = getQuery(select_all_cartPojo);
+//        query.setParameter("counterId", counterId);
         return query.getResultList();
     }
 

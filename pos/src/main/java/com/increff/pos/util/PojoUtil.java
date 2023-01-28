@@ -1,6 +1,7 @@
 package com.increff.pos.util;
 
 import com.increff.pos.pojo.BrandPojo;
+import com.increff.pos.pojo.CartPojo;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductPojo;
 
@@ -28,5 +29,14 @@ public class PojoUtil {
         inventoryPojo.setBarcode(barcode);
         inventoryPojo.setQuantity(quantity);
         return  inventoryPojo;
+    }
+    public static CartPojo getCartPojo(Integer productId,Integer counterId, String productName, Double sellingPrice, Integer quantity){
+        CartPojo cartPojo = new CartPojo();
+        cartPojo.setProductId(productId);
+        cartPojo.setCounterId(counterId);
+        cartPojo.setProductName(productName);
+        cartPojo.setSellingPrice(sellingPrice);
+        cartPojo.setQuantity(quantity);
+        return  cartPojo;
     }
 }

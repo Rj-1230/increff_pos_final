@@ -22,11 +22,11 @@ public class CartService {
     private CartDao cartDao;
 
     @Transactional(rollbackOn = ApiException.class)
-    public void add(CartPojo cartPojo,InventoryPojo inventoryPojo) throws ApiException {
+    public void add(CartPojo cartPojo,Integer quantity) throws ApiException {
         CartPojo exCartPojo = cartDao.getCartPojoFromProductIdAndCounterId(cartPojo.getProductId(), cartPojo.getCounterId());
         if(Objects.nonNull(exCartPojo)){
-            if(exCartPojo.getQuantity()+cartPojo.getQuantity()>inventoryPojo.getQuantity()){
-                throw new ApiException("Item can't be added to cart as it exceeds the inventory. Items already in cart : "+exCartPojo.getQuantity() +" Present inventory count :"+inventoryPojo.getQuantity());
+            if(exCartPojo.getQuantity()+cartPojo.getQuantity()>quantity){
+                throw new ApiException("Item can't be added to cart as it exceeds the inventory. Items already in cart : "+exCartPojo.getQuantity() +" Present inventory count :"+quantity);
             }
             exCartPojo.setQuantity(exCartPojo.getQuantity()+cartPojo.getQuantity());
             exCartPojo.setSellingPrice(cartPojo.getSellingPrice());
@@ -43,8 +43,13 @@ public class CartService {
     }
 
     @Transactional
+    public List<CartPojo> getAllItemsInCart() {
+        return cartDao.selectAll();
+    }
+    @Transactional
     public List<CartPojo> getAll() {
-        return cartDao.selectAll(getPrincipal().getId());
+        Integer id = getPrincipal().getId();
+        return cartDao.selectAll(id);
     }
 
     @Transactional(rollbackOn  = ApiException.class)
