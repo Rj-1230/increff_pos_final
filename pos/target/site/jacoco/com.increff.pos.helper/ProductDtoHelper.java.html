@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductDtoHelper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.helper</a> &gt; <span class="el_source">ProductDtoHelper.java</span></div><h1>ProductDtoHelper.java</h1><pre class="source lang-java linenums">package com.increff.pos.helper;
+
+import com.increff.pos.model.*;
+import com.increff.pos.pojo.ProductPojo;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+@Service
+<span class="fc" id="L11">public class ProductDtoHelper {</span>
+
+    public static void normalize(ProductForm f) {
+<span class="nc" id="L14">        f.setBarcode(f.getBarcode().toLowerCase().trim());</span>
+<span class="nc" id="L15">        f.setName(f.getName().toLowerCase().trim());</span>
+
+<span class="nc bnc" id="L17" title="All 2 branches missed.">        if(f.getBrandName().length()&gt;15){</span>
+<span class="nc" id="L18">            f.setBrandName(f.getBrandName().substring(0,15));</span>
+        }
+<span class="nc bnc" id="L20" title="All 2 branches missed.">        if(f.getCategoryName().length()&gt;15){</span>
+<span class="nc" id="L21">            f.setCategoryName(f.getCategoryName().substring(0,15));</span>
+        }
+<span class="nc bnc" id="L23" title="All 2 branches missed.">        if(f.getBarcode().length()&gt;15){</span>
+<span class="nc" id="L24">            f.setBarcode(f.getBarcode().substring(0,15));</span>
+        }
+<span class="nc bnc" id="L26" title="All 2 branches missed.">        if(f.getName().length()&gt;15){</span>
+<span class="nc" id="L27">            f.setName(f.getName().substring(0,15));</span>
+        }
+<span class="nc" id="L29">    }</span>
+
+    public static ProductData convert(ProductPojo p){
+<span class="nc" id="L32">        ProductData d = new ProductData();</span>
+<span class="nc" id="L33">        d.setProductId(p.getProductId());</span>
+<span class="nc" id="L34">        d.setBarcode(p.getBarcode());</span>
+<span class="nc" id="L35">        d.setName(p.getName());</span>
+<span class="nc" id="L36">        d.setMrp(p.getMrp());</span>
+<span class="nc" id="L37">        return d;</span>
+    }
+
+    public static ProductPojo convert(ProductForm f){
+<span class="nc" id="L41">        ProductPojo p = new ProductPojo();</span>
+<span class="nc" id="L42">        p.setName(f.getName());</span>
+<span class="nc" id="L43">        p.setBarcode(f.getBarcode());</span>
+<span class="nc" id="L44">        p.setMrp(f.getMrp());</span>
+<span class="nc" id="L45">        return p;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

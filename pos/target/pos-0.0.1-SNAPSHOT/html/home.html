@@ -1,0 +1,53 @@
+<!doctype html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head th:replace="snippets.html :: name_head"></head>
+<title>Home Page</title>
+<body>
+
+
+<nav th:replace="snippets.html :: name_navbar"></nav>
+
+<div class="container d-flex flex-row" style="margin-top :2rem">
+    <div class="card" style="width: 18rem; margin-left :2rem; border:2px solid black; border-radius:20px; background-color: rgba(0, 0, 0, 0.8); color:white">
+        <img class="card-img-top" style="border-radius:20px;" src="https://justcreative.com/wp-content/uploads/2018/09/build-your-brand.jpg" alt="Card image cap">
+        <div class="card-body lightToDark">
+            <h5 class="card-title">Brand-category</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a th:href="@{/ui/brands}" class="btn btn-light">Visit Brand</a>
+        </div>
+    </div>
+      <div class="card" style="width: 18rem; margin-left :2rem; border:2px solid black; border-radius:20px; background-color: rgba(0, 0, 0, 0.7); color:white">
+<img class="card-img-top" style="border-radius:20px;" src="https://thumbs.dreamstime.com/b/product-text-made-wooden-cube-white-background-181800372.jpg" alt="Card image cap">
+        <div class="card-body lightToDark">
+            <h5 class="card-title">Product</h5>
+            <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+            <a th:href="@{/ui/products}" class="btn btn-light">Products available</a>
+        </div>
+    </div>
+    <div class="card" style="width: 18rem; margin-left :2rem; border:2px solid black; border-radius:20px; background-color: rgba(0, 0, 0, 0.8); color:white">
+    <img class="card-img-top" style="border-radius:20px;" src="https://authorstream.s3.amazonaws.com/content/1393641_634703425670340000.jpg" alt="Card image cap">
+    <div class="card-body lightToDark">
+        <h5 class="card-title">Inventory</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a th:href="@{/ui/inventory}" class="btn btn-light">Look into inventory</a>
+    </div>
+</div>
+    <div class="card" style="width: 18rem; margin-left :2rem; border:2px solid black; border-radius:20px; background-color: rgba(0, 0, 0, 0.7); color:white">
+    <img class="card-img-top" style="border-radius:20px;" src="https://media.istockphoto.com/id/1206806317/vector/shopping-cart-icon-isolated-on-white-background.jpg?s=612x612&w=0&k=20&c=1RRQJs5NDhcB67necQn1WCpJX2YMfWZ4rYi1DFKlkNA=" alt="Card image cap">
+    <div class="card-body lightToDark">
+        <h5 class="card-title">Orders</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a th:href="@{/ui/orders}" class="btn btn-light">Orders here</a>
+    </div>
+</div>
+
+
+</div> <!-- Container end-->
+
+<footer th:replace="snippets.html :: name_footer"></footer>
+
+</body>
+
+</html>

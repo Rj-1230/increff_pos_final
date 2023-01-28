@@ -1,0 +1,116 @@
+html {
+	position: relative;
+	min-height: 100%;
+}
+
+.link{
+style-decoration:none;
+}
+
+.lightToDark .btn:hover{
+color:white;
+background-color:rgba(0,0,0,0.7);
+
+}
+
+.demo-wrap {
+  overflow: hidden;
+  position: relative;
+  height:100vh;
+}
+.alignleft {
+     position: relative;
+     left: 30%;
+	float: left;
+}
+
+
+.alignleftt {
+     position: relative;
+     left: 0;
+	float: left;
+}
+
+.alignright {
+	float: right;
+}
+.alignright button{
+    margin-left:10px;
+}
+
+.card-img-top{
+height: 14rem;
+}
+.half-space { margin:0; padding:0; height:15px; }
+
+.space { margin:0; padding:0; height:25px; }
+.demo-bg {
+  opacity: 0.5;
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+.jumbotron{
+margin-bottom :0px;
+}
+
+.demo-content {
+  position: relative;
+  top:100px;
+  left:50px;
+  border : 4px solid black;
+  width: max-content;
+  padding :20px;
+  background :  #D3D3D3;
+}
+
+body {
+background-color: rgba(17,174,239,0.3);
+
+
+}
+
+/*Css added */
+
+.footer {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 60px; /* Set the fixed height of the footer here */
+	line-height: 60px; /* Vertically center the text there */
+	text-align: center;
+	color:white;
+	background-color: #343a40!important;
+}
+
+#toast-container
+{
+  position: fixed !important;
+  top: 20px;
+  right:20px;
+  z-index: 999999;
+  overflow: visible !important;
+}
+
+
+#dropMenu a{
+color:rgba(255,255,255,.5);}
+
+#dropMenu a:hover{
+color: black;}
+
+
+
+#dropUserMenu a{
+color:rgba(255,255,255,.5);}
+
+#dropUserMenu a:hover{
+color: black;}
+
+
+table td,th{
+text-align: center;
+  vertical-align: middle;
+  }

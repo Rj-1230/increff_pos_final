@@ -1,0 +1,146 @@
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head"></head>
+<title> Inventory </title>
+<body>
+
+<nav th:replace="snippets.html :: name_navbar"></nav>
+
+<div class="container" style="margin-bottom:20px;">
+
+    <div th:replace="snippets.html :: name_toast"></div>
+
+    <div class="modal" tabindex="-1" role="dialog" id="inventory-create-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add items to inventory </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                <form id="inventory-form">
+                <div class="form-group">
+                    <label for="inputBarcode">Barcode</label>
+                    <input type="text" class="form-control" name="barcode" id="inputBarcode" placeholder="Enter barcode">
+                </div>
+                <div class="form-group">
+                    <label for="inputQuantity">Quantity</label>
+                    <input type="number" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control" name="quantity" id="inputQuantity" placeholder="Enter product's quantity">
+                </div>
+                <div class="half-space">
+                    <!--      Blank row -->
+                </div>
+                </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="add-inventory" style="margin-left:20px" data-dismiss="modal"><i class="bi bi-plus"></i></button>
+                    <!--          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="bi bi-x-circle"></i></button>-->
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="row card mx-auto" style="width: 40rem;color:white;background-color:#343a40!important;">
+        <div class="space">
+            <!--      Blank row-->
+        </div>
+
+
+        <div class="col-12" id="main">
+            <h3 class="alignleft">Inventory </h3>
+            <div class="alignright">
+                <button type="button" class="btn btn-primary supervisor" id="open-inventory-modal" data-toggle="modal" data-target="#inventory-create-modal" ><i class="bi bi-file-earmark-plus"></i></button>
+                <button type="button" class="btn btn-success" id="refresh-data" ><i class="bi bi-arrow-clockwise"></i></button>
+                <button type="button" class="btn btn-warning supervisor" id="upload-data" ><i class="bi bi-cloud-arrow-up"></i></button>
+            </div>
+
+        </div>
+
+        <div class="space">
+            <!--      Blank row -->
+        </div>
+    </div>
+    <div class="half-space"></div>
+    <div class="space"></div>
+
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-dark table-striped table-hover" id="inventory-table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Barcode</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col" id="actions-supervisor" style="display:none">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>barcode001</td>
+                    <td>120</td>
+                    <td>Edit | Delete</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>barcode002</td>
+                    <td>250</td>
+                    <td>Edit | Delete</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Inventory Edit Modal -->
+    <div class="modal" tabindex="-1" role="dialog" id="inventory-edit-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Update Inventory </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="inventory-edit-form">
+                        <div class="form-group">
+                            <label>Barcode</label>
+                                <input type="text" maxlength="15" class="form-control" name="barcode" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label>Quantity</label>
+                                <input type="number" min="0" max="9999" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control" name="quantity">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="update-inventory">Update</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div th:replace="snippets.html :: name_upload_modal"></div>
+
+</div> <!-- Container end-->
+<div class="space"></div>
+<div class="space"></div>
+<footer th:replace="snippets.html :: name_footer"></footer>
+
+<script th:src="@{/static/inventory.js}"/></script>
+
+</body>
+
+</html>

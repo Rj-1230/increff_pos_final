@@ -1,0 +1,9 @@
+com\increff\invoice_app\model\OrderItemData.class
+com\increff\invoice_app\service\CreateXMLFileJava.class
+com\increff\invoice_app\service\PDFFromFOP.class
+com\increff\invoice_app\spring\SpringConfig.class
+com\increff\invoice_app\spring\ControllerConfig.class
+com\increff\invoice_app\spring\WebInitializer.class
+com\increff\invoice_app\model\InvoiceForm.class
+com\increff\invoice_app\service\InvoiceService.class
+com\increff\invoice_app\controller\InvoiceController.class

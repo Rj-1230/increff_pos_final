@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ReportFlowHelper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.helper</a> &gt; <span class="el_source">ReportFlowHelper.java</span></div><h1>ReportFlowHelper.java</h1><pre class="source lang-java linenums">package com.increff.pos.helper;
+
+import com.increff.pos.model.BrandData;
+import com.increff.pos.model.DailyReportData;
+import com.increff.pos.model.InventoryReportData;
+import com.increff.pos.model.ProductRevenueData;
+import com.increff.pos.pojo.BrandPojo;
+import com.increff.pos.pojo.DailyReportPojo;
+import com.increff.pos.pojo.InventoryPojo;
+import com.increff.pos.pojo.ProductPojo;
+import com.increff.pos.service.ApiException;
+
+import java.util.Objects;
+
+<span class="nc" id="L15">public class ReportFlowHelper {</span>
+
+    public static boolean filterByBrandCategory (String dataBrand,String dataCategory, String formBrand, String formCategory){
+<span class="nc bnc" id="L18" title="All 4 branches missed.">        return (((Objects.equals(dataBrand,formBrand)) &amp;&amp; (Objects.equals(dataCategory,formCategory))) ||</span>
+<span class="nc bnc" id="L19" title="All 4 branches missed.">                ((Objects.equals(formBrand,&quot;All&quot;)) &amp;&amp; (Objects.equals(dataCategory,formCategory))) ||</span>
+<span class="nc bnc" id="L20" title="All 4 branches missed.">                ((Objects.equals(dataBrand,formBrand)) &amp;&amp; (Objects.equals(formCategory,&quot;All&quot;))) ||</span>
+<span class="nc bnc" id="L21" title="All 4 branches missed.">                ((Objects.equals(formBrand,&quot;All&quot;)) &amp;&amp; (Objects.equals(formCategory,&quot;All&quot;))));</span>
+
+    }
+
+    public static ProductRevenueData convert(ProductPojo p,BrandPojo brandPojo) throws ApiException
+    {
+<span class="nc" id="L27">        ProductRevenueData productRevenueData = new ProductRevenueData();</span>
+<span class="nc" id="L28">        productRevenueData.setProductId(p.getProductId());</span>
+<span class="nc" id="L29">        productRevenueData.setBarcode(p.getBarcode());</span>
+<span class="nc" id="L30">        productRevenueData.setMrp(p.getMrp());</span>
+<span class="nc" id="L31">        productRevenueData.setName(p.getName());</span>
+<span class="nc" id="L32">        productRevenueData.setQuantity(0);</span>
+<span class="nc" id="L33">        productRevenueData.setTotal(0);</span>
+
+<span class="nc" id="L35">        productRevenueData.setBrand(brandPojo.getBrand());</span>
+<span class="nc" id="L36">        productRevenueData.setCategory(brandPojo.getCategory());</span>
+
+<span class="nc" id="L38">        return productRevenueData;</span>
+    }
+
+    public static InventoryReportData convert(InventoryPojo p,BrandPojo brandPojo) throws ApiException
+    {
+<span class="nc" id="L43">        InventoryReportData inventoryReportData = new InventoryReportData();</span>
+<span class="nc" id="L44">        inventoryReportData.setBrand(brandPojo.getBrand());</span>
+<span class="nc" id="L45">        inventoryReportData.setCategory(brandPojo.getCategory());</span>
+<span class="nc" id="L46">        inventoryReportData.setQuantity(p.getQuantity());</span>
+
+<span class="nc" id="L48">        return inventoryReportData;</span>
+    }
+
+    public static BrandData convert(BrandPojo p) throws ApiException
+    {
+<span class="nc" id="L53">        BrandData brandData = new BrandData();</span>
+<span class="nc" id="L54">        brandData.setBrand(p.getBrand());</span>
+<span class="nc" id="L55">        brandData.setId(p.getId());</span>
+<span class="nc" id="L56">        brandData.setCategory(p.getCategory());</span>
+<span class="nc" id="L57">        return brandData;</span>
+    }
+
+    public static DailyReportData convert(DailyReportPojo p) throws ApiException
+    {
+<span class="nc" id="L62">        DailyReportData dailyReportData = new DailyReportData();</span>
+<span class="nc" id="L63">        dailyReportData.setDate(p.getDate().toString());</span>
+<span class="nc" id="L64">        dailyReportData.setInvoicedOrderCount(p.getInvoicedOrderCount());</span>
+<span class="nc" id="L65">        dailyReportData.setInvoicedItemsCount(p.getInvoicedItemsCount());</span>
+<span class="nc" id="L66">        dailyReportData.setTotalRevenue(p.getTotalRevenue());</span>
+
+<span class="nc" id="L68">        return dailyReportData;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.service</a> &gt; <span class="el_source">ProductService.java</span></div><h1>ProductService.java</h1><pre class="source lang-java linenums">package com.increff.pos.service;
+
+import com.increff.pos.dao.ProductDao;
+import com.increff.pos.pojo.InventoryPojo;
+import com.increff.pos.pojo.ProductPojo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Objects;
+
+@Service
+<span class="fc" id="L14">public class ProductService {</span>
+
+    @Autowired
+    private ProductDao productDao;
+
+
+    @Transactional(rollbackOn = ApiException.class)
+    public int add(ProductPojo p) throws ApiException {
+<span class="nc" id="L22">        ProductPojo a = productDao.getProductPojoFromBarcode(p.getBarcode());</span>
+<span class="nc bnc" id="L23" title="All 2 branches missed.">        if(Objects.nonNull(a)){</span>
+<span class="nc" id="L24">            throw new ApiException(&quot;The product with given barcode already exists&quot;);</span>
+        }
+<span class="nc" id="L26">       return productDao.insert(p);</span>
+
+    }
+
+    @Transactional
+    public void delete(int id) {
+<span class="nc" id="L32">        productDao.delete(id);</span>
+<span class="nc" id="L33">    }</span>
+
+
+    @Transactional
+    public List&lt;ProductPojo&gt; getAll() {
+<span class="nc" id="L38">        return productDao.selectAll();</span>
+    }
+
+    @Transactional(rollbackOn = ApiException.class)
+    public void update(int id, ProductPojo p) throws ApiException {
+<span class="nc" id="L43">        ProductPojo ex = getCheck(id);</span>
+<span class="nc" id="L44">        ex.setName(p.getName());</span>
+<span class="nc" id="L45">        ex.setMrp(p.getMrp());</span>
+<span class="nc" id="L46">    }</span>
+
+    @Transactional(rollbackOn = ApiException.class)
+    public  ProductPojo getCheck(int id) throws ApiException {
+<span class="nc" id="L50">        ProductPojo a = productDao.select(id);</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">        if(Objects.isNull(a)){</span>
+<span class="nc" id="L52">            throw new ApiException(&quot;No such product with given id exists !&quot;);</span>
+        }
+<span class="nc" id="L54">        return a;</span>
+    }
+
+    @Transactional(rollbackOn = ApiException.class)
+    public ProductPojo getProductPojoFromBarcode(String barcode) throws ApiException {
+<span class="nc" id="L59">        ProductPojo a = productDao.getProductPojoFromBarcode(barcode);</span>
+<span class="nc bnc" id="L60" title="All 2 branches missed.">        if(Objects.isNull(a)){</span>
+<span class="nc" id="L61">            throw new ApiException(&quot;The product with given barcode doesn't exists&quot;);</span>
+        }
+<span class="nc" id="L63">        return a;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,221 @@
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head">
+    <title>Order - [[${customerName}]] </title>
+</head>
+
+<body>
+
+<nav th:replace="snippets.html :: name_navbar"></nav>
+<div th:replace="snippets.html :: name_toast"></div>
+
+<div class="container" style="margin-bottom:20px;">
+
+    <div class="modal" tabindex="-1" role="dialog" id="add-orderItems-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Add Order Items for [[${customerName}]]  </h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form id="orderItem-form">
+                        <div class="form-group">
+                            <label for="inputOrderId">Order ID</label>
+                            <input type="number" class="form-control" name="orderId" id="inputOrderId" placeholder="Enter order ID" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputBarcode">Barcode</label>
+                            <input type="text" maxlength="15" class="form-control" name="barcode" id="inputBarcode" placeholder="Enter barcode of product">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputQuantity">Quantity</label>
+                            <input type="number" min="1" max="99" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control" name="quantity" id="inputQuantity" placeholder="Enter product's quantity">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputSellingPrice">Selling Price</label>
+                            <input type="number" min="1" max="999999" step=".01" class="form-control" name="sellingPrice" id="inputSellingPrice" placeholder="Enter product's selling price">
+                        </div>
+                        <div class="half-space">
+                            <!--      Blank row -->
+                        </div>
+
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="add-orderItem" style="margin-left:20px" data-dismiss="modal"><i class="bi bi-plus"></i></button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <br>
+
+    <div class="row card mx-auto" style="width: 40rem; color:white;background-color:#343a40!important;">
+        <div class="space">
+            <!--      Blank row-->
+        </div>
+        <div class="col-12" id="main">
+            <h3 class="alignleftt">Order Items for [[${customerName}]]  </h3>
+            <div class="alignright">
+                <button type="button" class="btn btn-primary" id="open-orderItem-modal" data-toggle="modal" data-target="#add-orderItems-modal" ><i class="bi bi-file-earmark-plus"></i></button>
+                <button type="button" class="btn btn-dark" data-toggle="tooltip" id="updateCustomerDetails" data-placement="bottom" title="Update Customer Details">
+                    <i class="bi bi-pen"></i>
+                </button>
+                <button type="button" class="btn btn-success" id="refresh-data" ><i class="bi bi-arrow-clockwise"></i></button>
+
+            </div>
+
+
+        </div>
+        <div class="col-12">
+        <button class="btn btn-primary" id="place-order"> Place Order </button>
+        </div>
+        <div class="space">
+            <!--      Blank row -->
+        </div>
+    </div>
+
+<!--        <h3 class="text-center"></h3>-->
+
+    <div class="half-space">
+        <!--      Blank row-->
+    </div>
+    <!--  </card>-->
+    <div class="row text-danger" id="logg">
+
+    </div>
+    <div class="space">
+        <!--      Blank row-->
+    </div>
+
+    <!-- Blank Row -->
+
+    <div class="row">
+
+        <!-- Table -->
+        <div class="col-12">
+            <table class="table table-dark table-striped table-hover" id="orderItem-table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Order ID</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Selling Price</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>Nestle</td>
+                    <td>dairy</td>
+                    <td>Edit | Delete</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Dabur</td>
+                    <td>health</td>
+                    <td>Edit | Delete</td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+    <!-- cart Edit Modal -->
+    <div class="modal" tabindex="-1" role="dialog" id="edit-orderItem-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit order item </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form id="orderItem-edit-form">
+                        <div class="form-group">
+                            <label for="inputOrderId">Order Item Id</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" name="orderItemId" readonly>
+                            </div>
+                        </div>
+                        <input type="hidden" maxlength="15" class="form-control" name="barcode">
+                        <input type="hidden" class="form-control" name="orderId">
+
+                        <div class="form-group">
+                            <label for="inputQuantity">Quantity</label>
+                            <div class="col-sm-10">
+                                <input type="number" max="99" onkeypress="return event.charCode >= 48 && event.charCode <= 57" min="1" class="form-control" name="quantity" placeholder="Enter product's quantity">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputSellingPrice">Selling Price(discounted) :</label>
+                            <div class="col-sm-10">
+                                <input type="number" min="1" max="999999" step=".01" class="form-control" name="sellingPrice" placeholder="Enter product's selling price">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="update-order-item">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal" tabindex="-1" role="dialog" id="edit-customer-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Customer Details </h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <form id="customer-edit-form">
+
+                        <div class="form-group">
+                            <label>Customer Name</label>
+                                <input type="text" maxlength="20" class="form-control" name="customerName">
+                        </div>
+                        <div class="form-group">
+                            <label>Mobile No.</label>
+                            <input type="text" class="form-control" name="customerPhone" maxlength="10" title="Error Message" pattern="[1-9]{1}[0-9]{9}">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="update-customer">Update</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div> <!-- Container end-->
+
+<div class="space"></div>
+<div class="space"></div>
+<footer th:replace="snippets.html :: name_footer"></footer>
+
+<script th:src="@{/static/orderItem.js}"/></script>
+
+</body>
+
+</html>
