@@ -17,7 +17,7 @@ public class ProductDao {
     @PersistenceContext
     EntityManager em;
 
-    public int insert(ProductPojo p) {
+    public Integer insert(ProductPojo p) {
         em.persist(p);
         em.flush();
         return p.getProductId();
@@ -34,13 +34,13 @@ public class ProductDao {
         }
     }
 
-    public int delete(int id) {
+    public Integer delete(Integer id) {
         Query query = em.createQuery(delete_productPojo_by_id);
         query.setParameter("id", id);
         return query.executeUpdate();
     }
 
-    public ProductPojo select(int id) {
+    public ProductPojo select(Integer id) {
         try {
             TypedQuery<ProductPojo> query = getQuery(select_productPojo_by_id);
             query.setParameter("id", id);

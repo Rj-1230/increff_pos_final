@@ -21,13 +21,13 @@ public class CartDao {
         em.persist(p);
     }
 
-    public int delete(int id) {
+    public Integer delete(Integer id) {
         Query query = em.createQuery(delete_cartPojo_by_id);
         query.setParameter("id", id);
         return query.executeUpdate();
     }
 
-    public CartPojo select(int id) {
+    public CartPojo select(Integer id) {
         try{
             TypedQuery<CartPojo> query = getQuery(select_cartPojo_by_id);
             query.setParameter("id", id);
@@ -39,7 +39,7 @@ public class CartDao {
         }
     }
 
-    public CartPojo getCartPojoFromProductIdAndCounterId(int productId,int counterId) {
+    public CartPojo getCartPojoFromProductIdAndCounterId(Integer productId,Integer counterId) {
         try{
             TypedQuery<CartPojo> query = getQuery(select_cartPojo_by_ProductId_and_counterId);
             query.setParameter("productId", productId);
@@ -52,7 +52,7 @@ public class CartDao {
 
     }
 
-    public List<CartPojo> selectAll(int counterId) {
+    public List<CartPojo> selectAll(Integer counterId) {
         TypedQuery<CartPojo> query = getQuery(select_all_cartPojo_by_counterId);
         query.setParameter("counterId", counterId);
         return query.getResultList();

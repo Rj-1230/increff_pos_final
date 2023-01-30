@@ -11,8 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.increff.pos.helper.GetCurrentTime.getCurrentDateTime;
 import static com.increff.pos.helper.NullCheckHelper.*;
@@ -33,17 +38,17 @@ public class OrderDto {
         return convert(p);
     }
 
-    public OrderData getOrderDetails(int id) throws ApiException {
+    public OrderData getOrderDetails(Integer id) throws ApiException {
         return convert(orderService.getCheckOrder(id));
     }
 
-    public void updateOrder(@PathVariable int id, @RequestBody OrderForm f) throws ApiException {
+    public void updateCustomerDetails(@PathVariable Integer id, @RequestBody OrderForm f) throws ApiException {
         checkNullable(f);
         normalize(f);
         orderService.updateCustomerDetails(id,convert(f));
     }
 
-    public OrderData getOrderById(int id) throws ApiException
+    public OrderData getOrderById(Integer id) throws ApiException
     {
         return convert(orderService.getCheckOrder(id));
     }
@@ -57,9 +62,9 @@ public class OrderDto {
     }
 
 
-    public void placeOrder(int id) throws ApiException
+    public void invoiceOrder(Integer id) throws ApiException
     {
-        orderService.placeOrder(id);
+        orderService.invoiceOrder(id);
     }
 
     public void addOrderItem(OrderItemForm f) throws ApiException {
@@ -68,24 +73,39 @@ public class OrderDto {
         orderFlow.addOrderItem(convert(f),f.getBarcode());
     }
 
-    public void deleteOrderItem(@PathVariable int id) throws ApiException {
+    public void deleteOrderItem(@PathVariable Integer id) throws ApiException {
         orderFlow.deleteOrderItem(id);
     }
 
-    public OrderItemData getOrderItem(int id) throws ApiException {
+    public OrderItemData getOrderItem(Integer id) throws ApiException {
         return convert(orderService.getCheckOrderItem(id));
     }
 
-    public void updateOrderItem(@PathVariable int id, @RequestBody OrderItemForm f) throws ApiException {
+    public void updateOrderItem(@PathVariable Integer id, @RequestBody OrderItemForm f) throws ApiException {
         checkNullable(f);
         normalize(f);
         orderFlow.updateOrderItem(id,convert(f));
     }
 
-    public List<OrderItemData> getAllOrderItems(int orderId){
+    public List<OrderItemData> getAllOrderItems(Integer orderId){
         return getAllOrderItemsOfAgivenOrder(orderService.getAllOrderItems(orderId));
     }
 
+    public List<OrderPojo> selectOrderByDateFilter(String start, String end) throws ApiException {
+        DateTimeFormatter formatter  = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        start += " 00:00:00";
+        end += " 23:59:59";
+        ZoneId timeZone = ZoneId.systemDefault();
+        ZonedDateTime startDate = LocalDateTime.parse(start, formatter).atZone(timeZone);
+        ZonedDateTime endDate = LocalDateTime.parse(end, formatter).atZone(timeZone);
+        return orderService.selectOrderByDateFilter(startDate,endDate);
+    }
+
+    public void pushToNewOrder(OrderForm f) throws ApiException {
+        checkNullable(f);
+        normalize(f);
+        orderFlow.addNewOrder(convert(f));
+    }
 
 
 }

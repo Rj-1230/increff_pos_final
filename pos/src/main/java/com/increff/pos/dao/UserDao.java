@@ -23,13 +23,13 @@ public class UserDao{
         em.persist(p);
     }
 
-    public int delete(int id) {
+    public Integer delete(Integer id) {
         Query query = em.createQuery(delete_userpojo_by_id);
         query.setParameter("id", id);
         return query.executeUpdate();
     }
 
-    public UserPojo select(int id) {
+    public UserPojo select(Integer id) {
         try {
             TypedQuery<UserPojo> query = getQuery(selct_userpojo_by_id);
             query.setParameter("id", id);

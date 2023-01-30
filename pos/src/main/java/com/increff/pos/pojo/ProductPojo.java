@@ -7,21 +7,20 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name="product")
-//        uniqueConstraints={@UniqueConstraint(columnNames={"Barcode", "BrandID","ProductName"})})
+@Table(name="product", indexes = @Index(columnList = "Barcode") , uniqueConstraints={@UniqueConstraint(columnNames={"Barcode", "Brand_Id"})})
 
 @Getter
 @Setter
 public class ProductPojo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="MyProductId", nullable=false)
+    @Column(name="Product_Id", nullable=false)
     private Integer productId;
     @Column(name="Barcode", nullable=false)
     private String barcode;
-    @Column(name="BrandId", nullable=false)
+    @Column(name="Brand_Id", nullable=false)
     private Integer brandId;
-    @Column(name="ProductName")
+    @Column(name="Product_Name")
     @NotNull
     private String name;
     @Column(name="Mrp", nullable=false)

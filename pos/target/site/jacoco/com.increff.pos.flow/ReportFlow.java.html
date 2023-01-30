@@ -9,13 +9,13 @@ import org.springframework.stereotype.Service;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.ZonedDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static com.increff.pos.helper.ReportFlowHelper.*;
-import static com.increff.pos.util.GetCurrentDateTime.getLocalDate;
+import static com.increff.pos.util.GetCurrentDateTime.*;
+
 //import static com.increff.pos.helper.ReportFlowHelper.filterByBrandCategory;
 @Service
 <span class="fc" id="L21">public class ReportFlow {</span>
@@ -35,143 +35,156 @@ import static com.increff.pos.util.GetCurrentDateTime.getLocalDate;
     public List&lt;ProductRevenueData&gt; getRevenueBrandCategoryWise(DateBrandCategoryFilterForm form) throws ApiException {
 <span class="nc" id="L36">        List&lt;ProductRevenueData&gt; list1 = new ArrayList&lt;ProductRevenueData&gt;();</span>
 <span class="nc" id="L37">        HashMap&lt;Integer, ProductRevenueData&gt; map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L38">        String startDate = form.getStart() + &quot; 00:00:00&quot;;</span>
-<span class="nc" id="L39">        String endDate = form.getEnd() + &quot; 23:59:59&quot;;</span>
+<span class="nc" id="L38">        ZonedDateTime startDate = convertStringToZonedDateTime(form.getStart() + &quot; 00:00:00&quot;);</span>
+<span class="nc" id="L39">        ZonedDateTime endDate = convertStringToZonedDateTime(form.getEnd() + &quot; 23:59:59&quot;);</span>
 
 <span class="nc" id="L41">        List&lt;OrderPojo&gt; orderPojoList = orderService.selectOrderByDateFilter(startDate, endDate);</span>
 <span class="nc bnc" id="L42" title="All 2 branches missed.">        for (OrderPojo e : orderPojoList) {</span>
-<span class="nc" id="L43">            int orderId = e.getOrderId();</span>
+<span class="nc" id="L43">            Integer orderId = e.getOrderId();</span>
 <span class="nc" id="L44">            List&lt;OrderItemPojo&gt; orderItemPojoList = orderService.getAllOrderItems(orderId);</span>
-<span class="nc bnc" id="L45" title="All 2 branches missed.">            for (OrderItemPojo p : orderItemPojoList) {</span>
-<span class="nc bnc" id="L46" title="All 2 branches missed.">                if (map.containsKey(p.getProductId())) {</span>
-<span class="nc" id="L47">                    continue;</span>
-                }
-<span class="nc" id="L49">                ProductPojo productPojo = productService.getCheck(p.getProductId());</span>
-<span class="nc" id="L50">                BrandPojo brandPojo = brandService.getCheckBrand(productPojo.getBrandId());</span>
-<span class="nc" id="L51">                ProductRevenueData productRevenueData = convert(productPojo, brandPojo);</span>
-<span class="nc" id="L52">                map.put(p.getProductId(), productRevenueData);</span>
+<span class="nc" id="L45">            Set&lt;Integer&gt; productIds = orderItemPojoList.stream().map(OrderItemPojo::getProductId).collect(Collectors.toSet());</span>
+<span class="nc" id="L46">            Map&lt;Integer,ProductPojo&gt; productIdPojoMap = productIds.stream().collect(Collectors.toMap(value-&gt; value,</span>
+<span class="nc" id="L47">                    value -&gt; productService.get(value)));</span>
+<span class="nc" id="L48">            Map&lt;Integer,BrandPojo&gt; productIdBrandPojoMap = productIds.stream().collect(Collectors.toMap(value-&gt; value,</span>
+<span class="nc" id="L49">                    value -&gt; brandService.getBrand(productService.get(value).getBrandId())));</span>
+//            Set&lt;ProductPojo&gt; productPojos = productIds.stream().map(x-&gt;productService.get(x)).collect(Collectors.toSet());
+//            Set&lt;BrandPojo&gt; brandPojos = productPojos.stream().map(x-&gt;brandService.getBrand(x.getBrandId())).collect(Collectors.toSet());
 
-<span class="nc" id="L54">                int productId = p.getProductId();</span>
-<span class="nc" id="L55">                int quantity = map.get(productId).getQuantity();</span>
-<span class="nc" id="L56">                double total = map.get(productId).getTotal();</span>
-<span class="nc" id="L57">                map.get(productId).setQuantity(quantity + p.getQuantity());</span>
-<span class="nc" id="L58">                map.get(productId).setTotal(total + p.getQuantity() * p.getSellingPrice());</span>
+//            Map&lt;Integer,ProductRevenueData&gt; productRevenueDataMap = productIds.stream().collect(Collectors.toMap(value-&gt; value,
+//                    value -&gt; convert(productIdPojoMap.get(value),productIdBrandPojoMap.get(value))));
 
-<span class="nc" id="L60">            }</span>
-<span class="nc" id="L61">        }</span>
+<span class="nc" id="L56">            Map&lt;Integer,ProductRevenueData&gt; productRevenueDataMap = productIds.stream().collect(Collectors.toMap(value-&gt; value,</span>
+<span class="nc" id="L57">                    value -&gt; convert(productService.get(value),brandService.getBrand(productService.get(value).getBrandId()))));</span>
+
+
+<span class="nc bnc" id="L60" title="All 2 branches missed.">            for(Map.Entry&lt;Integer,ProductRevenueData&gt; entry : productRevenueDataMap.entrySet()){</span>
+<span class="nc" id="L61">                System.out.println(entry.getKey() + &quot; --------------&quot;+ entry.getValue().getBrand() +entry.getValue().getCategory());</span>
+<span class="nc" id="L62">            }</span>
+
+//            Set&lt;ProductRevenueData&gt; productRevenueDataSet = productIds.stream().filter(productId -&gt; Objects.equals(productId,productPojos.))
+//            ProductRevenueData productRevenueData = convert(productPojo, brandPojo);
+//                map.put(p.getProductId(), productRevenueData);
+//
+//                Integer productId = p.getProductId();
+//                Integer quantity = map.get(productId).getQuantity();
+//                double total = map.get(productId).getTotal();
+//                map.get(productId).setQuantity(quantity + p.getQuantity());
+//                map.get(productId).setTotal(total + p.getQuantity() * p.getSellingPrice());
+<span class="nc" id="L73">        }</span>
+
 
 //        Converting map to list
-<span class="nc bnc" id="L64" title="All 2 branches missed.">        for (Map.Entry&lt;Integer, ProductRevenueData&gt; e : map.entrySet()) {</span>
-<span class="nc" id="L65">            e.getValue().setTotal(Double.parseDouble(formatter.format(e.getValue().getTotal())));</span>
-<span class="nc bnc" id="L66" title="All 2 branches missed.">            if (e.getValue().getQuantity() == 0)</span>
-<span class="nc" id="L67">                continue;</span>
-<span class="nc bnc" id="L68" title="All 2 branches missed.">            if (filterByBrandCategory(e.getValue().getBrand(), e.getValue().getCategory(), form.getBrand(), form.getCategory()))</span>
-<span class="nc" id="L69">                list1.add(e.getValue());</span>
-<span class="nc" id="L70">        }</span>
-<span class="nc" id="L71">        return list1;</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">        for (Map.Entry&lt;Integer, ProductRevenueData&gt; e : map.entrySet()) {</span>
+<span class="nc" id="L78">            e.getValue().setTotal(Double.parseDouble(formatter.format(e.getValue().getTotal())));</span>
+<span class="nc bnc" id="L79" title="All 2 branches missed.">            if (e.getValue().getQuantity() == 0)</span>
+<span class="nc" id="L80">                continue;</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">            if (filterByBrandCategory(e.getValue().getBrand(), e.getValue().getCategory(), form.getBrand(), form.getCategory()))</span>
+<span class="nc" id="L82">                list1.add(e.getValue());</span>
+<span class="nc" id="L83">        }</span>
+<span class="nc" id="L84">        return list1;</span>
     }
 
 
     public List&lt;InventoryReportData&gt; getInventoryBrandCategoryWise(BrandForm form) throws ApiException {
-<span class="nc" id="L76">        List&lt;InventoryReportData&gt; list1 = new ArrayList&lt;InventoryReportData&gt;();</span>
+<span class="nc" id="L89">        List&lt;InventoryReportData&gt; list1 = new ArrayList&lt;InventoryReportData&gt;();</span>
 
-<span class="nc" id="L78">        List&lt;InventoryPojo&gt; inventoryPojoList = inventoryService.getAll();</span>
-<span class="nc" id="L79">        HashMap&lt;Integer, InventoryReportData&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc" id="L91">        List&lt;InventoryPojo&gt; inventoryPojoList = inventoryService.getAll();</span>
+<span class="nc" id="L92">        HashMap&lt;Integer, InventoryReportData&gt; map = new HashMap&lt;&gt;();</span>
 
 //        getting the list of all available products in map
-<span class="nc bnc" id="L82" title="All 2 branches missed.">        for(InventoryPojo p: inventoryPojoList) {</span>
-<span class="nc" id="L83">            ProductPojo productPojo = productService.getCheck(p.getProductId());</span>
-<span class="nc" id="L84">            BrandPojo brandPojo = brandService.getCheckBrand(productPojo.getBrandId());</span>
-<span class="nc" id="L85">            InventoryReportData inventoryReportData = convert(p,brandPojo);</span>
-<span class="nc" id="L86">            map.put(p.getProductId(), inventoryReportData);</span>
-<span class="nc" id="L87">        }</span>
+<span class="nc bnc" id="L95" title="All 2 branches missed.">        for(InventoryPojo p: inventoryPojoList) {</span>
+<span class="nc" id="L96">            ProductPojo productPojo = productService.getCheck(p.getProductId());</span>
+<span class="nc" id="L97">            BrandPojo brandPojo = brandService.getCheckBrand(productPojo.getBrandId());</span>
+<span class="nc" id="L98">            InventoryReportData inventoryReportData = convert(p,brandPojo);</span>
+<span class="nc" id="L99">            map.put(p.getProductId(), inventoryReportData);</span>
+<span class="nc" id="L100">        }</span>
 //        Converting map to list
-<span class="nc bnc" id="L89" title="All 2 branches missed.">        for (Map.Entry&lt;Integer, InventoryReportData&gt; e: map.entrySet())</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        for (Map.Entry&lt;Integer, InventoryReportData&gt; e: map.entrySet())</span>
         {
-<span class="nc bnc" id="L91" title="All 2 branches missed.">            if(filterByBrandCategory(e.getValue().getBrand(),e.getValue().getCategory(),form.getBrand(),form.getCategory()))</span>
-<span class="nc" id="L92">                list1.add(e.getValue());</span>
-<span class="nc" id="L93">        }</span>
+<span class="nc bnc" id="L104" title="All 2 branches missed.">            if(filterByBrandCategory(e.getValue().getBrand(),e.getValue().getCategory(),form.getBrand(),form.getCategory()))</span>
+<span class="nc" id="L105">                list1.add(e.getValue());</span>
+<span class="nc" id="L106">        }</span>
 
-<span class="nc" id="L95">        return list1;</span>
+<span class="nc" id="L108">        return list1;</span>
     }
 
 
     public List&lt;BrandData&gt; getBrandReport(BrandForm form) throws ApiException {
-<span class="nc" id="L100">        List&lt;BrandData&gt; list1 = new ArrayList&lt;BrandData&gt;();</span>
+<span class="nc" id="L113">        List&lt;BrandData&gt; list1 = new ArrayList&lt;BrandData&gt;();</span>
 
-<span class="nc" id="L102">        List&lt;BrandPojo&gt; brandPojoList = brandService.getAll();</span>
-<span class="nc" id="L103">        HashMap&lt;Integer, BrandData&gt; map = new HashMap&lt;&gt;();</span>
-<span class="nc bnc" id="L104" title="All 2 branches missed.">        for(BrandPojo p: brandPojoList) {</span>
-<span class="nc" id="L105">            BrandData brandData = convert(p);</span>
-<span class="nc" id="L106">            map.put(p.getId(), brandData);</span>
-<span class="nc" id="L107">        }</span>
-<span class="nc bnc" id="L108" title="All 2 branches missed.">        for (Map.Entry&lt;Integer,BrandData&gt; e: map.entrySet())</span>
+<span class="nc" id="L115">        List&lt;BrandPojo&gt; brandPojoList = brandService.getAll();</span>
+<span class="nc" id="L116">        HashMap&lt;Integer, BrandData&gt; map = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        for(BrandPojo p: brandPojoList) {</span>
+<span class="nc" id="L118">            BrandData brandData = convert(p);</span>
+<span class="nc" id="L119">            map.put(p.getId(), brandData);</span>
+<span class="nc" id="L120">        }</span>
+<span class="nc bnc" id="L121" title="All 2 branches missed.">        for (Map.Entry&lt;Integer,BrandData&gt; e: map.entrySet())</span>
         {
-<span class="nc bnc" id="L110" title="All 2 branches missed.">            if(filterByBrandCategory(e.getValue().getBrand(),e.getValue().getCategory(),form.getBrand(),form.getCategory()))</span>
-<span class="nc" id="L111">                list1.add(e.getValue());</span>
-<span class="nc" id="L112">        }</span>
-<span class="nc" id="L113">        return list1;</span>
+<span class="nc bnc" id="L123" title="All 2 branches missed.">            if(filterByBrandCategory(e.getValue().getBrand(),e.getValue().getCategory(),form.getBrand(),form.getCategory()))</span>
+<span class="nc" id="L124">                list1.add(e.getValue());</span>
+<span class="nc" id="L125">        }</span>
+<span class="nc" id="L126">        return list1;</span>
     }
 
 
 
     public List&lt;DailyReportData&gt; getDailySalesFilteredReport(DateFilterForm form) throws ApiException
     {
-<span class="nc" id="L120">        List&lt;DailyReportData&gt; list1 = new ArrayList&lt;DailyReportData&gt;();</span>
-<span class="nc" id="L121">        HashMap&lt;LocalDate, DailyReportData&gt; map = new HashMap&lt;&gt;();</span>
-<span class="nc" id="L122">        LocalDate startDate = LocalDate.parse(form.getStart());</span>
-<span class="nc" id="L123">        LocalDate endDate = LocalDate.parse(form.getEnd());</span>
-<span class="nc" id="L124">        List&lt;DailyReportPojo&gt; dailyReportPojoList = reportService.selectReportByDateFilter(startDate,endDate);</span>
-<span class="nc bnc" id="L125" title="All 2 branches missed.">        for(DailyReportPojo p: dailyReportPojoList) {</span>
-<span class="nc" id="L126">            DailyReportData dailyReportData = convert(p);</span>
-<span class="nc" id="L127">            map.put(p.getDate(),dailyReportData);</span>
-<span class="nc" id="L128">        }</span>
+<span class="nc" id="L133">        List&lt;DailyReportData&gt; list1 = new ArrayList&lt;DailyReportData&gt;();</span>
+<span class="nc" id="L134">        HashMap&lt;ZonedDateTime, DailyReportData&gt; map = new HashMap&lt;&gt;();</span>
 
-<span class="nc bnc" id="L130" title="All 2 branches missed.">        for (Map.Entry&lt;LocalDate, DailyReportData&gt; e: map.entrySet())</span>
+<span class="nc" id="L136">        ZonedDateTime startDate = convertStringToZonedDateTime(form.getStart()+&quot; 00:00:00&quot;);</span>
+<span class="nc" id="L137">        ZonedDateTime endDate = convertStringToZonedDateTime(form.getEnd()+&quot; 23:59:59&quot;);</span>
+
+<span class="nc" id="L139">        List&lt;DailyReportPojo&gt; dailyReportPojoList = reportService.selectReportByDateFilter(startDate,endDate);</span>
+<span class="nc bnc" id="L140" title="All 2 branches missed.">        for(DailyReportPojo p: dailyReportPojoList) {</span>
+<span class="nc" id="L141">            DailyReportData dailyReportData = convert(p);</span>
+<span class="nc" id="L142">            map.put(p.getInvoiceDate(),dailyReportData);</span>
+<span class="nc" id="L143">        }</span>
+
+<span class="nc bnc" id="L145" title="All 2 branches missed.">        for (Map.Entry&lt;ZonedDateTime, DailyReportData&gt; e: map.entrySet())</span>
         {
-<span class="nc" id="L132">            e.getValue().setTotalRevenue(Double.parseDouble(formatter.format(e.getValue().getTotalRevenue())));</span>
-<span class="nc" id="L133">            list1.add(e.getValue());</span>
+<span class="nc" id="L147">            e.getValue().setTotalRevenue(Double.parseDouble(formatter.format(e.getValue().getTotalRevenue())));</span>
+<span class="nc" id="L148">            list1.add(e.getValue());</span>
 
-<span class="nc" id="L135">        }</span>
+<span class="nc" id="L150">        }</span>
 
-<span class="nc" id="L137">        return list1;</span>
+<span class="nc" id="L152">        return list1;</span>
     }
 
 
-
-
     public void createDailyReport() throws ApiException {
-<span class="nc" id="L144">        DailyReportPojo reportPojo = new DailyReportPojo();</span>
-<span class="nc" id="L145">        LocalDate date = getLocalDate();</span>
+<span class="nc" id="L157">        DailyReportPojo reportPojo = new DailyReportPojo();</span>
+//        ZonedDateTime start = ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0);
+<span class="nc" id="L159">        ZonedDateTime start = getStartOfDay();</span>
+<span class="nc" id="L160">        ZonedDateTime end = getEndOfDay();</span>
+//        ZonedDateTime end = ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59);
+<span class="nc" id="L162">        Integer totalItems = 0;</span>
+<span class="nc" id="L163">        Double totalRevenue = 0.0;</span>
+<span class="nc" id="L164">        List&lt;OrderPojo&gt; orderPojoList = orderService.selectOrderByDateFilter(start, end);</span>
 
-<span class="nc" id="L147">        Integer totalItems = 0;</span>
-<span class="nc" id="L148">        Double totalRevenue = 0.0;</span>
-<span class="nc" id="L149">        String startDate = date + &quot; 00:00:00&quot;;</span>
-<span class="nc" id="L150">        String endDate = date + &quot; 23:59:59&quot;;</span>
-<span class="nc" id="L151">        List&lt;OrderPojo&gt; orderPojoList = orderService.selectOrderByDateFilter(startDate, endDate);</span>
-<span class="nc" id="L152">        Integer totalOrders = orderPojoList.size();</span>
-<span class="nc bnc" id="L153" title="All 2 branches missed.">        for (OrderPojo o : orderPojoList) {</span>
-<span class="nc" id="L154">            Integer id = o.getOrderId();</span>
-<span class="nc" id="L155">            List&lt;OrderItemPojo&gt; orderItemPojoList = orderService.getAllOrderItems(id);</span>
-<span class="nc bnc" id="L156" title="All 2 branches missed.">            for (OrderItemPojo i : orderItemPojoList) {</span>
-<span class="nc" id="L157">                totalItems += i.getQuantity();</span>
-<span class="nc" id="L158">                totalRevenue += i.getQuantity() * i.getSellingPrice();</span>
-<span class="nc" id="L159">            }</span>
-<span class="nc" id="L160">        }</span>
-<span class="nc" id="L161">        totalRevenue = Double.parseDouble(formatter.format(totalRevenue));</span>
+<span class="nc" id="L166">        Integer totalOrders = orderPojoList.size();</span>
+<span class="nc bnc" id="L167" title="All 2 branches missed.">        for (OrderPojo o : orderPojoList) {</span>
+<span class="nc" id="L168">            Integer id = o.getOrderId();</span>
+<span class="nc" id="L169">            List&lt;OrderItemPojo&gt; orderItemPojoList = orderService.getAllOrderItems(id);</span>
+<span class="nc bnc" id="L170" title="All 2 branches missed.">            for (OrderItemPojo i : orderItemPojoList) {</span>
+<span class="nc" id="L171">                totalItems += i.getQuantity();</span>
+<span class="nc" id="L172">                totalRevenue += i.getQuantity() * i.getSellingPrice();</span>
+<span class="nc" id="L173">            }</span>
+<span class="nc" id="L174">        }</span>
+<span class="nc" id="L175">        totalRevenue = Double.parseDouble(formatter.format(totalRevenue));</span>
 
-<span class="nc" id="L163">        reportPojo.setDate(date);</span>
-<span class="nc" id="L164">        reportPojo.setTotalRevenue(totalRevenue);</span>
-<span class="nc" id="L165">        reportPojo.setInvoicedItemsCount(totalItems);</span>
-<span class="nc" id="L166">        reportPojo.setInvoicedOrderCount(totalOrders);</span>
-
-<span class="nc" id="L168">        DailyReportPojo pojo = reportService.getReportByDate(date);</span>
-<span class="nc bnc" id="L169" title="All 2 branches missed.">        if (pojo == null) {</span>
-<span class="nc" id="L170">            reportService.addReport(reportPojo);</span>
+<span class="nc" id="L177">        reportPojo.setInvoiceDate(start);</span>
+<span class="nc" id="L178">        reportPojo.setTotalRevenue(totalRevenue);</span>
+<span class="nc" id="L179">        reportPojo.setInvoicedItemsCount(totalItems);</span>
+<span class="nc" id="L180">        reportPojo.setInvoicedOrderCount(totalOrders);</span>
+<span class="nc" id="L181">        DailyReportPojo pojo = reportService.getReportByDate(start);</span>
+<span class="nc bnc" id="L182" title="All 2 branches missed.">        if (pojo == null) {</span>
+<span class="nc" id="L183">            reportService.addReport(reportPojo);</span>
         } else {
-<span class="nc" id="L172">            reportService.update(date, reportPojo);</span>
+<span class="nc" id="L185">            reportService.update(start, reportPojo);</span>
         }
-<span class="nc" id="L174">    }</span>
+<span class="nc" id="L187">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

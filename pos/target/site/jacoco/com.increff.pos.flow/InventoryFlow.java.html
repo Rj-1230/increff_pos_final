@@ -26,14 +26,14 @@ import static com.increff.pos.helper.InventoryDtoHelper.*;
     private ProductService productService;
 
     @Transactional(rollbackOn = ApiException.class)
-    public void addSub(InventoryPojo newInventoryPojo) throws ApiException {
+    public void update(InventoryPojo newInventoryPojo) throws ApiException {
 <span class="nc" id="L30">        ProductPojo productPojo = productService.getProductPojoFromBarcode(newInventoryPojo.getBarcode());</span>
 <span class="nc" id="L31">        newInventoryPojo.setProductId(productPojo.getProductId());</span>
-<span class="nc" id="L32">        inventoryService.addSub(newInventoryPojo, newInventoryPojo.getQuantity());</span>
+<span class="nc" id="L32">        inventoryService.updateInventory(newInventoryPojo, newInventoryPojo.getQuantity());</span>
 <span class="nc" id="L33">    }</span>
 
     @Transactional(rollbackOn = ApiException.class)
-    public InventoryData get(int id) throws ApiException {
+    public InventoryData get(Integer id) throws ApiException {
 <span class="nc" id="L37">        InventoryPojo inventoryPojo = inventoryService.getCheck(id);</span>
 <span class="nc" id="L38">        ProductPojo productPojo = productService.getCheck(id);</span>
 <span class="nc" id="L39">        InventoryData inventoryData = convert(inventoryPojo);</span>

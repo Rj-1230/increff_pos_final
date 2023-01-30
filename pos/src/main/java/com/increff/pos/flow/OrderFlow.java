@@ -1,17 +1,12 @@
 package com.increff.pos.flow;
 
-import com.increff.pos.pojo.InventoryPojo;
-import com.increff.pos.pojo.OrderItemPojo;
-import com.increff.pos.pojo.OrderPojo;
-import com.increff.pos.pojo.ProductPojo;
-import com.increff.pos.service.ApiException;
-import com.increff.pos.service.InventoryService;
-import com.increff.pos.service.OrderService;
-import com.increff.pos.service.ProductService;
+import com.increff.pos.pojo.*;
+import com.increff.pos.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Objects;
 
 import static com.increff.pos.util.generateRandomString.createRandomOrderCode;
@@ -24,19 +19,29 @@ public class OrderFlow {
     private InventoryService inventoryService;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private CartService cartService;
 
-
-    @Transactional(rollbackOn = ApiException.class)
-    public int addOrder(OrderPojo orderPojo) throws ApiException {
-        String orderCode = createRandomOrderCode();
-        OrderPojo x = orderService.getOrderByOrderCode(orderCode);
-        while (x != null) {
-            orderCode = createRandomOrderCode();
-            x = orderService.getOrderByOrderCode(orderCode);
+    @Transactional(rollbackOn  = ApiException.class)
+    public void addNewOrder(OrderPojo orderPojo) throws ApiException {
+        List<CartPojo> cartPojoList = cartService.getAll();
+        if(cartPojoList.size()==0){
+            throw new ApiException("The order can't be created as the cart is empty");
         }
-        orderPojo.setOrderCode(orderCode);
-        return orderService.addOrder(orderPojo);
+        checkSufficientInventoryToCreateOrder(cartPojoList);
+        orderService.addOrder(orderPojo,cartPojoList);
+        cartService.deleteAll();
     }
+
+    private void checkSufficientInventoryToCreateOrder(List<CartPojo> cartPojoList) throws ApiException {
+        for(CartPojo d : cartPojoList){
+            InventoryPojo inventoryPojo = inventoryService.getCheck(d.getProductId());
+            if(d.getQuantity()>inventoryPojo.getQuantity()){
+                throw new ApiException("The item "+d.getProductName()+" can't be added to order because sufficient amount not present in inventory. Inventory count = "+inventoryPojo.getQuantity()+"Cart count ="+d.getQuantity());
+            }
+        }
+    }
+
 
 
     @Transactional(rollbackOn = ApiException.class)
@@ -44,40 +49,41 @@ public class OrderFlow {
         ProductPojo productPojo= productService.getProductPojoFromBarcode(barcode);
         orderItemPojo.setProductId(productPojo.getProductId());
         orderItemPojo.setProductName(productPojo.getName());
-
-        InventoryPojo a = inventoryService.getCheck(orderItemPojo.getProductId());
-        if(orderItemPojo.getQuantity()>a.getQuantity()){
-            throw new ApiException("Item can't be added to order as it exceeds the inventory. Present inventory count : "+a.getQuantity());
-        }
-
-        if(orderItemPojo.getSellingPrice()>productPojo.getMrp()){
-            throw new ApiException("Item can't be added to order as selling price must be less than MRP. Product's MRP :"+productPojo.getMrp());
-
-        }
-
-        inventoryService.updateInventory(a,a.getQuantity()-orderItemPojo.getQuantity());
+        checkSufficientInventoryToAddOrderItem(orderItemPojo,productPojo.getMrp());
         orderService.addOrderItem(orderItemPojo);
+    }
+
+    @Transactional
+    private void checkSufficientInventoryToAddOrderItem(OrderItemPojo orderItemPojo, Double mrp) throws ApiException {
+    InventoryPojo inventoryPojo = inventoryService.getCheck(orderItemPojo.getProductId());
+    if(orderItemPojo.getQuantity()>inventoryPojo.getQuantity()){
+        throw new ApiException("Item can't be added to order as it exceeds the inventory. Present inventory count : "+inventoryPojo.getQuantity());
+    }
+
+    if(orderItemPojo.getSellingPrice()>mrp){
+        throw new ApiException("Item can't be added to order as selling price must be less than MRP. Product's MRP :"+mrp);
+    }
+    inventoryService.updateInventory(inventoryPojo,inventoryPojo.getQuantity()-orderItemPojo.getQuantity());
     }
 
 
     @Transactional(rollbackOn = ApiException.class)
-    public void deleteOrderItem(int id) throws ApiException {
+    public void deleteOrderItem(Integer id) throws ApiException {
         OrderItemPojo ex = orderService.getCheckOrderItem(id);
-        InventoryPojo a = inventoryService.getCheck(ex.getProductId());
-        inventoryService.updateInventory(a,a.getQuantity()+ ex.getQuantity());
+        InventoryPojo inventoryPojo = inventoryService.getCheck(ex.getProductId());
+        inventoryService.updateInventory(inventoryPojo,inventoryPojo.getQuantity()+ ex.getQuantity());
         orderService.deleteOrderItem(id);
     }
 
     @Transactional(rollbackOn  = ApiException.class)
-    public void updateOrderItem(int id, OrderItemPojo orderItemPojo) throws ApiException {
+    public void updateOrderItem(Integer id, OrderItemPojo orderItemPojo) throws ApiException {
         OrderItemPojo ex = orderService.getCheckOrderItem(id);
-        InventoryPojo a = inventoryService.getCheck(ex.getProductId());
+        InventoryPojo inventoryPojo = inventoryService.getCheck(ex.getProductId());
         ProductPojo productPojo= productService.getCheck(ex.getProductId());
         if(orderItemPojo.getSellingPrice()>productPojo.getMrp()){
             throw new ApiException("Item can't be updated to order as selling price must be less than MRP. Product's MRP :"+productPojo.getMrp());
-
         }
-        inventoryService.updateInventory(a,a.getQuantity()-orderItemPojo.getQuantity()+ex.getQuantity());
+        inventoryService.updateInventory(inventoryPojo,inventoryPojo.getQuantity()-orderItemPojo.getQuantity()+ex.getQuantity());
         orderService.updateOrderItem(ex,orderItemPojo);
     }
 

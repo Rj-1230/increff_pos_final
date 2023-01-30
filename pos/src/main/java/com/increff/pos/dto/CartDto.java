@@ -34,27 +34,21 @@ public class CartDto {
         cartFlow.add(convert(f),f.getBarcode());
     }
 
-    public void delete(@PathVariable int id) throws ApiException{
+    public void delete(Integer id) throws ApiException{
         cartService.delete(id);
     }
 
-    public CartData get(int id) throws ApiException {
+    public CartData get(Integer id) throws ApiException {
         return convert(cartService.getCheck(id));
     }
 
-    public void update(@PathVariable int id, @RequestBody CartForm f) throws ApiException {
+    public void update(@PathVariable Integer id, @RequestBody CartForm f) throws ApiException {
         checkNullable(f);
         normalize(f);
         cartFlow.update(id,convert(f));
     }
     public List<CartData> getAll(){
         return getAllCartItems(cartService.getAll());
-    }
-
-    public void pushToNewOrder(OrderForm f) throws ApiException {
-        checkNullable(f);
-        normalize(f);
-        cartFlow.pushToNewOrder(convert(f));
     }
 
     public void flushAll()throws ApiException{

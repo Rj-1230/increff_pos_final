@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
@@ -31,6 +32,12 @@ public class OrderController {
     @Autowired
     private InvoiceGenerator invoiceGenerator;
 
+    @ApiOperation(value = "Creating a new order and pushing all cart items into an order")
+    @RequestMapping(path = "/api/addOrder", method = RequestMethod.POST)
+    public void pushToNewOrder(@RequestBody OrderForm f) throws ApiException {
+        orderDto.pushToNewOrder(f);
+    }
+
     @ApiOperation(value = "Select order by id")
     @RequestMapping(path = "/api/order/{orderId}", method = RequestMethod.GET)
     public OrderData getOrder(@PathVariable Integer orderId) throws ApiException {
@@ -38,8 +45,8 @@ public class OrderController {
     }
     @ApiOperation(value = "Updating details of a particular Order")
     @RequestMapping(path = "/api/order/{id}", method = RequestMethod.PUT)
-    public void updateOrder(@PathVariable int id, @RequestBody OrderForm f) throws ApiException {
-        orderDto.updateOrder(id, f);
+    public void updateCustomerDetails(@PathVariable Integer id, @RequestBody OrderForm f) throws ApiException {
+        orderDto.updateCustomerDetails(id, f);
     }
 
     @ApiOperation(value = "Getting details of all the orders")
@@ -55,8 +62,8 @@ public class OrderController {
 
     @ApiOperation(value = "Mark order placed")
     @RequestMapping(path = "api/order/place/{orderId}", method = RequestMethod.PUT)
-    public void markOrderPlaced(@PathVariable int orderId) throws ApiException, IOException {
-        orderDto.placeOrder(orderId);
+    public void markOrderInvoiced(@PathVariable Integer orderId) throws ApiException, IOException {
+        orderDto.invoiceOrder(orderId);
 
         OrderData orderData = orderDto.getOrderDetails(orderId);
         InvoiceForm invoiceForm = invoiceGenerator.generateInvoiceForOrder(orderData.getOrderCode());
@@ -76,25 +83,25 @@ public class OrderController {
 
     @ApiOperation(value="Deleting a orderItem")
     @RequestMapping(path="/api/orderItem/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable int id) throws ApiException {
+    public void delete(@PathVariable Integer id) throws ApiException {
         orderDto.deleteOrderItem(id);
     }
 
     @ApiOperation(value="Getting details of a orderItem from order item ID")
     @RequestMapping(path="/api/orderItem/{id}", method = RequestMethod.GET)
-    public OrderItemData get(@PathVariable int id) throws ApiException {
+    public OrderItemData get(@PathVariable Integer id) throws ApiException {
         return orderDto.getOrderItem(id);
     }
 
     @ApiOperation(value="Updating details of a particular OrderItem")
     @RequestMapping(path="/api/orderItem/{id}", method = RequestMethod.PUT)
-    public void update(@PathVariable int id, @RequestBody OrderItemForm f) throws ApiException {
+    public void update(@PathVariable Integer id, @RequestBody OrderItemForm f) throws ApiException {
         orderDto.updateOrderItem(id,f);
     }
 
     @ApiOperation(value="Getting details of all the order with given order id")
     @RequestMapping(path="/api/orderItems/{id}", method = RequestMethod.GET)
-    public List<OrderItemData> getAll(@PathVariable int id){
+    public List<OrderItemData> getAll(@PathVariable Integer id){
         return orderDto.getAllOrderItems(id);
     }
 

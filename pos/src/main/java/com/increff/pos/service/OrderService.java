@@ -1,6 +1,7 @@
 package com.increff.pos.service;
 
 import com.increff.pos.dao.OrderDao;
+import com.increff.pos.pojo.CartPojo;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
@@ -8,11 +9,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 
+import static com.increff.pos.helper.CartFlowHelper.convertCartPojoToOrderItemPojo;
 import static com.increff.pos.helper.GetCurrentTime.getCurrentDateTime;
 import static com.increff.pos.util.SecurityUtil.getPrincipal;
+import static com.increff.pos.util.generateRandomString.createRandomOrderCode;
 
 @Service
 public class OrderService {
@@ -21,8 +25,23 @@ public class OrderService {
     private OrderDao orderDao;
 
     @Transactional(rollbackOn = ApiException.class)
-    public int addOrder(OrderPojo p) throws ApiException {
-        return orderDao.insertOrder(p);
+    public void addOrder(OrderPojo orderPojo,List<CartPojo>cartPojoList) throws ApiException {
+        assignOrderCodeToOrderPojo(orderPojo);
+        Integer orderId = orderDao.insertOrder(orderPojo);
+        for(CartPojo cartPojo : cartPojoList){
+            OrderItemPojo orderItemPojo = convertCartPojoToOrderItemPojo(cartPojo,orderId);
+            addOrderItem(orderItemPojo);
+        }
+    }
+    @Transactional(rollbackOn = ApiException.class)
+    private void assignOrderCodeToOrderPojo(OrderPojo orderPojo) throws ApiException {
+        String orderCode = createRandomOrderCode();
+        OrderPojo x = getOrderByOrderCode(orderCode);
+        while (x != null) {
+            orderCode = createRandomOrderCode();
+            x = getOrderByOrderCode(orderCode);
+        }
+        orderPojo.setOrderCode(orderCode);
     }
 
     @Transactional
@@ -36,21 +55,21 @@ public class OrderService {
     }
 
     @Transactional(rollbackOn  = ApiException.class)
-    public void updateCustomerDetails(int id, OrderPojo p) throws ApiException {
+    public void updateCustomerDetails(Integer id, OrderPojo p) throws ApiException {
         OrderPojo ex = getCheckOrder(id);
         ex.setCustomerPhone(p.getCustomerPhone());
         ex.setCustomerName(p.getCustomerName());
     }
 
     @Transactional(rollbackOn  = ApiException.class)
-    public void placeOrder(int id) throws ApiException {
+    public void invoiceOrder(Integer id) throws ApiException {
         OrderPojo ex = getCheckOrder(id);
         ex.setStatus("invoiced");
-        ex.setOrderPlaceTime(getCurrentDateTime());
+        ex.setOrderInvoiceTime(ZonedDateTime.now());
     }
 
     @Transactional
-    public OrderPojo getCheckOrder(int id) throws ApiException {
+    public OrderPojo getCheckOrder(Integer id) throws ApiException {
         OrderPojo p = orderDao.selectOrder(id);
           if(Objects.isNull(p)){
               throw new ApiException("No order with given id exists");
@@ -63,8 +82,8 @@ public class OrderService {
     }
 
     @Transactional
-    public List<OrderPojo> selectOrderByDateFilter(String start, String endDate) throws ApiException {
-        List<OrderPojo> orderPojoList = orderDao.selectDateFilter(start, endDate);
+    public List<OrderPojo> selectOrderByDateFilter(ZonedDateTime start, ZonedDateTime end) throws ApiException {
+        List<OrderPojo> orderPojoList = orderDao.selectDateFilter(start, end);
         if(Objects.isNull(orderPojoList)){
             throw new ApiException("No orders exists between the given dates");
         }
@@ -86,12 +105,12 @@ public class OrderService {
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public void deleteOrderItem(int id) throws ApiException {
+    public void deleteOrderItem(Integer id) throws ApiException {
         orderDao.deleteOrderItem(id);
     }
 
     @Transactional
-    public List<OrderItemPojo> getAllOrderItems(int id) {
+    public List<OrderItemPojo> getAllOrderItems(Integer id) {
         return orderDao.selectAllOrderItems(id);
     }
 
@@ -104,7 +123,7 @@ public class OrderService {
 
 
     @Transactional
-    public OrderItemPojo getCheckOrderItem(int id) throws ApiException {
+    public OrderItemPojo getCheckOrderItem(Integer id) throws ApiException {
         OrderItemPojo p = orderDao.selectOrderItem(id);
         if(!Objects.nonNull(p)){
             throw new ApiException("Order item with given id doesn't exist");

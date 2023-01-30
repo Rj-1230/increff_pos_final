@@ -7,6 +7,7 @@ import com.increff.pos.service.ApiException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Repository
@@ -14,7 +15,7 @@ public class OrderDao {
 
     private static String select_orderPojo_by_orderCode = "select p from OrderPojo p where orderCode=:orderCode";
     private static String select_orderPojo_by_orderId = "select p from OrderPojo p where orderId=:id";
-    private static String select_all_orderPojo_between_startDate_and_endDate = "select p from OrderPojo p where orderPlaceTime>=:start and orderPlaceTime<=:end";
+    private static String select_all_orderPojo_between_startDate_and_endDate = "select p from OrderPojo p where orderInvoiceTime>=:start and orderInvoiceTime<=:end";
     private static String select_all_orderPojo_by_counterId = "select p from OrderPojo p where counterId=:id order by orderCreateTime desc";
     private static String select_all_orderPojo = "select p from OrderPojo p order by orderCreateTime desc";
     private static String delete_orderItemPojo_by_id = "delete from OrderItemPojo p where orderItemId=:id";
@@ -26,13 +27,13 @@ public class OrderDao {
     @PersistenceContext
     EntityManager em;
 
-    public int insertOrder(OrderPojo p) {
+    public Integer insertOrder(OrderPojo p) {
         em.persist(p);
         em.flush();
         return p.getOrderId();
     }
 
-    public OrderPojo selectOrder(int id) {
+    public OrderPojo selectOrder(Integer id) {
         try{
         TypedQuery<OrderPojo> query = getQuery(select_orderPojo_by_orderId);
         query.setParameter("id", id);
@@ -43,7 +44,7 @@ public class OrderDao {
     }
     }
 
-    public List<OrderPojo> selectAllOrders(int id) {
+    public List<OrderPojo> selectAllOrders(Integer id) {
         TypedQuery<OrderPojo> query = getQuery(select_all_orderPojo_by_counterId);
         query.setParameter("id", id);
         return query.getResultList();
@@ -53,7 +54,7 @@ public class OrderDao {
         return query.getResultList();
     }
 
-    public List<OrderPojo> selectDateFilter(String start, String end)
+    public List<OrderPojo> selectDateFilter(ZonedDateTime start, ZonedDateTime end)
     {
         try{
             TypedQuery<OrderPojo> query = getQuery(select_all_orderPojo_between_startDate_and_endDate);
@@ -72,13 +73,13 @@ public class OrderDao {
         em.persist(p);
     }
 
-    public int deleteOrderItem(int id) {
+    public Integer deleteOrderItem(Integer id) {
         Query query = em.createQuery(delete_orderItemPojo_by_id);
         query.setParameter("id", id);
         return query.executeUpdate();
     }
 
-    public OrderItemPojo selectOrderItem(int id) {
+    public OrderItemPojo selectOrderItem(Integer id) {
         try {
             TypedQuery<OrderItemPojo> query = getItemQuery(select_orderItemPojo_by_id);
             query.setParameter("id", id);
@@ -90,13 +91,13 @@ public class OrderDao {
     }
 
 
-    public List<OrderItemPojo> selectAllOrderItems(int id) {
+    public List<OrderItemPojo> selectAllOrderItems(Integer id) {
         TypedQuery<OrderItemPojo> query = getItemQuery(select_all_orderItemPojos_by_orderID);
         query.setParameter("id", id);
         return query.getResultList();
     }
 
-    public OrderItemPojo getOrderItemPojoFromProductId(int productId,int orderId) {
+    public OrderItemPojo getOrderItemPojoFromProductId(Integer productId,Integer orderId) {
         try{
             TypedQuery<OrderItemPojo> query = getItemQuery(select_OrderItemPojo_by_ProductId_and_orderId);
             query.setParameter("productId", productId);

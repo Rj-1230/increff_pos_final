@@ -8,6 +8,7 @@ import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.OrderPojo;
 import org.springframework.stereotype.Service;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,10 +22,10 @@ public class OrderDtoHelper {
         OrderPojo p = new OrderPojo();
         p.setCustomerPhone(f.getCustomerPhone());
         p.setCustomerName(f.getCustomerName());
-        p.setOrderCreateTime(getCurrentDateTime());
+        p.setOrderCreateTime(ZonedDateTime.now());
         p.setCounterId(getPrincipal().getId());
         p.setStatus("created");
-        p.setOrderPlaceTime("");
+//        p.setOrderInvoiceTime(ZonedDateTime.now());
         return p;
     }
 
@@ -34,7 +35,7 @@ public class OrderDtoHelper {
         d.setStatus(p.getStatus());
         d.setCounterId(p.getCounterId());
         d.setOrderCreateTime(p.getOrderCreateTime());
-        d.setOrderPlaceTime(p.getOrderPlaceTime());
+        d.setOrderInvoiceTime(p.getOrderInvoiceTime());
         d.setCustomerName(p.getCustomerName());
         d.setCustomerPhone(p.getCustomerPhone());
         d.setOrderCode(p.getOrderCode());

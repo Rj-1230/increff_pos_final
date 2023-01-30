@@ -11,12 +11,13 @@ import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Repository
 public class ReportDao{
-    private static String select_dailyReportPojo_by_date = "select p from DailyReportPojo p where date=:date";
-    private static String select_all_dailyReportPojo_between_startDate_and_endDate = "select p from DailyReportPojo p where date>=:start and date<=:end";
+    private static String select_dailyReportPojo_by_date = "select p from DailyReportPojo p where invoiceDate=:date";
+    private static String select_all_dailyReportPojo_between_startDate_and_endDate = "select p from DailyReportPojo p where invoiceDate>=:start and invoiceDate<=:end";
 
     private static String select_all_dailyReportPojo = "select p from DailyReportPojo p";
     @PersistenceContext
@@ -25,7 +26,7 @@ public class ReportDao{
     public void insert(DailyReportPojo p) {
         em.persist(p);
     }
-    public DailyReportPojo select(LocalDate date) {
+    public DailyReportPojo select(ZonedDateTime date) {
         try {
         TypedQuery<DailyReportPojo> query = getQuery(select_dailyReportPojo_by_date);
         query.setParameter("date", date);
@@ -41,18 +42,13 @@ public class ReportDao{
         return query.getResultList();
     }
 
-    public List<DailyReportPojo> selectReportByDateFilter(LocalDate start, LocalDate end)
+    public List<DailyReportPojo> selectReportByDateFilter(ZonedDateTime start, ZonedDateTime end)
     {
-        try{
             TypedQuery<DailyReportPojo> query = getQuery(select_all_dailyReportPojo_between_startDate_and_endDate);
             query.setParameter("start", start);
             query.setParameter("end", end);
             return query.getResultList();
-        }
-        catch(Exception e)
-        {
-            return null;
-        }
+
     }
 
     TypedQuery<DailyReportPojo> getQuery(String jpql) {

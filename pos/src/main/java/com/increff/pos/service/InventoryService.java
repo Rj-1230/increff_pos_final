@@ -22,7 +22,7 @@ public class InventoryService {
 
     }
     @Transactional(rollbackOn = ApiException.class)
-    public void updateInventory(InventoryPojo newInventoryPojo, int quantity) throws ApiException {
+    public void updateInventory(InventoryPojo newInventoryPojo, Integer quantity) throws ApiException {
         InventoryPojo exInventoryPojo = getCheck(newInventoryPojo.getProductId());
         if (quantity <0) {
             throw new ApiException("The inventory count must not be negative. Current Inventory count :" + exInventoryPojo.getQuantity());
@@ -32,7 +32,7 @@ public class InventoryService {
 
 
     @Transactional
-    public void delete(int id) {
+    public void delete(Integer id) {
         inventoryDao.delete(id);
     }
 
@@ -42,7 +42,7 @@ public class InventoryService {
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public InventoryPojo getCheck(int id) throws ApiException {
+    public InventoryPojo getCheck(Integer id) throws ApiException {
         InventoryPojo inventoryPojo = inventoryDao.select(id);
         if (Objects.isNull(inventoryPojo)) {
             throw new ApiException("No such inventory with given Product Id exists !");

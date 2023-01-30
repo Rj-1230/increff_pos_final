@@ -30,7 +30,7 @@ import java.util.Objects;
 <span class="nc" id="L30">        invoiceForm.setOrderId(orderPojo.getOrderId());</span>
 <span class="nc" id="L31">        invoiceForm.setCustomerName(orderPojo.getCustomerName());</span>
 <span class="nc" id="L32">        invoiceForm.setCustomerPhone(orderPojo.getCustomerPhone());</span>
-<span class="nc" id="L33">        invoiceForm.setPlaceDate(orderPojo.getOrderPlaceTime());</span>
+<span class="nc" id="L33">        invoiceForm.setInvoiceDate(orderPojo.getOrderInvoiceTime());</span>
 
 <span class="nc" id="L35">        List&lt;OrderItemData&gt; orderItemDataList = orderDto.getAllOrderItems(orderPojo.getOrderId());</span>
 <span class="nc" id="L36">        invoiceForm.setOrderItemList(orderItemDataList);</span>

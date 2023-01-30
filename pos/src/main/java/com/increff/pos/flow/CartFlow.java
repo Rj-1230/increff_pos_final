@@ -18,9 +18,6 @@ public class CartFlow {
 
     @Autowired
     private OrderService orderService;
-
-    @Autowired
-    private OrderFlow orderFlow;
     @Autowired
     private ProductService productService;
 
@@ -29,52 +26,38 @@ public class CartFlow {
         ProductPojo productPojo= productService.getProductPojoFromBarcode(barcode);
         cartPojo.setProductId(productPojo.getProductId());
         cartPojo.setProductName(productPojo.getName());
-
-        if(cartPojo.getSellingPrice()>productPojo.getMrp()){
-            throw new ApiException("Item can't be added to cart as selling price must be less than MRP. Product's MRP :"+productPojo.getMrp());
-
-        }
-        InventoryPojo inventoryPojo = inventoryService.getCheck(cartPojo.getProductId());
-        if (cartPojo.getQuantity() > inventoryPojo.getQuantity()) {
-            throw new ApiException("Item can't be added to cart as it exceeds the inventory. Present inventory count : " + inventoryPojo.getQuantity());
-        }
-        cartService.add(cartPojo,inventoryPojo.getQuantity());
+        Integer inventoryQuantity = checkMrpAndInventoryForCartPojo(cartPojo,productPojo);
+        cartService.add(cartPojo,inventoryQuantity);
     }
 
+
     @Transactional(rollbackOn  = ApiException.class)
-    public void update(int id, CartPojo newCartPojo) throws ApiException {
+    public void update(Integer id, CartPojo newCartPojo) throws ApiException {
         CartPojo exCartPojo = cartService.getCheck(id);
-        InventoryPojo inventoryPojo = inventoryService.getCheck(exCartPojo.getProductId());
-        if(newCartPojo.getQuantity()>inventoryPojo.getQuantity()){
-            throw new ApiException("Item can't be updated as it exceeds the inventory. Present inventory count : "+inventoryPojo.getQuantity());
-        }
         ProductPojo productPojo = productService.getCheck(newCartPojo.getProductId());
         if(newCartPojo.getSellingPrice()>productPojo.getMrp()){
             throw new ApiException("Item can't be added to cart as selling price must be less than MRP. Product's MRP :"+productPojo.getMrp());
 
         }
+        InventoryPojo inventoryPojo = inventoryService.getCheck(exCartPojo.getProductId());
+        if(newCartPojo.getQuantity()>inventoryPojo.getQuantity()){
+            throw new ApiException("Item can't be updated as it exceeds the inventory. Present inventory count : "+inventoryPojo.getQuantity());
+        }
+
         cartService.update(exCartPojo,newCartPojo);
     }
 
-    @Transactional(rollbackOn  = ApiException.class)
-    public void pushToNewOrder(OrderPojo orderPojo) throws ApiException {
-        List<CartPojo> cartPojoList = cartService.getAll();
-        if(cartPojoList.size()==0){
-            throw new ApiException("The order can't be created as the cart is empty");
-        }
-        for(CartPojo d : cartPojoList){
-            InventoryPojo a = inventoryService.getCheck(d.getProductId());
-            if(d.getQuantity()>a.getQuantity()){
-                throw new ApiException("The item "+d.getProductName()+" can't be added to order because sufficient amount not present in inventory. Inventory count = "+a.getQuantity()+"Cart count ="+d.getQuantity());
-            }
-        }
-        int orderId = orderFlow.addOrder(orderPojo);
-        for(CartPojo cartPojo : cartPojoList){
-            OrderItemPojo orderItemPojo = convertCartPojoToOrderItemPojo(cartPojo,orderId);
-            orderService.addOrderItem(orderItemPojo);
-        }
 
-        cartService.deleteAll();
+
+    @Transactional(rollbackOn = ApiException.class)
+    private Integer checkMrpAndInventoryForCartPojo(CartPojo cartPojo, ProductPojo productPojo) throws ApiException {
+        if(cartPojo.getSellingPrice()>productPojo.getMrp()){
+            throw new ApiException("Item can't be added to cart as selling price must be less than MRP. Product's MRP :"+productPojo.getMrp());
+        }
+        InventoryPojo inventoryPojo = inventoryService.getCheck(cartPojo.getProductId());
+        if (cartPojo.getQuantity() > inventoryPojo.getQuantity()) {
+            throw new ApiException("Item can't be added to cart as it exceeds the inventory. Present inventory count : " + inventoryPojo.getQuantity());
+        }
+        return inventoryPojo.getQuantity();
     }
-
 }

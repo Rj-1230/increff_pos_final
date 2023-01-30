@@ -18,7 +18,7 @@ public class ProductService {
 
 
     @Transactional(rollbackOn = ApiException.class)
-    public int add(ProductPojo p) throws ApiException {
+    public Integer add(ProductPojo p) throws ApiException {
         ProductPojo a = productDao.getProductPojoFromBarcode(p.getBarcode());
         if(Objects.nonNull(a)){
             throw new ApiException("The product with given barcode already exists");
@@ -28,8 +28,13 @@ public class ProductService {
     }
 
     @Transactional
-    public void delete(int id) {
+    public void delete(Integer id) {
         productDao.delete(id);
+    }
+
+    @Transactional
+    public ProductPojo get(Integer id) {
+        return productDao.select(id);
     }
 
 
@@ -39,14 +44,14 @@ public class ProductService {
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public void update(int id, ProductPojo p) throws ApiException {
+    public void update(Integer id, ProductPojo p) throws ApiException {
         ProductPojo ex = getCheck(id);
         ex.setName(p.getName());
         ex.setMrp(p.getMrp());
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public  ProductPojo getCheck(int id) throws ApiException {
+    public  ProductPojo getCheck(Integer id) throws ApiException {
         ProductPojo a = productDao.select(id);
         if(Objects.isNull(a)){
             throw new ApiException("No such product with given id exists !");

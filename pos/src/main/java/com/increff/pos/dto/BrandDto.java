@@ -28,14 +28,14 @@ public class BrandDto {
         normalize(f);
         brandService.addBrand(convert(f));
     }
-    public void deleteBrand(@PathVariable int id){
+    public void deleteBrand(@PathVariable Integer id){
         brandService.deleteBrand(id);
     }
 
-    public BrandData getBrand(int id) throws ApiException {
+    public BrandData getBrand(Integer id) throws ApiException {
         return convert(brandService.getCheckBrand(id));
     }
-    public void updateBrand(@PathVariable int id, @RequestBody BrandForm f) throws ApiException {
+    public void updateBrand(@PathVariable Integer id, @RequestBody BrandForm f) throws ApiException {
         checkNullable(f);
         normalize(f);
         brandService.updateBrand(id,convert(f));

@@ -6,7 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name="cartItems")
+@Table(name="cart_items", indexes = @Index(name = "multiIndex", columnList = "Product_Id, Counter_Id"))
 
 @Getter
 @Setter
@@ -14,17 +14,17 @@ import javax.persistence.*;
 public class CartPojo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="CartItemID", nullable=false)
+    @Column(name="Cart_Item_Id", nullable=false)
     private Integer cartItemId;
-    @Column(name="ProductName", nullable=false)
+    @Column(name="Product_Name", nullable=false)
     private String productName;
-    @Column(name="ProductQuantity", nullable=false)
+    @Column(name="Product_Quantity", nullable=false)
     private Integer quantity;
-    @Column(name="ProductId", nullable=false)
+    @Column(name="Product_Id", nullable=false)
     private Integer productId;
-    @Column(name="SellingPrice", nullable=false)
+    @Column(name="Selling_Price", nullable=false)
     private Double sellingPrice ;
-    @Column(name="CounterID", nullable=false)
+    @Column(name="Counter_Id", nullable=false)
     private Integer counterId;
 
 

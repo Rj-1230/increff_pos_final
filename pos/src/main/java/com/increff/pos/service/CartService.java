@@ -67,7 +67,7 @@ public class CartService {
     }
 
     @Transactional(rollbackOn  = ApiException.class)
-    public CartPojo getCheck(int id) throws ApiException {
+    public CartPojo getCheck(Integer id) throws ApiException {
             CartPojo cartPojo = cartDao.select(id);
             if(!Objects.nonNull(cartPojo)){
                 throw new ApiException("No such item exists in cart with given Id");

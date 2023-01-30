@@ -5,7 +5,7 @@ import com.increff.pos.pojo.CartPojo;
 import com.increff.pos.pojo.OrderItemPojo;
 
 <span class="nc" id="L7">public class CartFlowHelper {</span>
-    public static OrderItemPojo convertCartPojoToOrderItemPojo(CartPojo cartPojo,int orderId){
+    public static OrderItemPojo convertCartPojoToOrderItemPojo(CartPojo cartPojo,Integer orderId){
 <span class="nc" id="L9">        OrderItemPojo orderItemPojo =new OrderItemPojo();</span>
 <span class="nc" id="L10">        orderItemPojo.setOrderId(orderId);</span>
 <span class="nc" id="L11">        orderItemPojo.setProductId(cartPojo.getProductId());</span>

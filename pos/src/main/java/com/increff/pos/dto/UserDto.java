@@ -36,11 +36,11 @@ public class UserDto {
         userService.delete(id);
     }
 
-    public UserData getUser(int id) throws ApiException {
+    public UserData getUser(Integer id) throws ApiException {
         return convert(userService.getCheck(id));
     }
 
-    public void updateUser(@PathVariable int id, @RequestBody UserForm f) throws ApiException {
+    public void updateUser(@PathVariable Integer id, @RequestBody UserForm f) throws ApiException {
         checkNullable(f);
         normalize(f);
         userService.update(id,convert(f));

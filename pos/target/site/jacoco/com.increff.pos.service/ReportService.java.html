@@ -8,44 +8,46 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 
 @Service
-<span class="fc" id="L15">public class ReportService {</span>
+<span class="fc" id="L16">public class ReportService {</span>
     @Autowired
     private ReportDao dao;
 
     @Transactional
     public void addReport(DailyReportPojo pojo) throws ApiException {
         try {
-<span class="nc" id="L22">            dao.insert(pojo);</span>
-<span class="nc" id="L23">        } catch (Exception e) {</span>
-<span class="nc" id="L24">            throw new ApiException(e.getMessage());</span>
-<span class="nc" id="L25">        }</span>
-<span class="nc" id="L26">    }</span>
+<span class="fc" id="L23">            dao.insert(pojo);</span>
+<span class="nc" id="L24">        } catch (Exception e) {</span>
+<span class="nc" id="L25">            throw new ApiException(e.getMessage());</span>
+<span class="fc" id="L26">        }</span>
+<span class="fc" id="L27">    }</span>
 
     @Transactional
-    public DailyReportPojo getReportByDate(LocalDate date) throws ApiException {
-<span class="nc" id="L30">        return dao.select(date);</span>
+    public DailyReportPojo getReportByDate(ZonedDateTime date) throws ApiException {
+<span class="fc" id="L31">        return dao.select(date);</span>
     }
 
     @Transactional
-    public List&lt;DailyReportPojo&gt; selectReportByDateFilter(LocalDate start, LocalDate endDate) throws ApiException {
-<span class="nc" id="L35">        List&lt;DailyReportPojo&gt; dailyReportPojoList = dao.selectReportByDateFilter(start, endDate);</span>
-<span class="nc bnc" id="L36" title="All 2 branches missed.">        if(Objects.isNull(dailyReportPojoList)){</span>
-<span class="nc" id="L37">            throw new ApiException(&quot;No orders exists between the given dates&quot;);</span>
+    public List&lt;DailyReportPojo&gt; selectReportByDateFilter(ZonedDateTime start, ZonedDateTime end) throws ApiException {
+<span class="fc" id="L36">        List&lt;DailyReportPojo&gt; dailyReportPojoList = dao.selectReportByDateFilter(start, end);</span>
+<span class="fc" id="L37">        System.out.println(dailyReportPojoList.size());</span>
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        if(Objects.isNull(dailyReportPojoList)){</span>
+<span class="nc" id="L39">            throw new ApiException(&quot;No orders exists between the given dates&quot;);</span>
         }
-<span class="nc" id="L39">        return dailyReportPojoList;</span>
+<span class="fc" id="L41">        return dailyReportPojoList;</span>
     }
 
     @Transactional
-    public void update(LocalDate date, DailyReportPojo newPojo)
+    public void update(ZonedDateTime date, DailyReportPojo newPojo)
     {
-<span class="nc" id="L45">        DailyReportPojo pojo = dao.select(date);</span>
-<span class="nc" id="L46">        pojo.setInvoicedOrderCount(newPojo.getInvoicedOrderCount());</span>
-<span class="nc" id="L47">        pojo.setTotalRevenue(newPojo.getTotalRevenue());</span>
-<span class="nc" id="L48">        pojo.setInvoicedItemsCount(newPojo.getInvoicedItemsCount());</span>
-<span class="nc" id="L49">    }</span>
+<span class="fc" id="L47">        DailyReportPojo pojo = dao.select(date);</span>
+<span class="fc" id="L48">        pojo.setInvoicedOrderCount(newPojo.getInvoicedOrderCount());</span>
+<span class="fc" id="L49">        pojo.setTotalRevenue(newPojo.getTotalRevenue());</span>
+<span class="fc" id="L50">        pojo.setInvoicedItemsCount(newPojo.getInvoicedItemsCount());</span>
+<span class="fc" id="L51">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

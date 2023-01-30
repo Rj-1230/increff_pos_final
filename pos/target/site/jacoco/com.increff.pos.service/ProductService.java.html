@@ -18,49 +18,54 @@ import java.util.Objects;
 
 
     @Transactional(rollbackOn = ApiException.class)
-    public int add(ProductPojo p) throws ApiException {
-<span class="nc" id="L22">        ProductPojo a = productDao.getProductPojoFromBarcode(p.getBarcode());</span>
-<span class="nc bnc" id="L23" title="All 2 branches missed.">        if(Objects.nonNull(a)){</span>
-<span class="nc" id="L24">            throw new ApiException(&quot;The product with given barcode already exists&quot;);</span>
+    public Integer add(ProductPojo p) throws ApiException {
+<span class="fc" id="L22">        ProductPojo a = productDao.getProductPojoFromBarcode(p.getBarcode());</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">        if(Objects.nonNull(a)){</span>
+<span class="fc" id="L24">            throw new ApiException(&quot;The product with given barcode already exists&quot;);</span>
         }
-<span class="nc" id="L26">       return productDao.insert(p);</span>
+<span class="fc" id="L26">       return productDao.insert(p);</span>
 
     }
 
     @Transactional
-    public void delete(int id) {
-<span class="nc" id="L32">        productDao.delete(id);</span>
-<span class="nc" id="L33">    }</span>
+    public void delete(Integer id) {
+<span class="fc" id="L32">        productDao.delete(id);</span>
+<span class="fc" id="L33">    }</span>
+
+    @Transactional
+    public ProductPojo get(Integer id) {
+<span class="nc" id="L37">        return productDao.select(id);</span>
+    }
 
 
     @Transactional
     public List&lt;ProductPojo&gt; getAll() {
-<span class="nc" id="L38">        return productDao.selectAll();</span>
+<span class="fc" id="L43">        return productDao.selectAll();</span>
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public void update(int id, ProductPojo p) throws ApiException {
-<span class="nc" id="L43">        ProductPojo ex = getCheck(id);</span>
-<span class="nc" id="L44">        ex.setName(p.getName());</span>
-<span class="nc" id="L45">        ex.setMrp(p.getMrp());</span>
-<span class="nc" id="L46">    }</span>
+    public void update(Integer id, ProductPojo p) throws ApiException {
+<span class="fc" id="L48">        ProductPojo ex = getCheck(id);</span>
+<span class="fc" id="L49">        ex.setName(p.getName());</span>
+<span class="fc" id="L50">        ex.setMrp(p.getMrp());</span>
+<span class="fc" id="L51">    }</span>
 
     @Transactional(rollbackOn = ApiException.class)
-    public  ProductPojo getCheck(int id) throws ApiException {
-<span class="nc" id="L50">        ProductPojo a = productDao.select(id);</span>
-<span class="nc bnc" id="L51" title="All 2 branches missed.">        if(Objects.isNull(a)){</span>
-<span class="nc" id="L52">            throw new ApiException(&quot;No such product with given id exists !&quot;);</span>
+    public  ProductPojo getCheck(Integer id) throws ApiException {
+<span class="fc" id="L55">        ProductPojo a = productDao.select(id);</span>
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        if(Objects.isNull(a)){</span>
+<span class="fc" id="L57">            throw new ApiException(&quot;No such product with given id exists !&quot;);</span>
         }
-<span class="nc" id="L54">        return a;</span>
+<span class="fc" id="L59">        return a;</span>
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public ProductPojo getProductPojoFromBarcode(String barcode) throws ApiException {
-<span class="nc" id="L59">        ProductPojo a = productDao.getProductPojoFromBarcode(barcode);</span>
-<span class="nc bnc" id="L60" title="All 2 branches missed.">        if(Objects.isNull(a)){</span>
-<span class="nc" id="L61">            throw new ApiException(&quot;The product with given barcode doesn't exists&quot;);</span>
+<span class="fc" id="L64">        ProductPojo a = productDao.getProductPojoFromBarcode(barcode);</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">        if(Objects.isNull(a)){</span>
+<span class="nc" id="L66">            throw new ApiException(&quot;The product with given barcode doesn't exists&quot;);</span>
         }
-<span class="nc" id="L63">        return a;</span>
+<span class="fc" id="L68">        return a;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

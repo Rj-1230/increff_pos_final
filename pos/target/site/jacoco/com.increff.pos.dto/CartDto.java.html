@@ -34,15 +34,15 @@ import static com.increff.pos.util.SecurityUtil.getPrincipal;
 <span class="nc" id="L34">        cartFlow.add(convert(f),f.getBarcode());</span>
 <span class="nc" id="L35">    }</span>
 
-    public void delete(@PathVariable int id) throws ApiException{
+    public void delete(Integer id) throws ApiException{
 <span class="nc" id="L38">        cartService.delete(id);</span>
 <span class="nc" id="L39">    }</span>
 
-    public CartData get(int id) throws ApiException {
+    public CartData get(Integer id) throws ApiException {
 <span class="nc" id="L42">        return convert(cartService.getCheck(id));</span>
     }
 
-    public void update(@PathVariable int id, @RequestBody CartForm f) throws ApiException {
+    public void update(@PathVariable Integer id, @RequestBody CartForm f) throws ApiException {
 <span class="nc" id="L46">        checkNullable(f);</span>
 <span class="nc" id="L47">        normalize(f);</span>
 <span class="nc" id="L48">        cartFlow.update(id,convert(f));</span>
@@ -51,14 +51,8 @@ import static com.increff.pos.util.SecurityUtil.getPrincipal;
 <span class="nc" id="L51">        return getAllCartItems(cartService.getAll());</span>
     }
 
-    public void pushToNewOrder(OrderForm f) throws ApiException {
-<span class="nc" id="L55">        checkNullable(f);</span>
-<span class="nc" id="L56">        normalize(f);</span>
-<span class="nc" id="L57">        cartFlow.pushToNewOrder(convert(f));</span>
-<span class="nc" id="L58">    }</span>
-
     public void flushAll()throws ApiException{
-<span class="nc" id="L61">        cartService.deleteAll();</span>
-<span class="nc" id="L62">    }</span>
+<span class="nc" id="L55">        cartService.deleteAll();</span>
+<span class="nc" id="L56">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

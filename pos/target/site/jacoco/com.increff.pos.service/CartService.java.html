@@ -22,52 +22,57 @@ import static com.increff.pos.util.SecurityUtil.getPrincipal;
     private CartDao cartDao;
 
     @Transactional(rollbackOn = ApiException.class)
-    public void add(CartPojo cartPojo,InventoryPojo inventoryPojo) throws ApiException {
-<span class="nc" id="L26">        CartPojo exCartPojo = cartDao.getCartPojoFromProductIdAndCounterId(cartPojo.getProductId(), cartPojo.getCounterId());</span>
-<span class="nc bnc" id="L27" title="All 2 branches missed.">        if(Objects.nonNull(exCartPojo)){</span>
-<span class="nc bnc" id="L28" title="All 2 branches missed.">            if(exCartPojo.getQuantity()+cartPojo.getQuantity()&gt;inventoryPojo.getQuantity()){</span>
-<span class="nc" id="L29">                throw new ApiException(&quot;Item can't be added to cart as it exceeds the inventory. Items already in cart : &quot;+exCartPojo.getQuantity() +&quot; Present inventory count :&quot;+inventoryPojo.getQuantity());</span>
+    public void add(CartPojo cartPojo,Integer quantity) throws ApiException {
+<span class="fc" id="L26">        CartPojo exCartPojo = cartDao.getCartPojoFromProductIdAndCounterId(cartPojo.getProductId(), cartPojo.getCounterId());</span>
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        if(Objects.nonNull(exCartPojo)){</span>
+<span class="fc bfc" id="L28" title="All 2 branches covered.">            if(exCartPojo.getQuantity()+cartPojo.getQuantity()&gt;quantity){</span>
+<span class="fc" id="L29">                throw new ApiException(&quot;Item can't be added to cart as it exceeds the inventory. Items already in cart : &quot;+exCartPojo.getQuantity() +&quot; Present inventory count :&quot;+quantity);</span>
             }
-<span class="nc" id="L31">            exCartPojo.setQuantity(exCartPojo.getQuantity()+cartPojo.getQuantity());</span>
-<span class="nc" id="L32">            exCartPojo.setSellingPrice(cartPojo.getSellingPrice());</span>
+<span class="fc" id="L31">            exCartPojo.setQuantity(exCartPojo.getQuantity()+cartPojo.getQuantity());</span>
+<span class="fc" id="L32">            exCartPojo.setSellingPrice(cartPojo.getSellingPrice());</span>
         }
         else{
-<span class="nc" id="L35">            cartDao.insert(cartPojo);</span>
+<span class="fc" id="L35">            cartDao.insert(cartPojo);</span>
         }
-<span class="nc" id="L37">    }</span>
+<span class="fc" id="L37">    }</span>
 
     @Transactional(rollbackOn = ApiException.class)
     public void delete(int id) throws ApiException {
-<span class="nc" id="L41">        getCheck(id);</span>
-<span class="nc" id="L42">        cartDao.delete(id);</span>
-<span class="nc" id="L43">    }</span>
+<span class="fc" id="L41">        getCheck(id);</span>
+<span class="fc" id="L42">        cartDao.delete(id);</span>
+<span class="fc" id="L43">    }</span>
 
     @Transactional
+    public List&lt;CartPojo&gt; getAllItemsInCart() {
+<span class="fc" id="L47">        return cartDao.selectAll();</span>
+    }
+    @Transactional
     public List&lt;CartPojo&gt; getAll() {
-<span class="nc" id="L47">        return cartDao.selectAll(getPrincipal().getId());</span>
+<span class="nc" id="L51">        Integer id = getPrincipal().getId();</span>
+<span class="nc" id="L52">        return cartDao.selectAll(id);</span>
     }
 
     @Transactional(rollbackOn  = ApiException.class)
     public void deleteAll() throws ApiException{
-<span class="nc" id="L52">        List&lt;CartPojo&gt; cartPojoList = getAll();</span>
-<span class="nc bnc" id="L53" title="All 2 branches missed.">        for(CartPojo cartPojo:cartPojoList){</span>
-<span class="nc" id="L54">            delete(cartPojo.getCartItemId());</span>
-<span class="nc" id="L55">        }</span>
-<span class="nc" id="L56">    }</span>
+<span class="nc" id="L57">        List&lt;CartPojo&gt; cartPojoList = getAll();</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        for(CartPojo cartPojo:cartPojoList){</span>
+<span class="nc" id="L59">            delete(cartPojo.getCartItemId());</span>
+<span class="nc" id="L60">        }</span>
+<span class="nc" id="L61">    }</span>
 
     @Transactional(rollbackOn  = ApiException.class)
     public void update(CartPojo exCartPojo, CartPojo newCartPojo) throws ApiException {
-<span class="nc" id="L60">        exCartPojo.setSellingPrice(newCartPojo.getSellingPrice());</span>
-<span class="nc" id="L61">        exCartPojo.setQuantity(newCartPojo.getQuantity());</span>
-<span class="nc" id="L62">    }</span>
+<span class="fc" id="L65">        exCartPojo.setSellingPrice(newCartPojo.getSellingPrice());</span>
+<span class="fc" id="L66">        exCartPojo.setQuantity(newCartPojo.getQuantity());</span>
+<span class="fc" id="L67">    }</span>
 
     @Transactional(rollbackOn  = ApiException.class)
-    public CartPojo getCheck(int id) throws ApiException {
-<span class="nc" id="L66">            CartPojo cartPojo = cartDao.select(id);</span>
-<span class="nc bnc" id="L67" title="All 2 branches missed.">            if(!Objects.nonNull(cartPojo)){</span>
-<span class="nc" id="L68">                throw new ApiException(&quot;No such item exists in cart with given Id&quot;);</span>
+    public CartPojo getCheck(Integer id) throws ApiException {
+<span class="fc" id="L71">            CartPojo cartPojo = cartDao.select(id);</span>
+<span class="fc bfc" id="L72" title="All 2 branches covered.">            if(!Objects.nonNull(cartPojo)){</span>
+<span class="fc" id="L73">                throw new ApiException(&quot;No such item exists in cart with given Id&quot;);</span>
             }
-<span class="nc" id="L70">            return cartPojo;</span>
+<span class="fc" id="L75">            return cartPojo;</span>
     }
 
 }

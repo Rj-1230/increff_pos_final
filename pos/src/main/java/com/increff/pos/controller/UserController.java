@@ -28,19 +28,19 @@ public class UserController {
 
     @ApiOperation(value="Deleting a operator")
     @RequestMapping(path="/api/supervisor/user/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable int id){
+    public void delete(@PathVariable Integer id){
         userDto.deleteUser(id);
     }
 
     @ApiOperation(value="Getting details of a operator")
     @RequestMapping(path="/api/supervisor/user/{id}", method = RequestMethod.GET)
-    public UserData get(@PathVariable int id) throws ApiException {
+    public UserData get(@PathVariable Integer id) throws ApiException {
         return userDto.getUser(id);
     }
 
     @ApiOperation(value="Updating details of a particular operator")
     @RequestMapping(path="/api/supervisor/user/{id}", method = RequestMethod.PUT)
-    public void update(@PathVariable int id, @RequestBody UserForm f) throws ApiException {
+    public void update(@PathVariable Integer id, @RequestBody UserForm f) throws ApiException {
         userDto.updateUser(id,f);
     }
 

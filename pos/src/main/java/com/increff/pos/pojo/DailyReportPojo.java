@@ -3,24 +3,23 @@ package com.increff.pos.pojo;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 
 @Entity
 @Getter
 @Setter
-@Table(name = "pos_day_sales")
+@Table(name="daily_sales")
+
 public class DailyReportPojo{
     @Id
-    @Column(nullable = false, name = "date")
-    private LocalDate date;
-    @Column(nullable = false, name = "invoiced_orders_count")
+    @Column(nullable = false, name = "Invoice_Date")
+    private ZonedDateTime invoiceDate;
+    @Column(nullable = false, name = "Invoiced_Orders_Count")
     private Integer invoicedOrderCount;
-    @Column(nullable = false, name = "invoiced_items_count")
+    @Column(nullable = false, name = "Invoiced_Items_Count")
     private Integer invoicedItemsCount;
-    @Column(nullable = false, name = "total_revenue")
+    @Column(nullable = false, name = "Total_Revenue")
     private Double totalRevenue;
 }

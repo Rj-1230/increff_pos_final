@@ -37,21 +37,21 @@ public class UserService {
     }
 
     @Transactional
-    public void delete(int id) {
+    public void delete(Integer id) {
         userDao.delete(id);
     }
 
     @Transactional(rollbackOn  = ApiException.class)
-    public void update(int id, UserPojo p) throws ApiException {
+    public void update(Integer id, UserPojo p) throws ApiException {
         UserPojo ex = getCheck(id);
         ex.setEmail(p.getEmail());
         ex.setPassword(p.getPassword());
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public  UserPojo getCheck(int id) throws ApiException {
+    public  UserPojo getCheck(Integer id) throws ApiException {
         UserPojo a = userDao.select(id);
-        if(!Objects.nonNull(a)){
+        if(Objects.isNull(a)){
             throw new ApiException("No such user with given id exists !");
         }
         return a;

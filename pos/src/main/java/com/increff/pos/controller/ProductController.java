@@ -27,19 +27,19 @@ public class ProductController {
 
     @ApiOperation(value="Deleting a product")
     @RequestMapping(path="/api/supervisor/product/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable int id){
+    public void delete(@PathVariable Integer id){
         productDto.delete(id);
     }
 
     @ApiOperation(value="Getting details of a product from id")
     @RequestMapping(path="/api/product/{id}", method = RequestMethod.GET)
-    public ProductData get(@PathVariable int id) throws ApiException {
+    public ProductData get(@PathVariable Integer id) throws ApiException {
         return productDto.get(id);
     }
 
     @ApiOperation(value="Updating details of a particular Product")
     @RequestMapping(path="/api/supervisor/product/{id}", method = RequestMethod.PUT)
-    public void update(@PathVariable int id, @RequestBody ProductForm f) throws ApiException {
+    public void update(@PathVariable Integer id, @RequestBody ProductForm f) throws ApiException {
         productDto.update(id,f);
     }
 

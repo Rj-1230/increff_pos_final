@@ -18,8 +18,8 @@ public class ReportScheduler {
         try {
             reportDto.createDailyReport();
         }
-        catch(Exception e)
-        {
+        catch(Exception e) {
+            System.out.println("HEllloo");
             System.out.println(e.getMessage());
         }
     }

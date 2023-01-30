@@ -6,14 +6,14 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name="brand")
+@Table(name="brand", uniqueConstraints={@UniqueConstraint(columnNames={"Brand_Id"})})
 
 @Getter
 @Setter
 public class BrandPojo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="BrandID")
+    @Column(name="Brand_Id")
     private Integer id;
     @Column(name="Brand", nullable=false)
     private String brand;

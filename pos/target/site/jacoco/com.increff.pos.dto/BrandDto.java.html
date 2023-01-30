@@ -28,14 +28,14 @@ import static com.increff.pos.helper.NullCheckHelper.*;
 <span class="nc" id="L28">        normalize(f);</span>
 <span class="nc" id="L29">        brandService.addBrand(convert(f));</span>
 <span class="nc" id="L30">    }</span>
-    public void deleteBrand(@PathVariable int id){
+    public void deleteBrand(@PathVariable Integer id){
 <span class="nc" id="L32">        brandService.deleteBrand(id);</span>
 <span class="nc" id="L33">    }</span>
 
-    public BrandData getBrand(int id) throws ApiException {
+    public BrandData getBrand(Integer id) throws ApiException {
 <span class="nc" id="L36">        return convert(brandService.getCheckBrand(id));</span>
     }
-    public void updateBrand(@PathVariable int id, @RequestBody BrandForm f) throws ApiException {
+    public void updateBrand(@PathVariable Integer id, @RequestBody BrandForm f) throws ApiException {
 <span class="nc" id="L39">        checkNullable(f);</span>
 <span class="nc" id="L40">        normalize(f);</span>
 <span class="nc" id="L41">        brandService.updateBrand(id,convert(f));</span>

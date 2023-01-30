@@ -26,14 +26,14 @@ public class InventoryFlow {
     private ProductService productService;
 
     @Transactional(rollbackOn = ApiException.class)
-    public void addSub(InventoryPojo newInventoryPojo) throws ApiException {
+    public void update(InventoryPojo newInventoryPojo) throws ApiException {
         ProductPojo productPojo = productService.getProductPojoFromBarcode(newInventoryPojo.getBarcode());
         newInventoryPojo.setProductId(productPojo.getProductId());
         inventoryService.updateInventory(newInventoryPojo, newInventoryPojo.getQuantity());
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public InventoryData get(int id) throws ApiException {
+    public InventoryData get(Integer id) throws ApiException {
         InventoryPojo inventoryPojo = inventoryService.getCheck(id);
         ProductPojo productPojo = productService.getCheck(id);
         InventoryData inventoryData = convert(inventoryPojo);

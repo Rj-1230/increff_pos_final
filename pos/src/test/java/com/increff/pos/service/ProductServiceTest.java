@@ -148,10 +148,34 @@ public class ProductServiceTest extends AbstractUnitTest{
         exceptionRule.expect(ApiException.class);
         exceptionRule.expectMessage("No such product with given id exists !");
         productService.getCheck(productPojo.getProductId()+1);
+    }
+
+    @Test
+    public void testProductWithWrongBarcode() throws ApiException {
+        Integer brandId = 1;
+        String barcode = "abc";
+        Double mrp= 12.35;
+        String productName= "prod1";
+        ProductPojo productPojo = PojoUtil.getProductPojo(brandId,barcode,mrp,productName);
+        productDao.insert(productPojo);
 
         exceptionRule.expect(ApiException.class);
         exceptionRule.expectMessage("The product with given barcode doesn't exists");
         productService.getProductPojoFromBarcode("barcode");
+    }
+
+
+    @Test
+    public void testGetProduct() throws ApiException {
+        Integer brandId = 1;
+        String barcode = "abc";
+        Double mrp= 12.35;
+        String productName= "prod1";
+        ProductPojo productPojo = PojoUtil.getProductPojo(brandId,barcode,mrp,productName);
+        productDao.insert(productPojo);
+
+        ProductPojo productPojo1 = productService.get(productPojo.getProductId());
+        assertEquals(productPojo1,productPojo);
     }
 
 }

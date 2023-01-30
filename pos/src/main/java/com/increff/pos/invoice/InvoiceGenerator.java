@@ -30,7 +30,7 @@ public class InvoiceGenerator {
         invoiceForm.setOrderId(orderPojo.getOrderId());
         invoiceForm.setCustomerName(orderPojo.getCustomerName());
         invoiceForm.setCustomerPhone(orderPojo.getCustomerPhone());
-        invoiceForm.setPlaceDate(orderPojo.getOrderPlaceTime());
+        invoiceForm.setInvoiceDate(orderPojo.getOrderInvoiceTime());
 
         List<OrderItemData> orderItemDataList = orderDto.getAllOrderItems(orderPojo.getOrderId());
         invoiceForm.setOrderItemList(orderItemDataList);

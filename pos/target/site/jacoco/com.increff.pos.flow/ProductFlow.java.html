@@ -31,10 +31,10 @@ import static com.increff.pos.helper.ProductDtoHelper.convert;
     @Transactional(rollbackOn = ApiException.class)
     public void add(ProductPojo productPojo,String brand,String category) throws ApiException {
 //        Putting brandId inside productPojo
-<span class="nc" id="L34">        int brandId = brandService.getBrandIdFromName(brand,category);</span>
+<span class="nc" id="L34">        Integer brandId = brandService.getBrandIdFromName(brand,category);</span>
 <span class="nc" id="L35">        productPojo.setBrandId(brandId);</span>
 
-<span class="nc" id="L37">        int productId = productService.add(productPojo);</span>
+<span class="nc" id="L37">        Integer productId = productService.add(productPojo);</span>
 
 //        Creating an inventory corresponding to the product added with quantity 0
 <span class="nc" id="L40">        InventoryPojo inventoryPojo = new InventoryPojo();</span>
@@ -46,7 +46,7 @@ import static com.increff.pos.helper.ProductDtoHelper.convert;
 
 
     @Transactional(rollbackOn = ApiException.class)
-    public ProductData get(int id) throws ApiException {
+    public ProductData get(Integer id) throws ApiException {
 <span class="nc" id="L50">        ProductPojo productPojo = productService.getCheck(id);</span>
 <span class="nc" id="L51">        BrandPojo brandPojo = brandService.getCheckBrand(productPojo.getBrandId());</span>
 <span class="nc" id="L52">        ProductData productData = convert(productPojo);</span>

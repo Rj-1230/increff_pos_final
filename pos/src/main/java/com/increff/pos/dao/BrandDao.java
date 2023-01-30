@@ -21,13 +21,13 @@ public class BrandDao {
         em.persist(p);
     }
 
-    public int delete(int id) {
+    public Integer delete(Integer id) {
         Query query = em.createQuery(delete_brandPojo_by_id);
         query.setParameter("id", id);
         return query.executeUpdate();
     }
 
-    public BrandPojo select(int id) {
+    public BrandPojo select(Integer id) {
         try{
             TypedQuery<BrandPojo> query = getQuery(select_brandPojo_by_id);
             query.setParameter("id", id);

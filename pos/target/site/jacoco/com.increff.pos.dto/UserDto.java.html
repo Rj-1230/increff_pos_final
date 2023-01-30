@@ -36,11 +36,11 @@ import static com.increff.pos.helper.UserDtoHelper.*;
 <span class="nc" id="L36">        userService.delete(id);</span>
 <span class="nc" id="L37">    }</span>
 
-    public UserData getUser(int id) throws ApiException {
+    public UserData getUser(Integer id) throws ApiException {
 <span class="nc" id="L40">        return convert(userService.getCheck(id));</span>
     }
 
-    public void updateUser(@PathVariable int id, @RequestBody UserForm f) throws ApiException {
+    public void updateUser(@PathVariable Integer id, @RequestBody UserForm f) throws ApiException {
 <span class="nc" id="L44">        checkNullable(f);</span>
 <span class="nc" id="L45">        normalize(f);</span>
 <span class="nc" id="L46">        userService.update(id,convert(f));</span>

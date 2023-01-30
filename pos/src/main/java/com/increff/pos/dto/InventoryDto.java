@@ -28,17 +28,17 @@ public class InventoryDto {
     private InventoryFlow inventoryFlow;
 
 
-    public void addSub(InventoryForm f) throws ApiException {
+    public void updateInventory(InventoryForm f) throws ApiException {
         checkNullable(f);
         normalize(f);
-        inventoryFlow.addSub(convert(f));
+        inventoryFlow.update(convert(f));
     }
 
-    public void delete(@PathVariable int id){
+    public void delete(@PathVariable Integer id){
         inventoryService.delete(id);
     }
 
-    public InventoryData get(int id) throws ApiException {
+    public InventoryData get(Integer id) throws ApiException {
         return inventoryFlow.get(id);
     }
 

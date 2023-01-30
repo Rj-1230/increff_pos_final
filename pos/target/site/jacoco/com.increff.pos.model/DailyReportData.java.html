@@ -3,13 +3,15 @@
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
+
 @Getter
-<span class="nc" id="L7">@Setter</span>
-<span class="nc" id="L8">public class DailyReportData {</span>
-<span class="nc" id="L9">        private String date;</span>
-<span class="nc" id="L10">        private Integer invoicedOrderCount;</span>
-<span class="nc" id="L11">        private Integer invoicedItemsCount;</span>
-<span class="nc" id="L12">        private Double totalRevenue;</span>
+<span class="nc" id="L9">@Setter</span>
+<span class="nc" id="L10">public class DailyReportData {</span>
+<span class="nc" id="L11">        private ZonedDateTime invoiceDate;</span>
+<span class="nc" id="L12">        private Integer invoicedOrderCount;</span>
+<span class="nc" id="L13">        private Integer invoicedItemsCount;</span>
+<span class="nc" id="L14">        private Double totalRevenue;</span>
     }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -18,43 +18,43 @@ import java.util.Objects;
 
     @Transactional
     public void add(UserPojo p) throws ApiException {
-<span class="nc" id="L21">        UserPojo existing = getByEmail(p.getEmail());</span>
-<span class="nc bnc" id="L22" title="All 2 branches missed.">        if (existing != null) {</span>
-<span class="nc" id="L23">            throw new ApiException(&quot;User with given email already exists&quot;);</span>
+<span class="fc" id="L21">        UserPojo existing = getByEmail(p.getEmail());</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">        if (existing != null) {</span>
+<span class="fc" id="L23">            throw new ApiException(&quot;User with given email already exists&quot;);</span>
         }
-<span class="nc" id="L25">        userDao.insert(p);</span>
-<span class="nc" id="L26">    }</span>
+<span class="fc" id="L25">        userDao.insert(p);</span>
+<span class="fc" id="L26">    }</span>
 
 
     @Transactional(rollbackOn = ApiException.class)
     public UserPojo getByEmail(String email) throws ApiException {
-<span class="nc" id="L31">        return userDao.select(email);</span>
+<span class="fc" id="L31">        return userDao.select(email);</span>
     }
 
     @Transactional
     public List&lt;UserPojo&gt; getAll() {
-<span class="nc" id="L36">        return userDao.selectAll();</span>
+<span class="fc" id="L36">        return userDao.selectAll();</span>
     }
 
     @Transactional
-    public void delete(int id) {
-<span class="nc" id="L41">        userDao.delete(id);</span>
-<span class="nc" id="L42">    }</span>
+    public void delete(Integer id) {
+<span class="fc" id="L41">        userDao.delete(id);</span>
+<span class="fc" id="L42">    }</span>
 
     @Transactional(rollbackOn  = ApiException.class)
-    public void update(int id, UserPojo p) throws ApiException {
-<span class="nc" id="L46">        UserPojo ex = getCheck(id);</span>
-<span class="nc" id="L47">        ex.setEmail(p.getEmail());</span>
-<span class="nc" id="L48">        ex.setPassword(p.getPassword());</span>
-<span class="nc" id="L49">    }</span>
+    public void update(Integer id, UserPojo p) throws ApiException {
+<span class="fc" id="L46">        UserPojo ex = getCheck(id);</span>
+<span class="fc" id="L47">        ex.setEmail(p.getEmail());</span>
+<span class="fc" id="L48">        ex.setPassword(p.getPassword());</span>
+<span class="fc" id="L49">    }</span>
 
     @Transactional(rollbackOn = ApiException.class)
-    public  UserPojo getCheck(int id) throws ApiException {
-<span class="nc" id="L53">        UserPojo a = userDao.select(id);</span>
-<span class="nc bnc" id="L54" title="All 2 branches missed.">        if(!Objects.nonNull(a)){</span>
-<span class="nc" id="L55">            throw new ApiException(&quot;No such user with given id exists !&quot;);</span>
+    public  UserPojo getCheck(Integer id) throws ApiException {
+<span class="fc" id="L53">        UserPojo a = userDao.select(id);</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        if(Objects.isNull(a)){</span>
+<span class="fc" id="L55">            throw new ApiException(&quot;No such user with given id exists !&quot;);</span>
         }
-<span class="nc" id="L57">        return a;</span>
+<span class="fc" id="L57">        return a;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -22,7 +22,7 @@ public class ReportFlowHelper {
 
     }
 
-    public static ProductRevenueData convert(ProductPojo p,BrandPojo brandPojo) throws ApiException
+    public static ProductRevenueData convert(ProductPojo p,BrandPojo brandPojo)
     {
         ProductRevenueData productRevenueData = new ProductRevenueData();
         productRevenueData.setProductId(p.getProductId());
@@ -60,7 +60,7 @@ public class ReportFlowHelper {
     public static DailyReportData convert(DailyReportPojo p) throws ApiException
     {
         DailyReportData dailyReportData = new DailyReportData();
-        dailyReportData.setDate(p.getDate().toString());
+        dailyReportData.setInvoiceDate(p.getInvoiceDate());
         dailyReportData.setInvoicedOrderCount(p.getInvoicedOrderCount());
         dailyReportData.setInvoicedItemsCount(p.getInvoicedItemsCount());
         dailyReportData.setTotalRevenue(p.getTotalRevenue());

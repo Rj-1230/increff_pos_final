@@ -18,64 +18,47 @@ import static com.increff.pos.helper.CartFlowHelper.convertCartPojoToOrderItemPo
 
     @Autowired
     private OrderService orderService;
-
-    @Autowired
-    private OrderFlow orderFlow;
     @Autowired
     private ProductService productService;
 
     @Transactional(rollbackOn = ApiException.class)
     public void add(CartPojo cartPojo,String barcode) throws ApiException {
-<span class="nc" id="L29">        ProductPojo productPojo= productService.getProductPojoFromBarcode(barcode);</span>
-<span class="nc" id="L30">        cartPojo.setProductId(productPojo.getProductId());</span>
-<span class="nc" id="L31">        cartPojo.setProductName(productPojo.getName());</span>
+<span class="nc" id="L26">        ProductPojo productPojo= productService.getProductPojoFromBarcode(barcode);</span>
+<span class="nc" id="L27">        cartPojo.setProductId(productPojo.getProductId());</span>
+<span class="nc" id="L28">        cartPojo.setProductName(productPojo.getName());</span>
+<span class="nc" id="L29">        Integer inventoryQuantity = checkMrpAndInventoryForCartPojo(cartPojo,productPojo);</span>
+<span class="nc" id="L30">        cartService.add(cartPojo,inventoryQuantity);</span>
+<span class="nc" id="L31">    }</span>
 
-<span class="nc bnc" id="L33" title="All 2 branches missed.">        if(cartPojo.getSellingPrice()&gt;productPojo.getMrp()){</span>
-<span class="nc" id="L34">            throw new ApiException(&quot;Item can't be added to cart as selling price must be less than MRP. Product's MRP :&quot;+productPojo.getMrp());</span>
-
-        }
-<span class="nc" id="L37">        InventoryPojo inventoryPojo = inventoryService.getCheck(cartPojo.getProductId());</span>
-<span class="nc bnc" id="L38" title="All 2 branches missed.">        if (cartPojo.getQuantity() &gt; inventoryPojo.getQuantity()) {</span>
-<span class="nc" id="L39">            throw new ApiException(&quot;Item can't be added to cart as it exceeds the inventory. Present inventory count : &quot; + inventoryPojo.getQuantity());</span>
-        }
-<span class="nc" id="L41">        cartService.add(cartPojo,inventoryPojo);</span>
-<span class="nc" id="L42">    }</span>
 
     @Transactional(rollbackOn  = ApiException.class)
-    public void update(int id, CartPojo newCartPojo) throws ApiException {
-<span class="nc" id="L46">        CartPojo exCartPojo = cartService.getCheck(id);</span>
-<span class="nc" id="L47">        InventoryPojo inventoryPojo = inventoryService.getCheck(exCartPojo.getProductId());</span>
-<span class="nc bnc" id="L48" title="All 2 branches missed.">        if(newCartPojo.getQuantity()&gt;inventoryPojo.getQuantity()){</span>
-<span class="nc" id="L49">            throw new ApiException(&quot;Item can't be updated as it exceeds the inventory. Present inventory count : &quot;+inventoryPojo.getQuantity());</span>
-        }
-<span class="nc" id="L51">        ProductPojo productPojo = productService.getCheck(newCartPojo.getProductId());</span>
-<span class="nc bnc" id="L52" title="All 2 branches missed.">        if(newCartPojo.getSellingPrice()&gt;productPojo.getMrp()){</span>
-<span class="nc" id="L53">            throw new ApiException(&quot;Item can't be added to cart as selling price must be less than MRP. Product's MRP :&quot;+productPojo.getMrp());</span>
+    public void update(Integer id, CartPojo newCartPojo) throws ApiException {
+<span class="nc" id="L36">        CartPojo exCartPojo = cartService.getCheck(id);</span>
+<span class="nc" id="L37">        ProductPojo productPojo = productService.getCheck(newCartPojo.getProductId());</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        if(newCartPojo.getSellingPrice()&gt;productPojo.getMrp()){</span>
+<span class="nc" id="L39">            throw new ApiException(&quot;Item can't be added to cart as selling price must be less than MRP. Product's MRP :&quot;+productPojo.getMrp());</span>
 
         }
-<span class="nc" id="L56">        cartService.update(exCartPojo,newCartPojo);</span>
-<span class="nc" id="L57">    }</span>
-
-    @Transactional(rollbackOn  = ApiException.class)
-    public void pushToNewOrder(OrderPojo orderPojo) throws ApiException {
-<span class="nc" id="L61">        List&lt;CartPojo&gt; cartPojoList = cartService.getAll();</span>
-<span class="nc bnc" id="L62" title="All 2 branches missed.">        if(cartPojoList.size()==0){</span>
-<span class="nc" id="L63">            throw new ApiException(&quot;The order can't be created as the cart is empty&quot;);</span>
+<span class="nc" id="L42">        InventoryPojo inventoryPojo = inventoryService.getCheck(exCartPojo.getProductId());</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        if(newCartPojo.getQuantity()&gt;inventoryPojo.getQuantity()){</span>
+<span class="nc" id="L44">            throw new ApiException(&quot;Item can't be updated as it exceeds the inventory. Present inventory count : &quot;+inventoryPojo.getQuantity());</span>
         }
-<span class="nc bnc" id="L65" title="All 2 branches missed.">        for(CartPojo d : cartPojoList){</span>
-<span class="nc" id="L66">            InventoryPojo a = inventoryService.getCheck(d.getProductId());</span>
-<span class="nc bnc" id="L67" title="All 2 branches missed.">            if(d.getQuantity()&gt;a.getQuantity()){</span>
-<span class="nc" id="L68">                throw new ApiException(&quot;The item &quot;+d.getProductName()+&quot; can't be added to order because sufficient amount not present in inventory. Inventory count = &quot;+a.getQuantity()+&quot;Cart count =&quot;+d.getQuantity());</span>
-            }
-<span class="nc" id="L70">        }</span>
-<span class="nc" id="L71">        int orderId = orderFlow.addOrder(orderPojo);</span>
-<span class="nc bnc" id="L72" title="All 2 branches missed.">        for(CartPojo cartPojo : cartPojoList){</span>
-<span class="nc" id="L73">            OrderItemPojo orderItemPojo = convertCartPojoToOrderItemPojo(cartPojo,orderId);</span>
-<span class="nc" id="L74">            orderService.addOrderItem(orderItemPojo);</span>
-<span class="nc" id="L75">        }</span>
 
-<span class="nc" id="L77">        cartService.deleteAll();</span>
-<span class="nc" id="L78">    }</span>
+<span class="nc" id="L47">        cartService.update(exCartPojo,newCartPojo);</span>
+<span class="nc" id="L48">    }</span>
 
+
+
+    @Transactional(rollbackOn = ApiException.class)
+    private Integer checkMrpAndInventoryForCartPojo(CartPojo cartPojo, ProductPojo productPojo) throws ApiException {
+<span class="nc bnc" id="L54" title="All 2 branches missed.">        if(cartPojo.getSellingPrice()&gt;productPojo.getMrp()){</span>
+<span class="nc" id="L55">            throw new ApiException(&quot;Item can't be added to cart as selling price must be less than MRP. Product's MRP :&quot;+productPojo.getMrp());</span>
+        }
+<span class="nc" id="L57">        InventoryPojo inventoryPojo = inventoryService.getCheck(cartPojo.getProductId());</span>
+<span class="nc bnc" id="L58" title="All 2 branches missed.">        if (cartPojo.getQuantity() &gt; inventoryPojo.getQuantity()) {</span>
+<span class="nc" id="L59">            throw new ApiException(&quot;Item can't be added to cart as it exceeds the inventory. Present inventory count : &quot; + inventoryPojo.getQuantity());</span>
+        }
+<span class="nc" id="L61">        return inventoryPojo.getQuantity();</span>
+    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

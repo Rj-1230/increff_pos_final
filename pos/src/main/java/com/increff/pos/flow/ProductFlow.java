@@ -31,10 +31,10 @@ public class ProductFlow {
     @Transactional(rollbackOn = ApiException.class)
     public void add(ProductPojo productPojo,String brand,String category) throws ApiException {
 //        Putting brandId inside productPojo
-        int brandId = brandService.getBrandIdFromName(brand,category);
+        Integer brandId = brandService.getBrandIdFromName(brand,category);
         productPojo.setBrandId(brandId);
 
-        int productId = productService.add(productPojo);
+        Integer productId = productService.add(productPojo);
 
 //        Creating an inventory corresponding to the product added with quantity 0
         InventoryPojo inventoryPojo = new InventoryPojo();
@@ -46,7 +46,7 @@ public class ProductFlow {
 
 
     @Transactional(rollbackOn = ApiException.class)
-    public ProductData get(int id) throws ApiException {
+    public ProductData get(Integer id) throws ApiException {
         ProductPojo productPojo = productService.getCheck(id);
         BrandPojo brandPojo = brandService.getCheckBrand(productPojo.getBrandId());
         ProductData productData = convert(productPojo);

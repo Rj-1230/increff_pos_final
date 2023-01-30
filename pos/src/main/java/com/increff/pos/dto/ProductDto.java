@@ -32,15 +32,15 @@ public class ProductDto {
         productFlow.add(convert(f),f.getBrandName(),f.getCategoryName());
     }
 
-    public void delete(@PathVariable int id){
+    public void delete(@PathVariable Integer id){
         productService.delete(id);
     }
 
-    public ProductData get(int id) throws ApiException {
+    public ProductData get(Integer id) throws ApiException {
         return productFlow.get(id);
     }
 
-    public void update(@PathVariable int id, @RequestBody ProductForm f) throws ApiException {
+    public void update(@PathVariable Integer id, @RequestBody ProductForm f) throws ApiException {
         checkNullable(f);
         normalize(f);
         productService.update(id,convert(f));

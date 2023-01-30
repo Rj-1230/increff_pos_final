@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.service</a> &gt; <span class="el_source">OrderService.java</span></div><h1>OrderService.java</h1><pre class="source lang-java linenums">package com.increff.pos.service;
 
 import com.increff.pos.dao.OrderDao;
+import com.increff.pos.pojo.CartPojo;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
@@ -8,108 +9,126 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Objects;
 
+import static com.increff.pos.helper.CartFlowHelper.convertCartPojoToOrderItemPojo;
 import static com.increff.pos.helper.GetCurrentTime.getCurrentDateTime;
 import static com.increff.pos.util.SecurityUtil.getPrincipal;
+import static com.increff.pos.util.generateRandomString.createRandomOrderCode;
 
 @Service
-<span class="fc" id="L18">public class OrderService {</span>
+<span class="fc" id="L22">public class OrderService {</span>
 
     @Autowired
     private OrderDao orderDao;
 
     @Transactional(rollbackOn = ApiException.class)
-    public int addOrder(OrderPojo p) throws ApiException {
-<span class="nc" id="L25">        return orderDao.insertOrder(p);</span>
-    }
+    public void addOrder(OrderPojo orderPojo,List&lt;CartPojo&gt;cartPojoList) throws ApiException {
+<span class="nc" id="L29">        assignOrderCodeToOrderPojo(orderPojo);</span>
+<span class="nc" id="L30">        Integer orderId = orderDao.insertOrder(orderPojo);</span>
+<span class="nc bnc" id="L31" title="All 2 branches missed.">        for(CartPojo cartPojo : cartPojoList){</span>
+<span class="nc" id="L32">            OrderItemPojo orderItemPojo = convertCartPojoToOrderItemPojo(cartPojo,orderId);</span>
+<span class="nc" id="L33">            addOrderItem(orderItemPojo);</span>
+<span class="nc" id="L34">        }</span>
+<span class="nc" id="L35">    }</span>
+    @Transactional(rollbackOn = ApiException.class)
+    private void assignOrderCodeToOrderPojo(OrderPojo orderPojo) throws ApiException {
+<span class="nc" id="L38">        String orderCode = createRandomOrderCode();</span>
+<span class="nc" id="L39">        OrderPojo x = getOrderByOrderCode(orderCode);</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        while (x != null) {</span>
+<span class="nc" id="L41">            orderCode = createRandomOrderCode();</span>
+<span class="nc" id="L42">            x = getOrderByOrderCode(orderCode);</span>
+        }
+<span class="nc" id="L44">        orderPojo.setOrderCode(orderCode);</span>
+<span class="nc" id="L45">    }</span>
 
     @Transactional
     public List&lt;OrderPojo&gt; getAllOrdersByCounterId() {
-<span class="nc" id="L30">        return orderDao.selectAllOrders(getPrincipal().getId());</span>
+<span class="nc" id="L49">        return orderDao.selectAllOrders(getPrincipal().getId());</span>
     }
 
     @Transactional
     public List&lt;OrderPojo&gt; getAll() {
-<span class="nc" id="L35">        return orderDao.selectAllOrders();</span>
+<span class="nc" id="L54">        return orderDao.selectAllOrders();</span>
     }
 
     @Transactional(rollbackOn  = ApiException.class)
-    public void updateCustomerDetails(int id, OrderPojo p) throws ApiException {
-<span class="nc" id="L40">        OrderPojo ex = getCheckOrder(id);</span>
-<span class="nc" id="L41">        ex.setCustomerPhone(p.getCustomerPhone());</span>
-<span class="nc" id="L42">        ex.setCustomerName(p.getCustomerName());</span>
-<span class="nc" id="L43">    }</span>
+    public void updateCustomerDetails(Integer id, OrderPojo p) throws ApiException {
+<span class="nc" id="L59">        OrderPojo ex = getCheckOrder(id);</span>
+<span class="nc" id="L60">        ex.setCustomerPhone(p.getCustomerPhone());</span>
+<span class="nc" id="L61">        ex.setCustomerName(p.getCustomerName());</span>
+<span class="nc" id="L62">    }</span>
 
     @Transactional(rollbackOn  = ApiException.class)
-    public void placeOrder(int id) throws ApiException {
-<span class="nc" id="L47">        OrderPojo ex = getCheckOrder(id);</span>
-<span class="nc" id="L48">        ex.setStatus(&quot;invoiced&quot;);</span>
-<span class="nc" id="L49">        ex.setOrderPlaceTime(getCurrentDateTime());</span>
-<span class="nc" id="L50">    }</span>
+    public void invoiceOrder(Integer id) throws ApiException {
+<span class="nc" id="L66">        OrderPojo ex = getCheckOrder(id);</span>
+<span class="nc" id="L67">        ex.setStatus(&quot;invoiced&quot;);</span>
+<span class="nc" id="L68">        ex.setOrderInvoiceTime(ZonedDateTime.now());</span>
+<span class="nc" id="L69">    }</span>
 
     @Transactional
-    public OrderPojo getCheckOrder(int id) throws ApiException {
-<span class="nc" id="L54">        OrderPojo p = orderDao.selectOrder(id);</span>
-<span class="nc bnc" id="L55" title="All 2 branches missed.">          if(Objects.isNull(p)){</span>
-<span class="nc" id="L56">              throw new ApiException(&quot;No order with given id exists&quot;);</span>
+    public OrderPojo getCheckOrder(Integer id) throws ApiException {
+<span class="nc" id="L73">        OrderPojo p = orderDao.selectOrder(id);</span>
+<span class="nc bnc" id="L74" title="All 2 branches missed.">          if(Objects.isNull(p)){</span>
+<span class="nc" id="L75">              throw new ApiException(&quot;No order with given id exists&quot;);</span>
           }
-<span class="nc" id="L58">          return p;</span>
+<span class="nc" id="L77">          return p;</span>
     }
     @Transactional
     public OrderPojo getOrderByOrderCode(String orderCode) throws ApiException {
-<span class="nc" id="L62">        return orderDao.selectByOrderCode(orderCode);</span>
+<span class="nc" id="L81">        return orderDao.selectByOrderCode(orderCode);</span>
     }
 
     @Transactional
-    public List&lt;OrderPojo&gt; selectOrderByDateFilter(String start, String endDate) throws ApiException {
-<span class="nc" id="L67">        List&lt;OrderPojo&gt; orderPojoList = orderDao.selectDateFilter(start, endDate);</span>
-<span class="nc bnc" id="L68" title="All 2 branches missed.">        if(Objects.isNull(orderPojoList)){</span>
-<span class="nc" id="L69">            throw new ApiException(&quot;No orders exists between the given dates&quot;);</span>
+    public List&lt;OrderPojo&gt; selectOrderByDateFilter(ZonedDateTime start, ZonedDateTime end) throws ApiException {
+<span class="nc" id="L86">        List&lt;OrderPojo&gt; orderPojoList = orderDao.selectDateFilter(start, end);</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        if(Objects.isNull(orderPojoList)){</span>
+<span class="nc" id="L88">            throw new ApiException(&quot;No orders exists between the given dates&quot;);</span>
         }
-<span class="nc" id="L71">        return orderPojoList;</span>
+<span class="nc" id="L90">        return orderPojoList;</span>
     }
 
 
     @Transactional(rollbackOn = ApiException.class)
     public void addOrderItem(OrderItemPojo p) throws ApiException {
-<span class="nc" id="L77">        OrderItemPojo b = orderDao.getOrderItemPojoFromProductId(p.getProductId(),p.getOrderId());</span>
-<span class="nc bnc" id="L78" title="All 2 branches missed.">        if(Objects.nonNull(b)){</span>
-<span class="nc" id="L79">            b.setQuantity(b.getQuantity()+p.getQuantity());</span>
-<span class="nc" id="L80">            b.setSellingPrice(p.getSellingPrice());</span>
+<span class="nc" id="L96">        OrderItemPojo b = orderDao.getOrderItemPojoFromProductId(p.getProductId(),p.getOrderId());</span>
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        if(Objects.nonNull(b)){</span>
+<span class="nc" id="L98">            b.setQuantity(b.getQuantity()+p.getQuantity());</span>
+<span class="nc" id="L99">            b.setSellingPrice(p.getSellingPrice());</span>
         }
         else{
-<span class="nc" id="L83">            orderDao.insertOrderItem(p);</span>
+<span class="nc" id="L102">            orderDao.insertOrderItem(p);</span>
         }
 
-<span class="nc" id="L86">    }</span>
+<span class="nc" id="L105">    }</span>
 
     @Transactional(rollbackOn = ApiException.class)
-    public void deleteOrderItem(int id) throws ApiException {
-<span class="nc" id="L90">        orderDao.deleteOrderItem(id);</span>
-<span class="nc" id="L91">    }</span>
+    public void deleteOrderItem(Integer id) throws ApiException {
+<span class="nc" id="L109">        orderDao.deleteOrderItem(id);</span>
+<span class="nc" id="L110">    }</span>
 
     @Transactional
-    public List&lt;OrderItemPojo&gt; getAllOrderItems(int id) {
-<span class="nc" id="L95">        return orderDao.selectAllOrderItems(id);</span>
+    public List&lt;OrderItemPojo&gt; getAllOrderItems(Integer id) {
+<span class="nc" id="L114">        return orderDao.selectAllOrderItems(id);</span>
     }
 
 
     @Transactional(rollbackOn  = ApiException.class)
     public void updateOrderItem(OrderItemPojo ex, OrderItemPojo p) throws ApiException {
-<span class="nc" id="L101">        ex.setQuantity(p.getQuantity());</span>
-<span class="nc" id="L102">        ex.setSellingPrice(p.getSellingPrice());</span>
-<span class="nc" id="L103">    }</span>
+<span class="nc" id="L120">        ex.setQuantity(p.getQuantity());</span>
+<span class="nc" id="L121">        ex.setSellingPrice(p.getSellingPrice());</span>
+<span class="nc" id="L122">    }</span>
 
 
     @Transactional
-    public OrderItemPojo getCheckOrderItem(int id) throws ApiException {
-<span class="nc" id="L108">        OrderItemPojo p = orderDao.selectOrderItem(id);</span>
-<span class="nc bnc" id="L109" title="All 2 branches missed.">        if(!Objects.nonNull(p)){</span>
-<span class="nc" id="L110">            throw new ApiException(&quot;Order item with given id doesn't exist&quot;);</span>
+    public OrderItemPojo getCheckOrderItem(Integer id) throws ApiException {
+<span class="nc" id="L127">        OrderItemPojo p = orderDao.selectOrderItem(id);</span>
+<span class="nc bnc" id="L128" title="All 2 branches missed.">        if(!Objects.nonNull(p)){</span>
+<span class="nc" id="L129">            throw new ApiException(&quot;Order item with given id doesn't exist&quot;);</span>
         }
-<span class="nc" id="L112">        return p;</span>
+<span class="nc" id="L131">        return p;</span>
     }
 
 

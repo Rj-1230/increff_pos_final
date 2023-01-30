@@ -1,9 +1,8 @@
 package com.increff.pos.util;
 
-import com.increff.pos.pojo.BrandPojo;
-import com.increff.pos.pojo.CartPojo;
-import com.increff.pos.pojo.InventoryPojo;
-import com.increff.pos.pojo.ProductPojo;
+import com.increff.pos.pojo.*;
+
+import java.time.ZonedDateTime;
 
 public class PojoUtil {
 
@@ -38,5 +37,21 @@ public class PojoUtil {
         cartPojo.setSellingPrice(sellingPrice);
         cartPojo.setQuantity(quantity);
         return  cartPojo;
+    }
+
+    public static UserPojo getUserPojo(String email, String password){
+        UserPojo userPojo = new UserPojo();
+        userPojo.setEmail(email);
+        userPojo.setPassword(password);
+        return userPojo;
+    }
+
+    public static DailyReportPojo getDailyReportPojo(ZonedDateTime date, Integer invoicedOrderCount, Integer invoicedItemsCount, Double totalRevenue){
+        DailyReportPojo dailyReportPojo = new DailyReportPojo();
+        dailyReportPojo.setInvoiceDate(date);
+        dailyReportPojo.setInvoicedOrderCount(invoicedOrderCount);
+        dailyReportPojo.setInvoicedItemsCount(invoicedItemsCount);
+        dailyReportPojo.setTotalRevenue(totalRevenue);
+        return  dailyReportPojo;
     }
 }
