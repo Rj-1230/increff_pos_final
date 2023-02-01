@@ -21,7 +21,7 @@ function getInvoiceUrl(){
 function addOrder(event){
 	var $form = $("#customer-form");
 	var json = toJson($form);
-	var url = getCartUrl() + 'PushToOrder';
+	var url = getOrderUrl();
 	$.ajax({
 	   url: url,
 	   type: 'POST',
@@ -34,8 +34,6 @@ function addOrder(event){
             	$('#customerModal').modal('toggle');
             	$('#create-order-modal').modal('toggle');
                 document.getElementById('cart-form').reset();
-//            var baseUrl = $("meta[name=baseUrl]").attr("content");
-//            window.location.href = baseUrl + "/ui/orders";
             document.getElementById('toast-container').classList.remove('bg-warning','bg-danger','bg-success');
             document.getElementById('toast-container').classList.add('bg-success');
             document.getElementById('my-message').innerHTML="The order was created successfully";
@@ -100,19 +98,24 @@ function displayOrderList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
+				var invoiceTime = "";
+				var createTime = dateToISOLikeButLocal(new Date(e.orderCreateTime*1000));
+
 		if(e.status=="invoiced"){
 		var buttonHtml ='<button class="btn btn-success" onclick=downloadInvoice("'+e.orderCode + '")> Download Invoice <i class="bi bi-receipt-cutoff"></i></a></button>'
+//		invoiceTime = timeConverter(e.orderInvoiceTime);
+		invoiceTime = dateToISOLikeButLocal(new Date(e.orderInvoiceTime*1000));
 		}
 		else{
-		var buttonHtml ='<button class="btn btn-dark" onClick=redirect("'+ e.orderCode +'")><i class="bi bi-pen"></i></button>'
+		var buttonHtml ='<button class="btn btn-dark" style="border:1px solid white;" onClick=redirect("'+ e.orderCode +'")><i class="bi bi-pen"></i></button>'
 		buttonHtml+='&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-primary" onclick="placeOrder('+e.orderId + ')"> Place Order </a></button>'
 		}
 		var row = '<tr>'
 		+ '<td>' + e.orderId + '</td>'
 		+ '<td>' + e.customerName + '</td>'
 		+ '<td>' + e.customerPhone + '</td>'
-		+ '<td>' + e.orderCreateTime + '</td>'
-		+ '<td>' + e.orderPlaceTime + '</td>'
+		+ '<td>' + createTime+ '</td>'
+		+ '<td>' + invoiceTime+ '</td>'
 		+ '<td>' + e.status + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
@@ -327,6 +330,21 @@ function downloadInvoice(orderCode)
     window.location.href = url;
 }
 
+
+function dateToISOLikeButLocal(date) {
+//Iska koi kaam ni h : method sahi h but return hi kr ra h ISt me
+//    console.log(date);
+    const offsetMs = date.getTimezoneOffset() * 60 * 1000;
+//    console.log(offsetMs);
+    const msLocal =  date.getTime() - offsetMs;
+//    console.log(msLocal);
+    const dateLocal = new Date(msLocal);
+//    console.log(dateLocal);
+    const iso = dateLocal.toISOString();
+//    console.log(iso);
+    const isoLocal = iso.slice(0, 10)+" "+iso.slice(11, 19);
+    return isoLocal;
+}
 
 function init(){
 counterId = $("meta[name=counterId]").attr("content")

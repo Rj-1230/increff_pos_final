@@ -47,32 +47,30 @@ import static com.increff.pos.util.SecurityUtil.getPrincipal;
 <span class="fc" id="L47">        return cartDao.selectAll();</span>
     }
     @Transactional
-    public List&lt;CartPojo&gt; getAll() {
-<span class="nc" id="L51">        Integer id = getPrincipal().getId();</span>
-<span class="nc" id="L52">        return cartDao.selectAll(id);</span>
+    public List&lt;CartPojo&gt; getAll(Integer id) {
+<span class="fc" id="L51">        return cartDao.selectAll(id);</span>
     }
 
     @Transactional(rollbackOn  = ApiException.class)
-    public void deleteAll() throws ApiException{
-<span class="nc" id="L57">        List&lt;CartPojo&gt; cartPojoList = getAll();</span>
-<span class="nc bnc" id="L58" title="All 2 branches missed.">        for(CartPojo cartPojo:cartPojoList){</span>
-<span class="nc" id="L59">            delete(cartPojo.getCartItemId());</span>
-<span class="nc" id="L60">        }</span>
-<span class="nc" id="L61">    }</span>
+    public void deleteAll(List&lt;CartPojo&gt; cartPojoList) throws ApiException{
+<span class="fc bfc" id="L56" title="All 2 branches covered.">        for(CartPojo cartPojo:cartPojoList){</span>
+<span class="fc" id="L57">            delete(cartPojo.getCartItemId());</span>
+<span class="fc" id="L58">        }</span>
+<span class="fc" id="L59">    }</span>
 
     @Transactional(rollbackOn  = ApiException.class)
     public void update(CartPojo exCartPojo, CartPojo newCartPojo) throws ApiException {
-<span class="fc" id="L65">        exCartPojo.setSellingPrice(newCartPojo.getSellingPrice());</span>
-<span class="fc" id="L66">        exCartPojo.setQuantity(newCartPojo.getQuantity());</span>
-<span class="fc" id="L67">    }</span>
+<span class="fc" id="L63">        exCartPojo.setSellingPrice(newCartPojo.getSellingPrice());</span>
+<span class="fc" id="L64">        exCartPojo.setQuantity(newCartPojo.getQuantity());</span>
+<span class="fc" id="L65">    }</span>
 
     @Transactional(rollbackOn  = ApiException.class)
     public CartPojo getCheck(Integer id) throws ApiException {
-<span class="fc" id="L71">            CartPojo cartPojo = cartDao.select(id);</span>
-<span class="fc bfc" id="L72" title="All 2 branches covered.">            if(!Objects.nonNull(cartPojo)){</span>
-<span class="fc" id="L73">                throw new ApiException(&quot;No such item exists in cart with given Id&quot;);</span>
+<span class="fc" id="L69">            CartPojo cartPojo = cartDao.select(id);</span>
+<span class="fc bfc" id="L70" title="All 2 branches covered.">            if(!Objects.nonNull(cartPojo)){</span>
+<span class="fc" id="L71">                throw new ApiException(&quot;No such item exists in cart with given Id&quot;);</span>
             }
-<span class="fc" id="L75">            return cartPojo;</span>
+<span class="fc" id="L73">            return cartPojo;</span>
     }
 
 }

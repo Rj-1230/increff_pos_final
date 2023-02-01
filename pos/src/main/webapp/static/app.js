@@ -102,8 +102,7 @@ function uploadRows(url){
 
 	   },
 	   error: function(response){
-	   		row.error=response.responseText;
-	   		console.log(row);
+	   		row.error=response.responseJSON.message;
 	   		errorData.push(row);
 	   		document.getElementById('toast-container').classList.remove('bg-warning','bg-danger','bg-success');
                 document.getElementById('toast-container').classList.add('bg-danger');
@@ -117,7 +116,6 @@ function uploadRows(url){
 
 function downloadErrors(){
 	writeFileData(errorData);
-//	writeReportData(reportData)
 }
 
 

@@ -19,7 +19,6 @@ public class ReportScheduler {
             reportDto.createDailyReport();
         }
         catch(Exception e) {
-            System.out.println("HEllloo");
             System.out.println(e.getMessage());
         }
     }

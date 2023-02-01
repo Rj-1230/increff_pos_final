@@ -1,50 +1,49 @@
 package com.increff.pos.flow;
 
 import com.increff.pos.pojo.*;
-import com.increff.pos.service.*;
+import com.increff.pos.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
-import static com.increff.pos.helper.CartFlowHelper.convertCartPojoToOrderItemPojo;
 @Service
 public class CartFlow {
     @Autowired
-    private InventoryService inventoryService;
+    private InventoryApi inventoryApi;
     @Autowired
-    private CartService cartService;
+    private CartApi cartApi;
 
     @Autowired
-    private OrderService orderService;
+    private OrderApi orderApi;
     @Autowired
-    private ProductService productService;
+    private ProductApi productApi;
 
     @Transactional(rollbackOn = ApiException.class)
     public void add(CartPojo cartPojo,String barcode) throws ApiException {
-        ProductPojo productPojo= productService.getProductPojoFromBarcode(barcode);
+        ProductPojo productPojo= productApi.getProductPojoFromBarcode(barcode);
         cartPojo.setProductId(productPojo.getProductId());
         cartPojo.setProductName(productPojo.getName());
         Integer inventoryQuantity = checkMrpAndInventoryForCartPojo(cartPojo,productPojo);
-        cartService.add(cartPojo,inventoryQuantity);
+        cartApi.add(cartPojo,inventoryQuantity);
     }
 
 
     @Transactional(rollbackOn  = ApiException.class)
     public void update(Integer id, CartPojo newCartPojo) throws ApiException {
-        CartPojo exCartPojo = cartService.getCheck(id);
-        ProductPojo productPojo = productService.getCheck(newCartPojo.getProductId());
+        CartPojo exCartPojo = cartApi.getCheck(id);
+        System.out.println(newCartPojo.getProductId());
+        ProductPojo productPojo = productApi.getCheck(exCartPojo.getProductId());
         if(newCartPojo.getSellingPrice()>productPojo.getMrp()){
             throw new ApiException("Item can't be added to cart as selling price must be less than MRP. Product's MRP :"+productPojo.getMrp());
 
         }
-        InventoryPojo inventoryPojo = inventoryService.getCheck(exCartPojo.getProductId());
+        InventoryPojo inventoryPojo = inventoryApi.getCheck(exCartPojo.getProductId());
         if(newCartPojo.getQuantity()>inventoryPojo.getQuantity()){
             throw new ApiException("Item can't be updated as it exceeds the inventory. Present inventory count : "+inventoryPojo.getQuantity());
         }
 
-        cartService.update(exCartPojo,newCartPojo);
+        cartApi.update(exCartPojo,newCartPojo);
     }
 
 
@@ -54,7 +53,7 @@ public class CartFlow {
         if(cartPojo.getSellingPrice()>productPojo.getMrp()){
             throw new ApiException("Item can't be added to cart as selling price must be less than MRP. Product's MRP :"+productPojo.getMrp());
         }
-        InventoryPojo inventoryPojo = inventoryService.getCheck(cartPojo.getProductId());
+        InventoryPojo inventoryPojo = inventoryApi.getCheck(cartPojo.getProductId());
         if (cartPojo.getQuantity() > inventoryPojo.getQuantity()) {
             throw new ApiException("Item can't be added to cart as it exceeds the inventory. Present inventory count : " + inventoryPojo.getQuantity());
         }

@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-public class BrandPojo {
+public class BrandPojo extends AbstractPojo{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="Brand_Id")

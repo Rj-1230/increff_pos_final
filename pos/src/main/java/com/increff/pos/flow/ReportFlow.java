@@ -2,13 +2,12 @@ package com.increff.pos.flow;
 
 import com.increff.pos.model.*;
 import com.increff.pos.pojo.*;
-import com.increff.pos.service.*;
+import com.increff.pos.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,15 +21,15 @@ public class ReportFlow {
 
     private static final NumberFormat formatter = new DecimalFormat("#0.00");
     @Autowired
-    ReportService reportService;
+    ReportApi reportApi;
     @Autowired
-    OrderService orderService;
+    OrderApi orderApi;
     @Autowired
-    ProductService productService;
+    ProductApi productApi;
     @Autowired
-    BrandService brandService;
+    BrandApi brandApi;
     @Autowired
-    InventoryService inventoryService;
+    InventoryApi inventoryApi;
 
     public List<ProductRevenueData> getRevenueBrandCategoryWise(DateBrandCategoryFilterForm form) throws ApiException {
         List<ProductRevenueData> list1 = new ArrayList<ProductRevenueData>();
@@ -38,15 +37,15 @@ public class ReportFlow {
         ZonedDateTime startDate = convertStringToZonedDateTime(form.getStart() + " 00:00:00");
         ZonedDateTime endDate = convertStringToZonedDateTime(form.getEnd() + " 23:59:59");
 
-        List<OrderPojo> orderPojoList = orderService.selectOrderByDateFilter(startDate, endDate);
+        List<OrderPojo> orderPojoList = orderApi.selectOrderByDateFilter(startDate, endDate);
         for (OrderPojo e : orderPojoList) {
             Integer orderId = e.getOrderId();
-            List<OrderItemPojo> orderItemPojoList = orderService.getAllOrderItems(orderId);
+            List<OrderItemPojo> orderItemPojoList = orderApi.getAllOrderItems(orderId);
             Set<Integer> productIds = orderItemPojoList.stream().map(OrderItemPojo::getProductId).collect(Collectors.toSet());
             Map<Integer,ProductPojo> productIdPojoMap = productIds.stream().collect(Collectors.toMap(value-> value,
-                    value -> productService.get(value)));
+                    value -> productApi.get(value)));
             Map<Integer,BrandPojo> productIdBrandPojoMap = productIds.stream().collect(Collectors.toMap(value-> value,
-                    value -> brandService.getBrandPojo(productService.get(value).getBrandId())));
+                    value -> brandApi.getBrandPojo(productApi.get(value).getBrandId())));
 //            Set<ProductPojo> productPojos = productIds.stream().map(x->productService.get(x)).collect(Collectors.toSet());
 //            Set<BrandPojo> brandPojos = productPojos.stream().map(x->brandService.getBrand(x.getBrandId())).collect(Collectors.toSet());
 
@@ -54,7 +53,7 @@ public class ReportFlow {
 //                    value -> convert(productIdPojoMap.get(value),productIdBrandPojoMap.get(value))));
 
             Map<Integer,ProductRevenueData> productRevenueDataMap = productIds.stream().collect(Collectors.toMap(value-> value,
-                    value -> convert(productService.get(value),brandService.getBrandPojo(productService.get(value).getBrandId()))));
+                    value -> convert(productApi.get(value), brandApi.getBrandPojo(productApi.get(value).getBrandId()))));
 
 
             for(Map.Entry<Integer,ProductRevenueData> entry : productRevenueDataMap.entrySet()){
@@ -88,13 +87,13 @@ public class ReportFlow {
     public List<InventoryReportData> getInventoryBrandCategoryWise(BrandForm form) throws ApiException {
         List<InventoryReportData> list1 = new ArrayList<InventoryReportData>();
 
-        List<InventoryPojo> inventoryPojoList = inventoryService.getAll();
+        List<InventoryPojo> inventoryPojoList = inventoryApi.getAll();
         HashMap<Integer, InventoryReportData> map = new HashMap<>();
 
 //        getting the list of all available products in map
         for(InventoryPojo p: inventoryPojoList) {
-            ProductPojo productPojo = productService.getCheck(p.getProductId());
-            BrandPojo brandPojo = brandService.getCheckBrand(productPojo.getBrandId());
+            ProductPojo productPojo = productApi.getCheck(p.getProductId());
+            BrandPojo brandPojo = brandApi.getCheckBrand(productPojo.getBrandId());
             InventoryReportData inventoryReportData = convert(p,brandPojo);
             map.put(p.getProductId(), inventoryReportData);
         }
@@ -112,7 +111,7 @@ public class ReportFlow {
     public List<BrandData> getBrandReport(BrandForm form) throws ApiException {
         List<BrandData> list1 = new ArrayList<BrandData>();
 
-        List<BrandPojo> brandPojoList = brandService.getAll();
+        List<BrandPojo> brandPojoList = brandApi.getAll();
         HashMap<Integer, BrandData> map = new HashMap<>();
         for(BrandPojo p: brandPojoList) {
             BrandData brandData = convert(p);
@@ -136,7 +135,7 @@ public class ReportFlow {
         ZonedDateTime startDate = convertStringToZonedDateTime(form.getStart()+" 00:00:00");
         ZonedDateTime endDate = convertStringToZonedDateTime(form.getEnd()+" 23:59:59");
 
-        List<DailyReportPojo> dailyReportPojoList = reportService.selectReportByDateFilter(startDate,endDate);
+        List<DailyReportPojo> dailyReportPojoList = reportApi.selectReportByDateFilter(startDate,endDate);
         for(DailyReportPojo p: dailyReportPojoList) {
             DailyReportData dailyReportData = convert(p);
             map.put(p.getInvoiceDate(),dailyReportData);
@@ -161,12 +160,12 @@ public class ReportFlow {
 //        ZonedDateTime end = ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59);
         Integer totalItems = 0;
         Double totalRevenue = 0.0;
-        List<OrderPojo> orderPojoList = orderService.selectOrderByDateFilter(start, end);
+        List<OrderPojo> orderPojoList = orderApi.selectOrderByDateFilter(start, end);
 
         Integer totalOrders = orderPojoList.size();
         for (OrderPojo o : orderPojoList) {
             Integer id = o.getOrderId();
-            List<OrderItemPojo> orderItemPojoList = orderService.getAllOrderItems(id);
+            List<OrderItemPojo> orderItemPojoList = orderApi.getAllOrderItems(id);
             for (OrderItemPojo i : orderItemPojoList) {
                 totalItems += i.getQuantity();
                 totalRevenue += i.getQuantity() * i.getSellingPrice();
@@ -178,11 +177,11 @@ public class ReportFlow {
         reportPojo.setTotalRevenue(totalRevenue);
         reportPojo.setInvoicedItemsCount(totalItems);
         reportPojo.setInvoicedOrderCount(totalOrders);
-        DailyReportPojo pojo = reportService.getCheckReportByDate(start);
+        DailyReportPojo pojo = reportApi.getReportByDate(start);
         if (pojo == null) {
-            reportService.addReport(reportPojo);
+            reportApi.addReport(reportPojo);
         } else {
-            reportService.update(start, reportPojo);
+            reportApi.update(start, reportPojo);
         }
     }
 

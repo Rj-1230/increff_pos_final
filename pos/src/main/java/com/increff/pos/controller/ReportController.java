@@ -2,8 +2,7 @@ package com.increff.pos.controller;
 
 import com.increff.pos.dto.ReportDto;
 import com.increff.pos.model.*;
-import com.increff.pos.pojo.DailyReportPojo;
-import com.increff.pos.service.ApiException;
+import com.increff.pos.api.ApiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

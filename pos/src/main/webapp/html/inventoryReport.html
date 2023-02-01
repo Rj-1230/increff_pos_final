@@ -9,11 +9,53 @@
 
     <br>
     <br>
-    <div class="row card mx-auto" style="width: 40rem; color:white;background-color:#343a40!important;">
+    <div class="modal" tabindex="-1" role="dialog" id="inventory-report-filter-modal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Filter Inventory Report</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="filter-brand-category-form">
+                        <div class="form-group">
+                            <label for="inputFilterBrand">Brand</label>
+                                <select type="text" class="form-control" name="brand" id="inputFilterBrand">
+                                    <option>All</option>
+                                </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputFilterCategory">Category</label>
+                                <select type="text" class="form-control" name="category" id="inputFilterCategory">
+                                    <option>All</option>
+                                </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="get-inventory-report"><i class="bi bi-funnel-fill"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row card mx-auto" style="width: 40rem;color:white;background-color:#343a40!important;">
         <div class="space">
             <!--      Blank row-->
         </div>
-        <h3 class="text-center">Inventory Report</h3>
+
+
+        <div class="col-12" id="main">
+            <h3 class="alignleft">Inventory Report</h3>
+            <div class="alignright">
+                <button type="button" class="btn btn-primary" id="open-inventory-report-filter-modal" data-toggle="modal" data-target="#inventory-report-filter-modal" ><i class="bi bi-funnel-fill"></i></button>
+            </div>
+
+        </div>
+
         <div class="space">
             <!--      Blank row -->
         </div>
@@ -24,27 +66,7 @@
 
     <div id="product-div">
         <!--    brand category filter-->
-        <div>
-            <form class="form-inline" id="filter-brand-category-form">
-                <div class="form-group">
-                    <label for="inputFilterBrand" class="col-sm-2 col-form-label">Brand</label>
-                    <div class="col-sm-10">
-                        <select type="text" class="form-control" name="brand" id="inputFilterBrand">
-                            <option>All</option>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="inputFilterCategory" class="col-sm-2 col-form-label">Category</label>
-                    <div class="col-sm-10">
-                        <select type="text" class="form-control" name="category" id="inputFilterCategory">
-                            <option>All</option>
-                        </select>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-primary" id="get-inventory-report">Apply</button>
-            </form>
-        </div>
+
 
         <div class="space">
             <!--      Blank row-->
@@ -65,8 +87,8 @@
             <tbody>
             </tbody>
         </table>
-            </div>
     </div>
+</div>
 </div>
 <div class="space"></div>
 <div class="space"></div>

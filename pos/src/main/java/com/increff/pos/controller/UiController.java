@@ -2,12 +2,11 @@ package com.increff.pos.controller;
 
 import com.increff.pos.dto.OrderDto;
 import com.increff.pos.model.OrderData;
-import com.increff.pos.service.ApiException;
+import com.increff.pos.api.ApiException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller

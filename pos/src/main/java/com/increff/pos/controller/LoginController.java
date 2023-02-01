@@ -3,8 +3,8 @@ package com.increff.pos.controller;
 import com.increff.pos.model.InfoData;
 import com.increff.pos.model.LoginForm;
 import com.increff.pos.pojo.UserPojo;
-import com.increff.pos.service.ApiException;
-import com.increff.pos.service.UserService;
+import com.increff.pos.api.ApiException;
+import com.increff.pos.api.UserApi;
 import com.increff.pos.util.SecurityUtil;
 import com.increff.pos.util.UserPrincipal;
 import io.swagger.annotations.ApiOperation;
@@ -29,7 +29,7 @@ import java.util.Objects;
 public class LoginController {
 
     @Autowired
-    private UserService service;
+    private UserApi service;
     @Autowired
     private InfoData info;
 

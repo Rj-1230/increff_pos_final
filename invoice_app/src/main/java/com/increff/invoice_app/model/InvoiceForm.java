@@ -3,6 +3,7 @@ package com.increff.invoice_app.model;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Getter
@@ -11,6 +12,6 @@ public class InvoiceForm {
     private Integer orderId;
     private String customerName;
     private String customerPhone;
-    private String placeDate;
+    private String invoiceTime;
     private List<OrderItemData> orderItemList;
 }

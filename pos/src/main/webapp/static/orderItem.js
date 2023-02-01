@@ -106,8 +106,8 @@ function displayOrderItemList(data){
 	var j=1;
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml ='<button class="btn btn-warning" onclick="displayEditOrderItem(' + e.orderItemId + ')" >Edit </button>'
-        buttonHtml += '&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-danger" onclick="deleteOrderItem(' + e.orderItemId + ')">Delete</button>'
+		var buttonHtml ='<button class="btn btn-dark" style="border:1px solid white;" onclick="displayEditOrderItem(' + e.orderItemId + ')"> <i class="bi bi-pen"></i></button>'
+        buttonHtml += '&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-danger" onclick="deleteOrderItem(' + e.orderItemId + ')"><i class="bi bi-trash"></i></button>'
 		var row = '<tr>'
 		+ '<td>' + j + '</td>'
 		+ '<td>' + e.orderId + '</td>'

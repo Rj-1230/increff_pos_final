@@ -1,9 +1,7 @@
 package com.increff.pos.dao;
 
-import com.increff.pos.pojo.CartPojo;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
-import com.increff.pos.service.ApiException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;

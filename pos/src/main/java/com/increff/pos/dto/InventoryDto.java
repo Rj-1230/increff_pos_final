@@ -3,15 +3,11 @@ package com.increff.pos.dto;
 import com.increff.pos.flow.InventoryFlow;
 import com.increff.pos.model.InventoryData;
 import com.increff.pos.model.InventoryForm;
-import com.increff.pos.model.InventoryReportData;
-import com.increff.pos.pojo.InventoryPojo;
-import com.increff.pos.service.ApiException;
-import com.increff.pos.service.InventoryService;
-import com.increff.pos.helper.InventoryDtoHelper;
+import com.increff.pos.api.ApiException;
+import com.increff.pos.api.InventoryApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -22,7 +18,7 @@ import static com.increff.pos.helper.NullCheckHelper.checkNullable;
 
 public class InventoryDto {
     @Autowired
-    private InventoryService inventoryService;
+    private InventoryApi inventoryApi;
 
     @Autowired
     private InventoryFlow inventoryFlow;
@@ -35,7 +31,7 @@ public class InventoryDto {
     }
 
     public void delete(@PathVariable Integer id){
-        inventoryService.delete(id);
+        inventoryApi.delete(id);
     }
 
     public InventoryData get(Integer id) throws ApiException {

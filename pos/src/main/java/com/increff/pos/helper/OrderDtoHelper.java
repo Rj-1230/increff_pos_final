@@ -8,6 +8,8 @@ import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.OrderPojo;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,7 @@ public class OrderDtoHelper {
         p.setOrderCreateTime(ZonedDateTime.now());
         p.setCounterId(getPrincipal().getId());
         p.setStatus("created");
-//        p.setOrderInvoiceTime(ZonedDateTime.now());
+
         return p;
     }
 
@@ -34,7 +36,7 @@ public class OrderDtoHelper {
         d.setOrderId(p.getOrderId());
         d.setStatus(p.getStatus());
         d.setCounterId(p.getCounterId());
-        d.setOrderCreateTime(p.getOrderCreateTime());
+        d.setOrderCreateTime(p.getOrderCreateTime().withZoneSameInstant(ZoneId.of("Asia/Calcutta")));
         d.setOrderInvoiceTime(p.getOrderInvoiceTime());
         d.setCustomerName(p.getCustomerName());
         d.setCustomerPhone(p.getCustomerPhone());

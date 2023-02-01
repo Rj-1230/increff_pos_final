@@ -8,7 +8,7 @@ import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.DailyReportPojo;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductPojo;
-import com.increff.pos.service.ApiException;
+import com.increff.pos.api.ApiException;
 
 import java.util.Objects;
 

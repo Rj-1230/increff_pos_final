@@ -47,12 +47,25 @@ import java.time.ZonedDateTime;
     }
 
     public static DailyReportPojo getDailyReportPojo(ZonedDateTime date, Integer invoicedOrderCount, Integer invoicedItemsCount, Double totalRevenue){
-<span class="fc" id="L50">        DailyReportPojo dailyReportPojo = new DailyReportPojo();</span>
-<span class="fc" id="L51">        dailyReportPojo.setInvoiceDate(date);</span>
-<span class="fc" id="L52">        dailyReportPojo.setInvoicedOrderCount(invoicedOrderCount);</span>
-<span class="fc" id="L53">        dailyReportPojo.setInvoicedItemsCount(invoicedItemsCount);</span>
-<span class="fc" id="L54">        dailyReportPojo.setTotalRevenue(totalRevenue);</span>
-<span class="fc" id="L55">        return  dailyReportPojo;</span>
+<span class="nc" id="L50">        DailyReportPojo dailyReportPojo = new DailyReportPojo();</span>
+<span class="nc" id="L51">        dailyReportPojo.setInvoiceDate(date);</span>
+<span class="nc" id="L52">        dailyReportPojo.setInvoicedOrderCount(invoicedOrderCount);</span>
+<span class="nc" id="L53">        dailyReportPojo.setInvoicedItemsCount(invoicedItemsCount);</span>
+<span class="nc" id="L54">        dailyReportPojo.setTotalRevenue(totalRevenue);</span>
+<span class="nc" id="L55">        return  dailyReportPojo;</span>
+    }
+
+
+    public static OrderPojo getOrderPojo(String customerName, String customerPhone, ZonedDateTime orderCreateTime, ZonedDateTime orderInvoiceTime,
+                                         String status,Integer counterId){
+<span class="fc" id="L61">        OrderPojo orderPojo = new OrderPojo();</span>
+<span class="fc" id="L62">        orderPojo.setCustomerName(customerName);</span>
+<span class="fc" id="L63">        orderPojo.setCustomerPhone(customerPhone);</span>
+<span class="fc" id="L64">        orderPojo.setOrderCreateTime(orderCreateTime);</span>
+<span class="fc" id="L65">        orderPojo.setOrderInvoiceTime(orderInvoiceTime);</span>
+<span class="fc" id="L66">        orderPojo.setStatus(status);</span>
+<span class="fc" id="L67">        orderPojo.setCounterId(counterId);</span>
+<span class="fc" id="L68">        return  orderPojo;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

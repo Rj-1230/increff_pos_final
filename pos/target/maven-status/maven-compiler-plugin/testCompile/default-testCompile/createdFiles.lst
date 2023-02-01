@@ -1,9 +1,8 @@
 com\increff\pos\service\QaConfig.class
 com\increff\pos\service\BrandServiceTest.class
 com\increff\pos\service\CartServiceTest.class
+com\increff\pos\service\OrderServiceTest.class
 com\increff\pos\service\InventoryServiceTest.class
 com\increff\pos\service\UserServiceTest.class
-com\increff\pos\service\ReportServiceTest.class
 com\increff\pos\service\ProductServiceTest.class
-com\increff\pos\service\AboutAppServiceTest.class
 com\increff\pos\service\AbstractUnitTest.class

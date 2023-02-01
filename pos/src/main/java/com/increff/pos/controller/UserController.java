@@ -1,11 +1,9 @@
 package com.increff.pos.controller;
 
 import com.increff.pos.dto.UserDto;
-import com.increff.pos.model.BrandData;
-import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.UserData;
 import com.increff.pos.model.UserForm;
-import com.increff.pos.service.ApiException;
+import com.increff.pos.api.ApiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,7 @@ public class UserController {
 
     @ApiOperation(value="Deleting a operator")
     @RequestMapping(path="/api/supervisor/user/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable Integer id){
+    public void delete(@PathVariable Integer id) throws ApiException {
         userDto.deleteUser(id);
     }
 

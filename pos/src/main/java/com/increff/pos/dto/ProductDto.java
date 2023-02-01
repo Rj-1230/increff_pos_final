@@ -3,10 +3,8 @@ package com.increff.pos.dto;
 import com.increff.pos.flow.ProductFlow;
 import com.increff.pos.model.ProductData;
 import com.increff.pos.model.ProductForm;
-import com.increff.pos.pojo.ProductPojo;
-import com.increff.pos.service.ApiException;
-import com.increff.pos.service.BrandService;
-import com.increff.pos.service.ProductService;
+import com.increff.pos.api.ApiException;
+import com.increff.pos.api.ProductApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,7 +19,7 @@ import java.util.List;
 
 public class ProductDto {
     @Autowired
-    private ProductService productService;
+    private ProductApi productApi;
     @Autowired
     private ProductFlow productFlow;
 
@@ -33,7 +31,7 @@ public class ProductDto {
     }
 
     public void delete(@PathVariable Integer id){
-        productService.delete(id);
+        productApi.delete(id);
     }
 
     public ProductData get(Integer id) throws ApiException {
@@ -43,7 +41,7 @@ public class ProductDto {
     public void update(@PathVariable Integer id, @RequestBody ProductForm f) throws ApiException {
         checkNullable(f);
         normalize(f);
-        productService.update(id,convert(f));
+        productApi.update(id,convert(f));
     }
 
     public List<ProductData> getAll()throws ApiException{

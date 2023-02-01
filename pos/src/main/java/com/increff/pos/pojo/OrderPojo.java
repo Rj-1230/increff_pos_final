@@ -14,7 +14,7 @@ import java.time.ZonedDateTime;
 @Setter
 
 //Order is a reserved keyword so use diff table name
-public class OrderPojo {
+public class OrderPojo extends AbstractPojo{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "order_generator")
     @SequenceGenerator(name="order_generator", sequenceName = "order_seq", allocationSize=1,initialValue = 101)
@@ -24,7 +24,7 @@ public class OrderPojo {
     private String customerName;
     @Column(name="Order_Create_Time", nullable=false)
     private ZonedDateTime orderCreateTime;
-    @Column(name="Order_Invoice_Time",nullable = false)
+    @Column(name="Order_Invoice_Time")
     private ZonedDateTime orderInvoiceTime;
     @Column(name="Order_Status",nullable = false)
     private String status;

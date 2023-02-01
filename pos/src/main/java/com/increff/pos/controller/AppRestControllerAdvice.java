@@ -1,8 +1,9 @@
 package com.increff.pos.controller;
 
 import com.increff.pos.model.MessageData;
-import com.increff.pos.service.ApiException;
+import com.increff.pos.api.ApiException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -26,21 +27,12 @@ public class AppRestControllerAdvice {
 		return data;
 	}
 
-//
-//	@ExceptionHandler(Throwable.class)
-//	@ResponseStatus(HttpStatus.FORBIDDEN)
-//	public MessageData handleForbiddenException(Throwable accessDeniedException){
-//		MessageData data = new MessageData();
-//		data.setMessage("You are not authorized - " + accessDeniedException.getMessage());
-//		System.out.println("hey not allowed");
-//		return data;
-//
-//	}
-//	@ExceptionHandler(CustomAccessDeniedHandler.class)
-//	@ResponseStatus(HttpStatus.FORBIDDEN)
-//	public MessageData handle(CustomAccessDeniedHandler e) {
-//		MessageData data = new MessageData();
-//		data.setMessage("The user is not given access. Please contact supervisor");
-//		return data;
-//	}
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	public MessageData handle(HttpMessageNotReadableException e) {
+		MessageData data = new MessageData();
+		data.setMessage("Invalid Input");
+		return data;
+	}
+
 }

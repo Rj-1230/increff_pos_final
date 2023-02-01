@@ -41,7 +41,7 @@ function addInventory(event){
 }
 
 
-function addSubInventory(event){
+function updateInventory(event){
 	var $form = $("#inventory-edit-form");
 	var json = toJson($form);
 	var url = getSupervisorInventoryUrl()+"AddSub";
@@ -109,7 +109,7 @@ function displayInventoryList(data){
 		var e = data[i];
 		var buttonHtml=''
 		if(role=='supervisor'){
-        		buttonHtml +='<button class="btn btn-dark" onclick="displayEditInventory(' + e.productId + ')"> <i class="bi bi-pen"></i></button>'
+        		buttonHtml +='<button class="btn btn-dark" style="border:1px solid white;" onclick="displayEditInventory(' + e.productId + ')"> <i class="bi bi-pen"></i></button>'
        }
 		var row = '<tr>'
 		+ '<td>' + j + '</td>'
@@ -149,6 +149,13 @@ function displayInventory(data){
 
 function readFileDataCallback(results){
 	fileData = results.data;
+	if(fileData.length>5000){
+    	    document.getElementById('toast-container').classList.remove('bg-warning','bg-danger','bg-success');
+                        document.getElementById('toast-container').classList.add('bg-danger');
+            	   		document.getElementById('my-message').innerHTML="The file data was too big. It can contain max 5000 rows";
+                        $(".toast").toast('show');
+                        return;
+    	}
 	var url = getSupervisorInventoryUrl()+"AddSub";
 	uploadRows(url);
 }
@@ -164,10 +171,10 @@ getInventoryList();
 //INITIALIZATION CODE
 function init(){
     role= $("meta[name=role]").attr("content");
-    	$('#add-inventory').click(addSubInventory);
-	$('#update-inventory').click(addSubInventory);
+    	$('#add-inventory').click(addInventory);
+	$('#update-inventory').click(updateInventory);
 	$('#refresh-data').click(getInventoryList);
-	$('#upload-data').click(displayUploadData);
+	$('#upload-data').click(uploadData);
         	$('#process-data').click(processData);
         	$('#download-errors').click(downloadErrors);
             $('#myFile').on('change', updateFileName)

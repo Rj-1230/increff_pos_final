@@ -6,7 +6,7 @@ import java.time.ZonedDateTime;
 
 @Getter
 @Setter
-public class OrderData  extends OrderForm{
+public class OrderData extends OrderForm{
    private Integer orderId;
    private ZonedDateTime orderCreateTime;
     private ZonedDateTime orderInvoiceTime;

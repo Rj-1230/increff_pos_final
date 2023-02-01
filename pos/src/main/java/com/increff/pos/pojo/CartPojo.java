@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 
-public class CartPojo {
+public class CartPojo extends AbstractPojo{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="Cart_Item_Id", nullable=false)

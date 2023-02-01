@@ -50,12 +50,6 @@ import static com.increff.pos.util.GetCurrentDateTime.getLocalDate;
 <span class="nc" id="L50">        reportFlow.createDailyReport();</span>
 <span class="nc" id="L51">    }</span>
 
-    public List&lt;DailyReportPojo&gt; selectReportByDateFilter(DateFilterForm form) throws ApiException {
-<span class="nc" id="L54">        ZonedDateTime start = convertStringToZonedDateTime(form.getStart()+&quot; 00:00:00&quot;);</span>
-<span class="nc" id="L55">        ZonedDateTime end = convertStringToZonedDateTime(form.getEnd()+&quot; 23:59:59&quot;);</span>
-<span class="nc" id="L56">        return reportService.selectReportByDateFilter(start,end);</span>
-    }
-
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,4 +1,3 @@
-com\increff\pos\invoice\InvoiceGenerator.class
 com\increff\pos\controller\InventoryController.class
 com\increff\pos\service\ApiException.class
 com\increff\pos\controller\UserController.class
@@ -27,7 +26,6 @@ com\increff\pos\model\CartForm.class
 com\increff\pos\spring\SpringConfig.class
 com\increff\pos\model\OrderData.class
 com\increff\pos\model\LoginForm.class
-com\increff\pos\model\AboutAppData.class
 com\increff\pos\controller\ProductController.class
 com\increff\pos\dto\BrandDto.class
 com\increff\pos\controller\SiteUiController.class
@@ -42,11 +40,12 @@ com\increff\pos\flow\InventoryFlow.class
 com\increff\pos\model\OrderItemData.class
 com\increff\pos\model\DateFilterForm.class
 com\increff\pos\util\UserPrincipal.class
+com\increff\pos\pojo\AbstractPojo.class
 com\increff\pos\helper\ProductDtoHelper.class
 com\increff\pos\util\SecurityUtil.class
 com\increff\pos\model\OrderForm.class
 com\increff\pos\model\UserForm.class
-com\increff\pos\pojo\AbstractDateAudit.class
+com\increff\pos\client\InvoiceClient.class
 com\increff\pos\helper\OrderDtoHelper.class
 com\increff\pos\dto\ReportDto.class
 com\increff\pos\model\ProductData.class
@@ -70,6 +69,7 @@ com\increff\pos\pojo\ProductPojo.class
 com\increff\pos\spring\SecurityConfig.class
 com\increff\pos\dao\CartDao.class
 com\increff\pos\model\BrandRevenueData.class
+com\increff\pos\service\InvoiceClientService.class
 com\increff\pos\service\ProductService.class
 com\increff\pos\controller\OrderController.class
 com\increff\pos\dao\ProductDao.class
@@ -90,15 +90,15 @@ com\increff\pos\pojo\BrandPojo.class
 com\increff\pos\dao\OrderDao.class
 com\increff\pos\pojo\OrderPojo.class
 com\increff\pos\service\UserService.class
-com\increff\pos\controller\AboutAppController.class
 com\increff\pos\helper\OrderItemDtoHelper.class
 com\increff\pos\spring\DbConfig.class
 com\increff\pos\controller\AppRestControllerAdvice.class
 com\increff\pos\dto\ProductDto.class
 com\increff\pos\spring\ControllerConfig.class
 com\increff\pos\dto\UserDto.class
+com\increff\pos\model\FieldErrorData.class
 com\increff\pos\controller\BrandController.class
 com\increff\pos\util\PojoUtil.class
 com\increff\pos\controller\UiController.class
-com\increff\pos\service\AboutAppService.class
+com\increff\pos\util\ValidationUtil.class
 com\increff\pos\flow\ReportFlow.class

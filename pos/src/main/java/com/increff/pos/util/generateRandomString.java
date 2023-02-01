@@ -1,19 +1,9 @@
 package com.increff.pos.util;
-
-import java.util.Random;
+import java.util.UUID;
 public class generateRandomString {
         public static String createRandomOrderCode() {
-            Integer leftLimit = 97; // letter 'a'
-            Integer rightLimit = 122; // letter 'z'
-            Integer targetStringLength = 10;
-            Random random = new Random();
-
-            String generatedString = random.ints(leftLimit, rightLimit + 1)
-                    .limit(targetStringLength)
-                    .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
-                    .toString();
-
-            return(generatedString);
+            UUID uuid=UUID.randomUUID();
+            return uuid.toString();
         }
 
 }

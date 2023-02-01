@@ -12,7 +12,7 @@ import java.time.ZonedDateTime;
 @Setter
 @Table(name="daily_sales")
 
-public class DailyReportPojo{
+public class DailyReportPojo extends AbstractPojo{
     @Id
     @Column(nullable = false, name = "Invoice_Date")
     private ZonedDateTime invoiceDate;

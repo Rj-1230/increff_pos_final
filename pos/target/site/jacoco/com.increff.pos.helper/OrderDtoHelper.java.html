@@ -8,6 +8,8 @@ import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.OrderPojo;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,48 +18,48 @@ import static com.increff.pos.helper.GetCurrentTime.getCurrentDateTime;
 import static com.increff.pos.util.SecurityUtil.getPrincipal;
 
 @Service
-<span class="fc" id="L19">public class OrderDtoHelper {</span>
+<span class="fc" id="L21">public class OrderDtoHelper {</span>
 
     public static OrderPojo convert(OrderForm f){
-<span class="nc" id="L22">        OrderPojo p = new OrderPojo();</span>
-<span class="nc" id="L23">        p.setCustomerPhone(f.getCustomerPhone());</span>
-<span class="nc" id="L24">        p.setCustomerName(f.getCustomerName());</span>
-<span class="nc" id="L25">        p.setOrderCreateTime(ZonedDateTime.now());</span>
-<span class="nc" id="L26">        p.setCounterId(getPrincipal().getId());</span>
-<span class="nc" id="L27">        p.setStatus(&quot;created&quot;);</span>
-//        p.setOrderInvoiceTime(ZonedDateTime.now());
-<span class="nc" id="L29">        return p;</span>
+<span class="nc" id="L24">        OrderPojo p = new OrderPojo();</span>
+<span class="nc" id="L25">        p.setCustomerPhone(f.getCustomerPhone());</span>
+<span class="nc" id="L26">        p.setCustomerName(f.getCustomerName());</span>
+<span class="nc" id="L27">        p.setOrderCreateTime(ZonedDateTime.now());</span>
+<span class="nc" id="L28">        p.setCounterId(getPrincipal().getId());</span>
+<span class="nc" id="L29">        p.setStatus(&quot;created&quot;);</span>
+
+<span class="nc" id="L31">        return p;</span>
     }
 
     public static OrderData convert(OrderPojo p){
-<span class="nc" id="L33">        OrderData d = new OrderData();</span>
-<span class="nc" id="L34">        d.setOrderId(p.getOrderId());</span>
-<span class="nc" id="L35">        d.setStatus(p.getStatus());</span>
-<span class="nc" id="L36">        d.setCounterId(p.getCounterId());</span>
-<span class="nc" id="L37">        d.setOrderCreateTime(p.getOrderCreateTime());</span>
-<span class="nc" id="L38">        d.setOrderInvoiceTime(p.getOrderInvoiceTime());</span>
-<span class="nc" id="L39">        d.setCustomerName(p.getCustomerName());</span>
-<span class="nc" id="L40">        d.setCustomerPhone(p.getCustomerPhone());</span>
-<span class="nc" id="L41">        d.setOrderCode(p.getOrderCode());</span>
-<span class="nc" id="L42">        return d;</span>
+<span class="nc" id="L35">        OrderData d = new OrderData();</span>
+<span class="nc" id="L36">        d.setOrderId(p.getOrderId());</span>
+<span class="nc" id="L37">        d.setStatus(p.getStatus());</span>
+<span class="nc" id="L38">        d.setCounterId(p.getCounterId());</span>
+<span class="nc" id="L39">        d.setOrderCreateTime(p.getOrderCreateTime().withZoneSameInstant(ZoneId.of(&quot;Asia/Calcutta&quot;)));</span>
+<span class="nc" id="L40">        d.setOrderInvoiceTime(p.getOrderInvoiceTime());</span>
+<span class="nc" id="L41">        d.setCustomerName(p.getCustomerName());</span>
+<span class="nc" id="L42">        d.setCustomerPhone(p.getCustomerPhone());</span>
+<span class="nc" id="L43">        d.setOrderCode(p.getOrderCode());</span>
+<span class="nc" id="L44">        return d;</span>
     }
 
     public static void normalize(OrderForm f) {
-<span class="nc" id="L46">        f.setCustomerName(f.getCustomerName().toLowerCase().trim());</span>
-<span class="nc bnc" id="L47" title="All 2 branches missed.">        if(f.getCustomerName().length()&gt;15){</span>
-<span class="nc" id="L48">            f.setCustomerName(f.getCustomerName().substring(0,15));</span>
+<span class="nc" id="L48">        f.setCustomerName(f.getCustomerName().toLowerCase().trim());</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if(f.getCustomerName().length()&gt;15){</span>
+<span class="nc" id="L50">            f.setCustomerName(f.getCustomerName().substring(0,15));</span>
         }
-<span class="nc bnc" id="L50" title="All 2 branches missed.">        if(f.getCustomerPhone().length()&gt;10){</span>
-<span class="nc" id="L51">            f.setCustomerPhone(f.getCustomerPhone().substring(0,10));</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        if(f.getCustomerPhone().length()&gt;10){</span>
+<span class="nc" id="L53">            f.setCustomerPhone(f.getCustomerPhone().substring(0,10));</span>
         }
-<span class="nc" id="L53">    }</span>
+<span class="nc" id="L55">    }</span>
 
     public static List&lt;OrderData&gt; getAllOrders(List&lt;OrderPojo&gt; list){
-<span class="nc" id="L56">        List&lt;OrderData&gt; list2 = new ArrayList&lt;OrderData&gt;();</span>
-<span class="nc bnc" id="L57" title="All 2 branches missed.">        for(OrderPojo p: list){</span>
-<span class="nc" id="L58">            list2.add(convert(p));</span>
-<span class="nc" id="L59">        }</span>
-<span class="nc" id="L60">        return list2;</span>
+<span class="nc" id="L58">        List&lt;OrderData&gt; list2 = new ArrayList&lt;OrderData&gt;();</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">        for(OrderPojo p: list){</span>
+<span class="nc" id="L60">            list2.add(convert(p));</span>
+<span class="nc" id="L61">        }</span>
+<span class="nc" id="L62">        return list2;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

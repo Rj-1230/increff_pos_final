@@ -2,17 +2,11 @@ package com.increff.pos.helper;
 
 import com.increff.pos.model.BrandData;
 import com.increff.pos.model.BrandForm;
-import com.increff.pos.model.BrandReportData;
 import com.increff.pos.pojo.BrandPojo;
-import com.increff.pos.pojo.BrandPojo;
-import com.increff.pos.pojo.ProductPojo;
-import com.increff.pos.service.ApiException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class BrandDtoHelper {

@@ -73,16 +73,14 @@ public class CreateXMLFileJava {
             state.appendChild(document.createTextNode("Karanataka"));
             root.appendChild(state);
 
-            String formattedInvoiceDate  = invoiceForm.getPlaceDate().substring(8, 10) +"-"+invoiceForm.getPlaceDate().substring(5, 7)+"-"+invoiceForm.getPlaceDate().substring(0,4);
+            String formattedInvoiceDate  = invoiceForm.getInvoiceTime().substring(0,10);
             Element invoiceDate = document.createElement("invoiceDate");
             invoiceDate.appendChild(document.createTextNode(formattedInvoiceDate));
             root.appendChild(invoiceDate);
 
             Element invoiceTime = document.createElement("invoiceTime");
-            invoiceTime.appendChild(document.createTextNode(invoiceForm.getPlaceDate().substring(11, 19)));
+            invoiceTime.appendChild(document.createTextNode(invoiceForm.getInvoiceTime().substring(11,19)));
             root.appendChild(invoiceTime);
-
-//            System.out.println(invoiceForm.getPlaceDate());
 
             Element orderItems = document.createElement("orderItems");
             root.appendChild(orderItems);

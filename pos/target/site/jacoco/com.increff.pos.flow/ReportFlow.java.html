@@ -46,7 +46,7 @@ import static com.increff.pos.util.GetCurrentDateTime.*;
 <span class="nc" id="L46">            Map&lt;Integer,ProductPojo&gt; productIdPojoMap = productIds.stream().collect(Collectors.toMap(value-&gt; value,</span>
 <span class="nc" id="L47">                    value -&gt; productService.get(value)));</span>
 <span class="nc" id="L48">            Map&lt;Integer,BrandPojo&gt; productIdBrandPojoMap = productIds.stream().collect(Collectors.toMap(value-&gt; value,</span>
-<span class="nc" id="L49">                    value -&gt; brandService.getBrand(productService.get(value).getBrandId())));</span>
+<span class="nc" id="L49">                    value -&gt; brandService.getBrandPojo(productService.get(value).getBrandId())));</span>
 //            Set&lt;ProductPojo&gt; productPojos = productIds.stream().map(x-&gt;productService.get(x)).collect(Collectors.toSet());
 //            Set&lt;BrandPojo&gt; brandPojos = productPojos.stream().map(x-&gt;brandService.getBrand(x.getBrandId())).collect(Collectors.toSet());
 
@@ -54,7 +54,7 @@ import static com.increff.pos.util.GetCurrentDateTime.*;
 //                    value -&gt; convert(productIdPojoMap.get(value),productIdBrandPojoMap.get(value))));
 
 <span class="nc" id="L56">            Map&lt;Integer,ProductRevenueData&gt; productRevenueDataMap = productIds.stream().collect(Collectors.toMap(value-&gt; value,</span>
-<span class="nc" id="L57">                    value -&gt; convert(productService.get(value),brandService.getBrand(productService.get(value).getBrandId()))));</span>
+<span class="nc" id="L57">                    value -&gt; convert(productService.get(value),brandService.getBrandPojo(productService.get(value).getBrandId()))));</span>
 
 
 <span class="nc bnc" id="L60" title="All 2 branches missed.">            for(Map.Entry&lt;Integer,ProductRevenueData&gt; entry : productRevenueDataMap.entrySet()){</span>

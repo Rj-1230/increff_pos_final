@@ -1,12 +1,9 @@
 package com.increff.pos.dto;
 
-import com.increff.pos.helper.BrandDtoHelper;
 import com.increff.pos.model.BrandData;
 import com.increff.pos.model.BrandForm;
-import com.increff.pos.model.BrandReportData;
-import com.increff.pos.pojo.BrandPojo;
-import com.increff.pos.service.ApiException;
-import com.increff.pos.service.BrandService;
+import com.increff.pos.api.ApiException;
+import com.increff.pos.api.BrandApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,27 +18,27 @@ import static com.increff.pos.helper.NullCheckHelper.*;
 
 public class BrandDto {
     @Autowired
-    private BrandService brandService;
+    private BrandApi brandApi;
 
     public void addBrand(BrandForm f)throws  ApiException{
         checkNullable(f);
         normalize(f);
-        brandService.addBrand(convert(f));
+        brandApi.addBrand(convert(f));
     }
     public void deleteBrand(@PathVariable Integer id){
-        brandService.deleteBrand(id);
+        brandApi.deleteBrand(id);
     }
 
     public BrandData getBrand(Integer id) throws ApiException {
-        return convert(brandService.getCheckBrand(id));
+        return convert(brandApi.getCheckBrand(id));
     }
     public void updateBrand(@PathVariable Integer id, @RequestBody BrandForm f) throws ApiException {
         checkNullable(f);
         normalize(f);
-        brandService.updateBrand(id,convert(f));
+        brandApi.updateBrand(id,convert(f));
     }
     public List<BrandData> getAll(){
-        return getAllBrands(brandService.getAll());
+        return getAllBrands(brandApi.getAll());
     }
 
 }

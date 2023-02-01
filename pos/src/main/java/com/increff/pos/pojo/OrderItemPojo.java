@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-public class OrderItemPojo {
+public class OrderItemPojo extends AbstractPojo {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @SequenceGenerator(name="orderItem_generator", sequenceName = "orderItem_seq", allocationSize=1,initialValue = 100001)

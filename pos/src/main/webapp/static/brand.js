@@ -150,6 +150,13 @@ function displayBrand(data){
 
 function readFileDataCallback(results){
 	fileData = results.data;
+	if(fileData.length>5000){
+	    document.getElementById('toast-container').classList.remove('bg-warning','bg-danger','bg-success');
+                    document.getElementById('toast-container').classList.add('bg-danger');
+        	   		document.getElementById('my-message').innerHTML="The file data was too big. It can contain max 5000 rows";
+                    $(".toast").toast('show');
+                    return;
+	}
 	var url = getSupervisorBrandUrl();
 	uploadRows(url);
 

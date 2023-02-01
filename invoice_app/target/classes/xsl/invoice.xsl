@@ -72,8 +72,8 @@
                                 <fo:inline font-weight="bold">Customer Name : </fo:inline>&#x2028;
                                 <fo:inline font-weight="bold">Customer Phone : </fo:inline>&#x2028;
                                 <fo:inline font-weight="bold">Invoice ID : </fo:inline>&#x2028;
-                                <fo:inline font-weight="bold">Invoiced Date</fo:inline>&#x2028;
-                                <fo:inline font-weight="bold">Invoiced Time</fo:inline>&#x2028;
+                                <fo:inline font-weight="bold">Invoiced Date :</fo:inline>&#x2028;
+                                <fo:inline font-weight="bold">Invoiced Time :</fo:inline>&#x2028;
                             </fo:block>
                         </fo:table-cell>
                         <fo:table-cell>

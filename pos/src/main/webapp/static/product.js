@@ -146,7 +146,7 @@ function displayProductList(data){
 		var e = data[i];
 		var buttonHtml=''
 		if(role=='supervisor'){
-		buttonHtml +='<button class="btn btn-dark" onclick="displayEditProduct(' + e.productId + ')"> <i class="bi bi-pen"></i></button>'
+		buttonHtml +='<button class="btn btn-dark" style="border:1px solid white;" onclick="displayEditProduct(' + e.productId + ')"> <i class="bi bi-pen"></i></button>'
 		}
 		var row = '<tr>'
 		+ '<td>' + j + '</td>'
@@ -224,6 +224,13 @@ function displayProduct(data){
 
 function readFileDataCallback(results){
 	fileData = results.data;
+	if(fileData.length>5000){
+    	    document.getElementById('toast-container').classList.remove('bg-warning','bg-danger','bg-success');
+                        document.getElementById('toast-container').classList.add('bg-danger');
+            	   		document.getElementById('my-message').innerHTML="The file data was too big. It can contain max 5000 rows";
+                        $(".toast").toast('show');
+                        return;
+    	}
 	var url = getSupervisorProductUrl();
 	uploadRows(url);
 }

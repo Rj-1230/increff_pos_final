@@ -4,14 +4,18 @@ import com.increff.pos.model.*;
 import com.increff.pos.pojo.ProductPojo;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ProductDtoHelper {
+    private static final NumberFormat formatter = new DecimalFormat("#0.00");
 
     public static void normalize(ProductForm f) {
         f.setBarcode(f.getBarcode().toLowerCase().trim());
+        f.setMrp(Double.parseDouble(formatter.format(f.getMrp())));
         f.setName(f.getName().toLowerCase().trim());
 
         if(f.getBrandName().length()>15){

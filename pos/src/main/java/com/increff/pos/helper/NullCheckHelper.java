@@ -1,9 +1,8 @@
 package com.increff.pos.helper;
 
 import com.increff.pos.model.*;
-import com.increff.pos.service.ApiException;
+import com.increff.pos.api.ApiException;
 
-import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 //import java.time.LocalDate;

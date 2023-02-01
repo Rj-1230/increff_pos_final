@@ -1,14 +1,11 @@
 package com.increff.pos.flow;
 
-import com.increff.pos.helper.ProductDtoHelper;
 import com.increff.pos.model.InventoryData;
-import com.increff.pos.model.InventoryData;
-import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductPojo;
-import com.increff.pos.service.ApiException;
-import com.increff.pos.service.InventoryService;
-import com.increff.pos.service.ProductService;
+import com.increff.pos.api.ApiException;
+import com.increff.pos.api.InventoryApi;
+import com.increff.pos.api.ProductApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,21 +18,21 @@ import static com.increff.pos.helper.InventoryDtoHelper.*;
 @Service
 public class InventoryFlow {
     @Autowired
-    private InventoryService inventoryService;
+    private InventoryApi inventoryApi;
     @Autowired
-    private ProductService productService;
+    private ProductApi productApi;
 
     @Transactional(rollbackOn = ApiException.class)
     public void update(InventoryPojo newInventoryPojo) throws ApiException {
-        ProductPojo productPojo = productService.getProductPojoFromBarcode(newInventoryPojo.getBarcode());
+        ProductPojo productPojo = productApi.getProductPojoFromBarcode(newInventoryPojo.getBarcode());
         newInventoryPojo.setProductId(productPojo.getProductId());
-        inventoryService.updateInventory(newInventoryPojo, newInventoryPojo.getQuantity());
+        inventoryApi.updateInventory(newInventoryPojo, newInventoryPojo.getQuantity());
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public InventoryData get(Integer id) throws ApiException {
-        InventoryPojo inventoryPojo = inventoryService.getCheck(id);
-        ProductPojo productPojo = productService.getCheck(id);
+        InventoryPojo inventoryPojo = inventoryApi.getCheck(id);
+        ProductPojo productPojo = productApi.getCheck(id);
         InventoryData inventoryData = convert(inventoryPojo);
         inventoryData.setProductName(productPojo.getName());
         inventoryData.setProductId(productPojo.getProductId());
@@ -44,10 +41,10 @@ public class InventoryFlow {
 
     @Transactional(rollbackOn = ApiException.class)
     public List<InventoryData> getAll() throws ApiException {
-        List<InventoryPojo> inventoryPojoList = inventoryService.getAll();
+        List<InventoryPojo> inventoryPojoList = inventoryApi.getAll();
         List<InventoryData> list2 = new ArrayList<InventoryData>();
         for(InventoryPojo inventoryPojo: inventoryPojoList){
-            ProductPojo productPojo = productService.getCheck(inventoryPojo.getProductId());
+            ProductPojo productPojo = productApi.getCheck(inventoryPojo.getProductId());
             InventoryData inventoryData = convert(inventoryPojo);
             inventoryData.setProductName(productPojo.getName());
             inventoryData.setProductId(productPojo.getProductId());

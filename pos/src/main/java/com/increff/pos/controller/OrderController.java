@@ -1,10 +1,9 @@
 package com.increff.pos.controller;
 
-import com.increff.pos.invoice.InvoiceGenerator;
+import com.increff.pos.client.InvoiceClient;
 import com.increff.pos.dto.OrderDto;
 import com.increff.pos.model.*;
-import com.increff.pos.pojo.OrderPojo;
-import com.increff.pos.service.ApiException;
+import com.increff.pos.api.ApiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +12,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @RestController
@@ -30,10 +27,10 @@ public class OrderController {
     @Autowired
     private OrderDto orderDto;
     @Autowired
-    private InvoiceGenerator invoiceGenerator;
+    InvoiceClient invoiceClient;
 
     @ApiOperation(value = "Creating a new order and pushing all cart items into an order")
-    @RequestMapping(path = "/api/addOrder", method = RequestMethod.POST)
+    @RequestMapping(path = "/api/order", method = RequestMethod.POST)
     public void pushToNewOrder(@RequestBody OrderForm f) throws ApiException {
         orderDto.pushToNewOrder(f);
     }
@@ -62,16 +59,8 @@ public class OrderController {
 
     @ApiOperation(value = "Mark order placed")
     @RequestMapping(path = "api/order/place/{orderId}", method = RequestMethod.PUT)
-    public void markOrderInvoiced(@PathVariable Integer orderId) throws ApiException, IOException {
+    public void markOrderInvoiced(@PathVariable Integer orderId) throws Exception {
         orderDto.invoiceOrder(orderId);
-
-        OrderData orderData = orderDto.getOrderDetails(orderId);
-        InvoiceForm invoiceForm = invoiceGenerator.generateInvoiceForOrder(orderData.getOrderCode());
-        RestTemplate restTemplate = new RestTemplate();
-        String url = "http://localhost:8080/invoice_app/api/invoice";
-        byte[] contents = restTemplate.postForEntity(url, invoiceForm, byte[].class).getBody();
-        Path pdfPath = Paths.get("./src/main/resources/pdf/" + orderId + "_invoice.pdf");
-        Files.write(pdfPath, contents);
     }
 
     @ApiOperation(value="Adding a orderItem")
@@ -109,12 +98,12 @@ public class OrderController {
     @ApiOperation(value = "Download Invoice")
     @RequestMapping(path = "/api/invoice/{orderCode}", method = RequestMethod.GET)
     public ResponseEntity<byte[]> getPDF(@PathVariable String orderCode) throws Exception {
-
         OrderData orderData = orderDto.getOrderByOrderCode(orderCode);
-        System.out.println("helloo");
+        return getPDF(orderData);
+    }
 
+    private ResponseEntity<byte[]> getPDF(OrderData orderData) throws IOException {
         Path pdfPath = Paths.get("./src/main/resources/pdf/" + orderData.getOrderId() + "_invoice.pdf");
-
         byte[] contents = Files.readAllBytes(pdfPath);
 
         HttpHeaders headers = new HttpHeaders();

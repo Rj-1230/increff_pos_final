@@ -1,11 +1,7 @@
 package com.increff.pos.helper;
 
 import com.increff.pos.model.*;
-import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.CartPojo;
-import com.increff.pos.pojo.ProductPojo;
-import com.increff.pos.service.CartService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;

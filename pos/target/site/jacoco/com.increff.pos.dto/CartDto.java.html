@@ -48,11 +48,11 @@ import static com.increff.pos.util.SecurityUtil.getPrincipal;
 <span class="nc" id="L48">        cartFlow.update(id,convert(f));</span>
 <span class="nc" id="L49">    }</span>
     public List&lt;CartData&gt; getAll(){
-<span class="nc" id="L51">        return getAllCartItems(cartService.getAll());</span>
+<span class="nc" id="L51">        return getAllCartItems(cartService.getAll(getPrincipal().getId()));</span>
     }
 
     public void flushAll()throws ApiException{
-<span class="nc" id="L55">        cartService.deleteAll();</span>
+<span class="nc" id="L55">        cartService.deleteAll(cartService.getAll(getPrincipal().getId()));</span>
 <span class="nc" id="L56">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 
-public class InventoryPojo {
+public class InventoryPojo extends AbstractPojo {
     @Id
     @Column(name="Product_Id", nullable=false)
     private Integer productId;

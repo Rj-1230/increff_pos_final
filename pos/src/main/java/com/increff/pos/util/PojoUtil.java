@@ -54,4 +54,17 @@ public class PojoUtil {
         dailyReportPojo.setTotalRevenue(totalRevenue);
         return  dailyReportPojo;
     }
+
+
+    public static OrderPojo getOrderPojo(String customerName, String customerPhone, ZonedDateTime orderCreateTime, ZonedDateTime orderInvoiceTime,
+                                         String status,Integer counterId){
+        OrderPojo orderPojo = new OrderPojo();
+        orderPojo.setCustomerName(customerName);
+        orderPojo.setCustomerPhone(customerPhone);
+        orderPojo.setOrderCreateTime(orderCreateTime);
+        orderPojo.setOrderInvoiceTime(orderInvoiceTime);
+        orderPojo.setStatus(status);
+        orderPojo.setCounterId(counterId);
+        return  orderPojo;
+    }
 }

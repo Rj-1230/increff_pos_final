@@ -101,11 +101,15 @@ function getFilteredInventoryReport(event)
            	'Content-Type': 'application/json'
            },
     	   success: function(data) {
+    	   	$('#inventory-report-filter-modal').modal('hide');
+    	    document.getElementById("filter-brand-category-form").reset();
     	   reportData=data;
     	   displayInventoryReportList(data);
     	   },
     	   error: function(response){
                handleAjaxError(response);
+                   	       	   	$('#inventory-report-filter-modal').modal('show');
+
     	   }
     	});
 

@@ -31,8 +31,8 @@ import com.increff.pos.dao.BrandDao;
 <span class="fc" id="L31">    }</span>
 
     @Transactional
-    public BrandPojo getBrand(Integer id) {
-<span class="nc" id="L35">        return brandDao.select(id);</span>
+    public BrandPojo getBrandPojo(Integer id) {
+<span class="fc" id="L35">        return brandDao.select(id);</span>
     }
 
     @Transactional
@@ -43,8 +43,8 @@ import com.increff.pos.dao.BrandDao;
     @Transactional(rollbackOn  = ApiException.class)
     public void updateBrand(Integer id, BrandPojo newBrandPojo) throws ApiException {
 <span class="fc" id="L45">        BrandPojo brandPojo = brandDao.getBrandPojoFromBrandCategory(newBrandPojo.getBrand(), newBrandPojo.getCategory());</span>
-<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        if(Objects.nonNull(brandPojo)){</span>
-<span class="nc" id="L47">            throw new ApiException(&quot;The given brand-category already exists&quot;);</span>
+<span class="fc bfc" id="L46" title="All 2 branches covered.">        if(Objects.nonNull(brandPojo)){</span>
+<span class="fc" id="L47">            throw new ApiException(&quot;The given brand-category already exists&quot;);</span>
         }
 <span class="fc" id="L49">        BrandPojo exBrandPojo = getCheckBrand(id);</span>
 <span class="fc" id="L50">        exBrandPojo.setBrand(newBrandPojo.getBrand());</span>
@@ -63,8 +63,8 @@ import com.increff.pos.dao.BrandDao;
     @Transactional(rollbackOn = ApiException.class)
     public Integer getBrandIdFromName(String brandName, String categoryName) throws ApiException {
 <span class="fc" id="L65">        BrandPojo brandPojo = brandDao.getBrandPojoFromBrandCategory(brandName,categoryName);</span>
-<span class="pc bpc" id="L66" title="1 of 2 branches missed.">        if(Objects.isNull(brandPojo)){</span>
-<span class="nc" id="L67">            throw new ApiException(&quot;The given brand-category does not exist&quot;);</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        if(Objects.isNull(brandPojo)){</span>
+<span class="fc" id="L67">            throw new ApiException(&quot;The given brand-category does not exist&quot;);</span>
         }
 <span class="fc" id="L69">        return brandPojo.getId();</span>
     }

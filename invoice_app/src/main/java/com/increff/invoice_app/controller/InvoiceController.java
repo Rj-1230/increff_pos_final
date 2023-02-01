@@ -27,16 +27,11 @@ public class InvoiceController {
         @ApiOperation(value = "Generate Invoice")
         @RequestMapping(path = "/api/invoice", method = RequestMethod.POST)
         public ResponseEntity<byte[]> getPDF(@RequestBody InvoiceForm form) throws IOException {
-
             invoiceService.generateInvoice(form);
-
             Path pdfPath = Paths.get("./src/main/resources/pdf/invoice.pdf");
-
             byte[] contents = Files.readAllBytes(pdfPath);
-
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_PDF);
-            // Here you have to set the actual filename of your pdf
             String filename = "output.pdf";
             headers.setContentDispositionFormData(filename, filename);
             headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
