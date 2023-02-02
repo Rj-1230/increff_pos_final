@@ -16,12 +16,12 @@ public class UserApi {
     private UserDao userDao;
 
     @Transactional
-    public void add(UserPojo p) throws ApiException {
-        UserPojo existing = getByEmail(p.getEmail());
+    public void add(UserPojo userPojo) throws ApiException {
+        UserPojo existing = getByEmail(userPojo.getEmail());
         if (existing != null) {
             throw new ApiException("User with given email already exists");
         }
-        userDao.insert(p);
+        userDao.insert(userPojo);
     }
 
 
@@ -41,18 +41,18 @@ public class UserApi {
     }
 
     @Transactional(rollbackOn  = ApiException.class)
-    public void update(Integer id, UserPojo p) throws ApiException {
+    public void update(Integer id, UserPojo userPojo) throws ApiException {
         UserPojo ex = getCheck(id);
-        ex.setEmail(p.getEmail());
-        ex.setPassword(p.getPassword());
+        ex.setEmail(userPojo.getEmail());
+        ex.setPassword(userPojo.getPassword());
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public  UserPojo getCheck(Integer id) throws ApiException {
-        UserPojo a = userDao.select(id);
-        if(Objects.isNull(a)){
+        UserPojo userPojo = userDao.select(id);
+        if(Objects.isNull(userPojo)){
             throw new ApiException("No such user with given id exists !");
         }
-        return a;
+        return userPojo;
     }
 }

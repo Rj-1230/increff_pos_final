@@ -3,25 +3,26 @@ package com.increff.pos.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
 
 public class ProductForm {
-    @NotNull
+    @NotBlank
     @Size(min=1,max=15)
     private String barcode;
-    @NotNull
+    @NotBlank
     @Size(min=1,max=15)
     private String brandName;
-    @NotNull
+    @NotBlank
     @Size(min=1,max=15)
     private String categoryName;
-    @NotNull
+    @NotBlank
     @Size(min=1,max=15)
     private String name;
     @NotNull
+    @Min(0)
+    @Max(999999)
     private Double mrp;
 }

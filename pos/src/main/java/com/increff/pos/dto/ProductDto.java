@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import static com.increff.pos.helper.NullCheckHelper.*;
-import static com.increff.pos.helper.ProductDtoHelper.*;
+import static com.increff.pos.helper.dtoHelper.ProductDtoHelper.*;
 
 import java.util.List;
 

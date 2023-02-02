@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 import static com.increff.pos.helper.NullCheckHelper.checkNullable;
-import static com.increff.pos.helper.UserDtoHelper.*;
+import static com.increff.pos.helper.dtoHelper.UserDtoHelper.*;
 @Service
 public class UserDto {
     @Autowired

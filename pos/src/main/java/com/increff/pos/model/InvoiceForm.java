@@ -12,13 +12,13 @@ import java.util.List;
 public class InvoiceForm {
     @NotNull
     private Integer orderId;
-    @NotNull
+    @NotBlank
     @Size(min=1, max=15)
     private String customerName;
-    @NotNull
+    @NotBlank
     @Size(min=10,max=10)
     private String customerPhone;
-    @NotNull
+    @NotBlank
     private String invoiceTime;
     @NotEmpty
     private List<OrderItemData> orderItemList;

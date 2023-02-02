@@ -3,51 +3,49 @@
 import com.increff.pos.flow.ProductFlow;
 import com.increff.pos.model.ProductData;
 import com.increff.pos.model.ProductForm;
-import com.increff.pos.pojo.ProductPojo;
-import com.increff.pos.service.ApiException;
-import com.increff.pos.service.BrandService;
-import com.increff.pos.service.ProductService;
+import com.increff.pos.api.ApiException;
+import com.increff.pos.api.ProductApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import static com.increff.pos.helper.NullCheckHelper.*;
-import static com.increff.pos.helper.ProductDtoHelper.*;
+import static com.increff.pos.helper.dtoHelper.ProductDtoHelper.*;
 
 import java.util.List;
 
 @Service
 
-<span class="fc" id="L22">public class ProductDto {</span>
+<span class="fc" id="L20">public class ProductDto {</span>
     @Autowired
-    private ProductService productService;
+    private ProductApi productApi;
     @Autowired
     private ProductFlow productFlow;
 
 
     public void add(ProductForm f) throws ApiException {
-<span class="nc" id="L30">        checkNullable(f);</span>
-<span class="nc" id="L31">        normalize(f);</span>
-<span class="nc" id="L32">        productFlow.add(convert(f),f.getBrandName(),f.getCategoryName());</span>
-<span class="nc" id="L33">    }</span>
+<span class="nc" id="L28">        checkNullable(f);</span>
+<span class="nc" id="L29">        normalize(f);</span>
+<span class="nc" id="L30">        productFlow.add(convert(f),f.getBrandName(),f.getCategoryName());</span>
+<span class="nc" id="L31">    }</span>
 
     public void delete(@PathVariable Integer id){
-<span class="nc" id="L36">        productService.delete(id);</span>
-<span class="nc" id="L37">    }</span>
+<span class="nc" id="L34">        productApi.delete(id);</span>
+<span class="nc" id="L35">    }</span>
 
     public ProductData get(Integer id) throws ApiException {
-<span class="nc" id="L40">        return productFlow.get(id);</span>
+<span class="nc" id="L38">        return productFlow.get(id);</span>
     }
 
     public void update(@PathVariable Integer id, @RequestBody ProductForm f) throws ApiException {
-<span class="nc" id="L44">        checkNullable(f);</span>
-<span class="nc" id="L45">        normalize(f);</span>
-<span class="nc" id="L46">        productService.update(id,convert(f));</span>
-<span class="nc" id="L47">    }</span>
+<span class="nc" id="L42">        checkNullable(f);</span>
+<span class="nc" id="L43">        normalize(f);</span>
+<span class="nc" id="L44">        productApi.update(id,convert(f));</span>
+<span class="nc" id="L45">    }</span>
 
     public List&lt;ProductData&gt; getAll()throws ApiException{
-<span class="nc" id="L50">        return productFlow.getAll();</span>
+<span class="nc" id="L48">        return productFlow.getAll();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

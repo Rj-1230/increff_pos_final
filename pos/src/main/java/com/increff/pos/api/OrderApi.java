@@ -41,26 +41,34 @@ public class OrderApi {
     }
 
     @Transactional(rollbackOn  = ApiException.class)
-    public void updateCustomerDetails(Integer id, OrderPojo p) throws ApiException {
-        OrderPojo ex = getCheckOrder(id);
-        ex.setCustomerPhone(p.getCustomerPhone());
-        ex.setCustomerName(p.getCustomerName());
+    public void updateCustomerDetails(Integer id, OrderPojo orderPojo) throws ApiException {
+        String status =getCheckOrderByOrderId(id).getStatus();
+        if(Objects.equals(status,"invoiced")){
+            throw new ApiException("Invoiced order can't be edited");
+        }
+        OrderPojo ex = getCheckOrderByOrderId(id);
+        ex.setCustomerPhone(orderPojo.getCustomerPhone());
+        ex.setCustomerName(orderPojo.getCustomerName());
     }
 
     @Transactional(rollbackOn  = ApiException.class)
     public void invoiceOrder(Integer id) throws ApiException {
-        OrderPojo ex = getCheckOrder(id);
+        String status =getCheckOrderByOrderId(id).getStatus();
+        if(Objects.equals(status,"invoiced")){
+            throw new ApiException("Order is already invoiced");
+        }
+        OrderPojo ex = getCheckOrderByOrderId(id);
         ex.setStatus("invoiced");
         ex.setOrderInvoiceTime(ZonedDateTime.now());
     }
 
     @Transactional(rollbackOn  = ApiException.class)
-    public OrderPojo getCheckOrder(Integer id) throws ApiException {
-        OrderPojo p = orderDao.selectOrder(id);
-          if(Objects.isNull(p)){
+    public OrderPojo getCheckOrderByOrderId(Integer orderId) throws ApiException {
+        OrderPojo orderPojo = orderDao.selectOrder(orderId);
+          if(Objects.isNull(orderPojo)){
               throw new ApiException("No order with given Order Id exists");
           }
-          return p;
+          return orderPojo;
     }
     @Transactional(rollbackOn  = ApiException.class)
     public OrderPojo getCheckOrderByOrderCode(String orderCode) throws ApiException {
@@ -77,20 +85,28 @@ public class OrderApi {
 
 
     @Transactional(rollbackOn = ApiException.class)
-    public void addOrderItem(OrderItemPojo p) throws ApiException {
-        OrderItemPojo b = orderDao.getOrderItemPojoFromProductId(p.getProductId(),p.getOrderId());
+    public void addOrderItem(OrderItemPojo orderItemPojo) throws ApiException {
+        String status =getCheckOrderByOrderId(orderItemPojo.getOrderId()).getStatus();
+        if(Objects.equals(status,"invoiced")){
+            throw new ApiException("Invoiced order can't be edited");
+        }
+        OrderItemPojo b = orderDao.getOrderItemPojoFromProductId(orderItemPojo.getProductId(),orderItemPojo.getOrderId());
         if(Objects.nonNull(b)){
-            b.setQuantity(b.getQuantity()+p.getQuantity());
-            b.setSellingPrice(p.getSellingPrice());
+            b.setQuantity(b.getQuantity()+orderItemPojo.getQuantity());
+            b.setSellingPrice(orderItemPojo.getSellingPrice());
         }
         else{
-            orderDao.insertOrderItem(p);
+            orderDao.insertOrderItem(orderItemPojo);
         }
 
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public void deleteOrderItem(Integer id) throws ApiException {
+        String status =getCheckOrderByOrderId(getCheckOrderItem(id).getOrderId()).getStatus();
+        if(Objects.equals(status,"invoiced")){
+            throw new ApiException("Invoiced order can't be deleted");
+        }
         orderDao.deleteOrderItem(id);
     }
 
@@ -100,21 +116,24 @@ public class OrderApi {
     }
 
 
-    @Transactional(rollbackOn  = ApiException.class)
-    public void updateOrderItem(OrderItemPojo ex, OrderItemPojo p) throws ApiException {
-
-        ex.setQuantity(p.getQuantity());
-        ex.setSellingPrice(p.getSellingPrice());
+    @Transactional
+    public void updateOrderItem(OrderItemPojo ex, OrderItemPojo orderItemPojo) throws ApiException {
+        String status =getCheckOrderByOrderId(ex.getOrderId()).getStatus();
+        if(Objects.equals(status,"invoiced")){
+            throw new ApiException("Invoiced order can't be edited");
+        }
+        ex.setQuantity(orderItemPojo.getQuantity());
+        ex.setSellingPrice(orderItemPojo.getSellingPrice());
     }
 
 
-    @Transactional
+    @Transactional(rollbackOn  = ApiException.class)
     public OrderItemPojo getCheckOrderItem(Integer id) throws ApiException {
-        OrderItemPojo p = orderDao.selectOrderItem(id);
-        if(!Objects.nonNull(p)){
-            throw new ApiException("Order item with given id doesn't exist");
+        OrderItemPojo orderItemPojo = orderDao.selectOrderItem(id);
+        if(Objects.isNull(orderItemPojo)){
+            throw new ApiException("Order item with given order Item Id doesn't exist");
         }
-        return p;
+        return orderItemPojo;
     }
 
 

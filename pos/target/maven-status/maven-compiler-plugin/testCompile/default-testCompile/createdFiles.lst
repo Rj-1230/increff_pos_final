@@ -1,8 +1,8 @@
-com\increff\pos\service\QaConfig.class
-com\increff\pos\service\BrandServiceTest.class
-com\increff\pos\service\CartServiceTest.class
-com\increff\pos\service\OrderServiceTest.class
-com\increff\pos\service\InventoryServiceTest.class
-com\increff\pos\service\UserServiceTest.class
-com\increff\pos\service\ProductServiceTest.class
-com\increff\pos\service\AbstractUnitTest.class
+com\increff\pos\api\CartApiTest.class
+com\increff\pos\api\OrderApiTest.class
+com\increff\pos\api\InventoryApiTest.class
+com\increff\pos\api\AbstractUnitTest.class
+com\increff\pos\api\UserServiceTest.class
+com\increff\pos\api\BrandApiTest.class
+com\increff\pos\api\QaConfig.class
+com\increff\pos\api\ProductApiTest.class

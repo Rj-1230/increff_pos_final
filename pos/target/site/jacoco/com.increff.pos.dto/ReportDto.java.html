@@ -2,53 +2,45 @@
 
 import com.increff.pos.flow.ReportFlow;
 import com.increff.pos.model.*;
-import com.increff.pos.pojo.*;
-import com.increff.pos.service.*;
+import com.increff.pos.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.*;
 
 import static com.increff.pos.helper.NullCheckHelper.checkDate;
 import static com.increff.pos.helper.ReportFlowHelper.convert;
-import static com.increff.pos.helper.ReportFlowHelper.filterByBrandCategory;
-import static com.increff.pos.util.GetCurrentDateTime.convertStringToZonedDateTime;
-import static com.increff.pos.util.GetCurrentDateTime.getLocalDate;
 
 @Service
-<span class="fc" id="L23">public class ReportDto {</span>
+<span class="fc" id="L15">public class ReportDto {</span>
     @Autowired
     ReportFlow reportFlow;
 
     @Autowired
-    ReportService reportService;
+    ReportApi reportApi;
 
 
     public List&lt;ProductRevenueData&gt; getRevenueBrandCategoryWise(DateBrandCategoryFilterForm form) throws ApiException {
-<span class="nc" id="L32">        return reportFlow.getRevenueBrandCategoryWise(form);</span>
+<span class="nc" id="L24">        return reportFlow.getRevenueBrandCategoryWise(form);</span>
     }
 
     public List&lt;InventoryReportData&gt; getInventoryBrandCategoryWise(BrandForm form) throws ApiException {
-<span class="nc" id="L36">        return reportFlow.getInventoryBrandCategoryWise(form);</span>
+<span class="nc" id="L28">        return reportFlow.getInventoryBrandCategoryWise(form);</span>
     }
 
     public List&lt;BrandData&gt; getBrandReport(BrandForm form) throws ApiException {
-<span class="nc" id="L40">       return reportFlow.getBrandReport(form);</span>
+<span class="nc" id="L32">       return reportFlow.getBrandReport(form);</span>
     }
 
     public List&lt;DailyReportData&gt; getDailySalesFilteredReport(DateFilterForm form) throws ApiException
     {
-<span class="nc" id="L45">        checkDate(form);</span>
-<span class="nc" id="L46">       return reportFlow.getDailySalesFilteredReport(form);</span>
+<span class="nc" id="L37">        checkDate(form);</span>
+<span class="nc" id="L38">       return reportFlow.getDailySalesFilteredReport(form);</span>
     }
 
     public void createDailyReport() throws ApiException {
-<span class="nc" id="L50">        reportFlow.createDailyReport();</span>
-<span class="nc" id="L51">    }</span>
+<span class="nc" id="L42">        reportFlow.createDailyReport();</span>
+<span class="nc" id="L43">    }</span>
 
 
 }

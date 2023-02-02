@@ -1,4 +1,5 @@
 var role;
+var flagObj ={flag:false,id:0};
 function getUserUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/supervisor/user";
@@ -105,17 +106,34 @@ function displayUserList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
+		var showPassword = ' <button class="btn btn-dark" onclick="toggle(' + e.id + ')"> Show Password</button>'
+		var password = '********'
+		if(flagObj.flag==true && flagObj.id==e.id){
+		password = e.password;
+		showPassword = '<button class="btn btn-dark" onclick="toggle(' + e.id + ')"> Hide Password</button>'
+		}
 		var buttonHtml ='<button class="btn btn-dark" style="border:1px solid white;" onclick="displayEdituser(' + e.id + ')"> <i class="bi bi-pen"></i></button>'
 		buttonHtml += '&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-danger" onclick="deleteUser(' + e.id + ')"><i class="bi bi-trash"></i></button>'
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.email + '</td>'
-		+ '<td>'  + e.password + '</td>'
+		+ '<td>'  + password + '</td>'
+        + '<td>'  + showPassword + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
-		+ '</tr>';
+		+ '</tr>'
         $tbody.append(row);
 	}
+	}
+
+function toggle(id) {
+if(flagObj.id!=id){
+flagObj.flag=false;
 }
+flagObj.flag = !flagObj.flag
+flagObj.id = id;
+            getUserList();
+        }
+
 
 
 function displayEdituser(id){

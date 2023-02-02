@@ -3,47 +3,43 @@
 import com.increff.pos.flow.InventoryFlow;
 import com.increff.pos.model.InventoryData;
 import com.increff.pos.model.InventoryForm;
-import com.increff.pos.model.InventoryReportData;
-import com.increff.pos.pojo.InventoryPojo;
-import com.increff.pos.service.ApiException;
-import com.increff.pos.service.InventoryService;
-import com.increff.pos.helper.InventoryDtoHelper;
+import com.increff.pos.api.ApiException;
+import com.increff.pos.api.InventoryApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-import static com.increff.pos.helper.InventoryDtoHelper.*;
+import static com.increff.pos.helper.dtoHelper.InventoryDtoHelper.*;
 import static com.increff.pos.helper.NullCheckHelper.checkNullable;
 
 @Service
 
-<span class="fc" id="L23">public class InventoryDto {</span>
+<span class="fc" id="L19">public class InventoryDto {</span>
     @Autowired
-    private InventoryService inventoryService;
+    private InventoryApi inventoryApi;
 
     @Autowired
     private InventoryFlow inventoryFlow;
 
 
     public void updateInventory(InventoryForm f) throws ApiException {
-<span class="nc" id="L32">        checkNullable(f);</span>
-<span class="nc" id="L33">        normalize(f);</span>
-<span class="nc" id="L34">        inventoryFlow.update(convert(f));</span>
-<span class="nc" id="L35">    }</span>
+<span class="nc" id="L28">        checkNullable(f);</span>
+<span class="nc" id="L29">        normalize(f);</span>
+<span class="nc" id="L30">        inventoryFlow.update(convert(f));</span>
+<span class="nc" id="L31">    }</span>
 
     public void delete(@PathVariable Integer id){
-<span class="nc" id="L38">        inventoryService.delete(id);</span>
-<span class="nc" id="L39">    }</span>
+<span class="nc" id="L34">        inventoryApi.delete(id);</span>
+<span class="nc" id="L35">    }</span>
 
     public InventoryData get(Integer id) throws ApiException {
-<span class="nc" id="L42">        return inventoryFlow.get(id);</span>
+<span class="nc" id="L38">        return inventoryFlow.get(id);</span>
     }
 
     public List&lt;InventoryData&gt; getAll() throws ApiException{
-<span class="nc" id="L46">        return inventoryFlow.getAll();</span>
+<span class="nc" id="L42">        return inventoryFlow.getAll();</span>
     }
 
 

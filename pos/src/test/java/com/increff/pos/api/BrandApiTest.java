@@ -95,7 +95,7 @@ public class BrandApiTest extends AbstractUnitTest{
         BrandPojo brandPojo = PojoUtil.getBrandPojo(brand,category);
         brandDao.insert(brandPojo);
 
-        Integer brandId = brandApi.getBrandIdFromName(brand,category);
+        Integer brandId = brandApi.getCheckBrandIdFromName(brand,category);
         assertEquals(brandPojo.getId(),brandId);
     }
 @Test
@@ -138,7 +138,7 @@ public class BrandApiTest extends AbstractUnitTest{
 
         exceptionRule.expect(ApiException.class);
         exceptionRule.expectMessage("The given brand-category does not exist");
-        brandApi.getBrandIdFromName("brand","category");
+        brandApi.getCheckBrandIdFromName("brand","category");
     }
 
 
@@ -151,7 +151,7 @@ public class BrandApiTest extends AbstractUnitTest{
 
         exceptionRule.expect(ApiException.class);
         exceptionRule.expectMessage("The given brand-category does not exist");
-        brandApi.getBrandIdFromName("brand","category");
+        brandApi.getCheckBrandIdFromName("brand","category");
     }
 
 

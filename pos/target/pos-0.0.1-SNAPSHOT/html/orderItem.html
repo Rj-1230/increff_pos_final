@@ -63,31 +63,27 @@
             <!--      Blank row-->
         </div>
         <div class="col-12" id="main">
-            <h3 class="alignleftt">Order Items for [[${customerName}]]  </h3>
+            <h3 class="alignleftt" id="customer-container">Order Items for [[${customerName}]]  </h3>
             <div class="alignright">
-                <button type="button" class="btn btn-primary" id="open-orderItem-modal" data-toggle="modal" data-target="#add-orderItems-modal" ><i class="bi bi-file-earmark-plus"></i></button>
-                <button type="button" class="btn btn-dark" data-toggle="tooltip" id="updateCustomerDetails" data-placement="bottom" title="Update Customer Details">
-                    <i class="bi bi-pen"></i>
-                </button>
-                <button type="button" class="btn btn-success" id="refresh-data" ><i class="bi bi-arrow-clockwise"></i></button>
-
+                <button type="button" class="btn btn-primary hideUponInvoiced" id="open-orderItem-modal" data-toggle="modal" data-target="#add-orderItems-modal" ><i class="bi bi-file-earmark-plus"></i></button>
+<!--                <button type="button" class="btn btn-success hideUponInvoiced" id="refresh-data" ><i class="bi bi-arrow-clockwise"></i></button>-->
             </div>
-
-
         </div>
-        <div class="col-12">
-        <button class="btn btn-primary" id="place-order"> Place Order </button>
-        </div>
-        <div class="space">
+        <div class="half-space">
             <!--      Blank row -->
         </div>
     </div>
 
+
 <!--        <h3 class="text-center"></h3>-->
 
-    <div class="half-space">
+    <div class="space">
         <!--      Blank row-->
     </div>
+    <button class="btn btn-lg btn-success hideUponInvoiced" id="place-order" data-toggle="tooltip" data-placement="bottom" title=" Place Order"><i class="bi bi-receipt-cutoff"></i>  </button>
+    <button type="button" class="btn btn-lg btn-dark hideUponInvoiced" style="margin-left:20px;" data-toggle="tooltip" id="updateCustomerDetails" data-placement="bottom" title="Update Customer Details">
+        <i class="bi bi-pen"></i>
+    </button>
     <!--  </card>-->
     <div class="row text-danger" id="logg">
 
@@ -110,7 +106,7 @@
                     <th scope="col">Product Name</th>
                     <th scope="col">Quantity</th>
                     <th scope="col">Selling Price</th>
-                    <th scope="col">Actions</th>
+                    <th scope="col" id="invoiced-action">Actions</th>
                 </tr>
                 </thead>
                 <tbody>

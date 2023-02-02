@@ -1,4 +1,5 @@
 var counterId;
+
 function getOrderUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/order";
@@ -93,6 +94,12 @@ function redirect(orderCode)
     window.location.href = url;
 }
 
+function redirectInvoiced(orderCode)
+{
+    var url = $("meta[name=baseUrl]").attr("content") + "/ui/orderItem/" + orderCode;
+    window.location.href = url;
+}
+
 function displayOrderList(data){
 	var $tbody = $('#order-table').find('tbody');
 	$tbody.empty();
@@ -100,15 +107,14 @@ function displayOrderList(data){
 		var e = data[i];
 				var invoiceTime = "";
 				var createTime = dateToISOLikeButLocal(new Date(e.orderCreateTime*1000));
-
-		if(e.status=="invoiced"){
-		var buttonHtml ='<button class="btn btn-success" onclick=downloadInvoice("'+e.orderCode + '")> Download Invoice <i class="bi bi-receipt-cutoff"></i></a></button>'
-//		invoiceTime = timeConverter(e.orderInvoiceTime);
+	    if(e.status=='invoiced'){
+		var buttonHtml ='<button class="btn btn-dark" style="border:1px solid white;" onClick=redirectInvoiced("'+ e.orderCode +'")><i class="bi bi-eye"></i></button>'
+		buttonHtml+='&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-success" onclick=downloadInvoice("'+e.orderCode + '")> <i class="bi bi-file-earmark-arrow-down"></i></button>'
 		invoiceTime = dateToISOLikeButLocal(new Date(e.orderInvoiceTime*1000));
 		}
 		else{
 		var buttonHtml ='<button class="btn btn-dark" style="border:1px solid white;" onClick=redirect("'+ e.orderCode +'")><i class="bi bi-pen"></i></button>'
-		buttonHtml+='&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-primary" onclick="placeOrder('+e.orderId + ')"> Place Order </a></button>'
+		buttonHtml+='&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-success" onclick="placeOrder('+e.orderId + ')"> <i class="bi bi-receipt-cutoff"></i> </a></button>'
 		}
 		var row = '<tr>'
 		+ '<td>' + e.orderId + '</td>'
@@ -138,6 +144,7 @@ function getCartItemList(){
 }
 
 function displayCartItemList(data){
+
 	if(data.length>0){
 	    document.getElementById("create-new-order").style.display = "block";
 	    document.getElementById("empty-cart").style.display = "block";
@@ -157,7 +164,8 @@ function displayCartItemList(data){
 		if(e.quantity==0 || e.counterId!=counterId){
 		continue;
 		}
-		var buttonHtml ='<button class="btn btn-warning" onclick="displayEditCartItem(' + e.cartItemId + ')" >Edit </button>'
+		var buttonHtml='';
+		buttonHtml +='<button class="btn btn-warning" onclick="displayEditCartItem(' + e.cartItemId + ')" >Edit </button>'
 		buttonHtml += '&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-danger" onclick="deleteCartItem(' + e.cartItemId + ')">Delete</button>'
 		var row = '<tr>'
 		+ '<td>' +j + '</td>'

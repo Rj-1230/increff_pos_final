@@ -92,7 +92,7 @@ public class ReportFlow {
 
 //        getting the list of all available products in map
         for(InventoryPojo p: inventoryPojoList) {
-            ProductPojo productPojo = productApi.getCheck(p.getProductId());
+            ProductPojo productPojo = productApi.getCheckProduct(p.getProductId());
             BrandPojo brandPojo = brandApi.getCheckBrand(productPojo.getBrandId());
             InventoryReportData inventoryReportData = convert(p,brandPojo);
             map.put(p.getProductId(), inventoryReportData);

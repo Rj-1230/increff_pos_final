@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
-import static com.increff.pos.helper.InventoryDtoHelper.*;
+import static com.increff.pos.helper.dtoHelper.InventoryDtoHelper.*;
 import static com.increff.pos.helper.NullCheckHelper.checkNullable;
 
 @Service

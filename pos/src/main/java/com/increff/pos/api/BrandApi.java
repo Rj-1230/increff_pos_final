@@ -61,7 +61,7 @@ public class BrandApi {
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public Integer getBrandIdFromName(String brandName, String categoryName) throws ApiException {
+    public Integer getCheckBrandIdFromName(String brandName, String categoryName) throws ApiException {
         BrandPojo brandPojo = brandDao.getBrandPojoFromBrandCategory(brandName,categoryName);
         if(Objects.isNull(brandPojo)){
             throw new ApiException("The given brand-category does not exist");

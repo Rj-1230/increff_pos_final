@@ -1,4 +1,5 @@
 var orderId;
+var status;
 var customerName;
 function getOrderItemUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
@@ -38,10 +39,39 @@ function addOrderItem(event){
 	return false;
 }
 
+function getOrder()
+{
+    var url = getOrderUrl() + "/" + orderId;
+    $.ajax({
+    	   url: url,
+    	   type: 'GET',
+    	   success: function(data) {
+    	   status = data.status;
+    	   disableButtons();
+    	   getOrderItemList();
+    	   },
+    	   error: handleAjaxError
+    	});
+
+    	return false;
+}
+
+function disableButtons(){
+      if(status=='invoiced'){
+	    var x = document.getElementsByClassName("hideUponInvoiced");
+                var i;
+                for (i = 0; i < x.length; i++) {
+                    x[i].style.display = 'none';
+                }
+                    document.getElementById('customer-container').classList.remove('alignleftt');
+                    document.getElementById('customer-container').classList.add('text-center');
+
+      }
+}
+
 function placeOrder () {
     console.log(orderId);
 	var url = getOrderUrl() + "/place/" + orderId;
-	console.log(url);
     $.ajax({
     	   url: url,
     	   type: 'PUT',
@@ -104,10 +134,19 @@ function displayOrderItemList(data){
 	var $tbody = $('#orderItem-table').find('tbody');
 	$tbody.empty();
 	var j=1;
+	var total=0;
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml ='<button class="btn btn-dark" style="border:1px solid white;" onclick="displayEditOrderItem(' + e.orderItemId + ')"> <i class="bi bi-pen"></i></button>'
+		var buttonHtml='';
+		if(status=='created'){
+		buttonHtml ='<button class="btn btn-dark" style="border:1px solid white;" onclick="displayEditOrderItem(' + e.orderItemId + ')"> <i class="bi bi-pen"></i></button>'
         buttonHtml += '&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-danger" onclick="deleteOrderItem(' + e.orderItemId + ')"><i class="bi bi-trash"></i></button>'
+        }
+        else{
+	   		document.getElementById('invoiced-action').innerHTML = 'Total';
+	   		buttonHtml+= (e.quantity*e.sellingPrice);
+	   		total+=(e.quantity*e.sellingPrice);
+        }
 		var row = '<tr>'
 		+ '<td>' + j + '</td>'
 		+ '<td>' + e.orderId + '</td>'
@@ -119,6 +158,13 @@ function displayOrderItemList(data){
         $tbody.append(row);
         j++;
 	}
+	if(status=='invoiced'){
+	var row = '<tr>'
+    		+ '<td colspan=5>' + '<b>Total</b>'+ '</td>'
+    		+ '<td><b>' + total + '</b></td>'
+    		+ '</tr>';
+  $tbody.append(row);
+  }
 }
 
 function displayEditOrderItem(id){
@@ -240,4 +286,4 @@ function init(){
 	$('#place-order').click(placeOrder);
 }
 $(document).ready(init);
-$(document).ready(getOrderItemList);
+$(document).ready(getOrder);

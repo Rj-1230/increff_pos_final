@@ -16,7 +16,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.increff.pos.helper.ProductDtoHelper.convert;
+import static com.increff.pos.helper.dtoHelper.ProductDtoHelper.convert;
 
 @Service
 public class ProductFlow {
@@ -30,7 +30,7 @@ public class ProductFlow {
     @Transactional(rollbackOn = ApiException.class)
     public void add(ProductPojo productPojo,String brand,String category) throws ApiException {
 //        Putting brandId inside productPojo
-        Integer brandId = brandApi.getBrandIdFromName(brand,category);
+        Integer brandId = brandApi.getCheckBrandIdFromName(brand,category);
         productPojo.setBrandId(brandId);
 
         Integer productId = productApi.add(productPojo);
@@ -46,7 +46,7 @@ public class ProductFlow {
 
     @Transactional(rollbackOn = ApiException.class)
     public ProductData get(Integer id) throws ApiException {
-        ProductPojo productPojo = productApi.getCheck(id);
+        ProductPojo productPojo = productApi.getCheckProduct(id);
         BrandPojo brandPojo = brandApi.getCheckBrand(productPojo.getBrandId());
         ProductData productData = convert(productPojo);
         productData.setBrand(brandPojo.getBrand());

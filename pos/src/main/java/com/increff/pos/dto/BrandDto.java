@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-import static com.increff.pos.helper.BrandDtoHelper.*;
+import static com.increff.pos.helper.dtoHelper.BrandDtoHelper.*;
 import static com.increff.pos.helper.NullCheckHelper.*;
 
 @Service

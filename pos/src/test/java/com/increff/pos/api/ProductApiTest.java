@@ -97,7 +97,7 @@ public class ProductApiTest extends AbstractUnitTest{
         ProductPojo productPojo = PojoUtil.getProductPojo(brandId,barcode,mrp,productName);
         productDao.insert(productPojo);
 
-        ProductPojo productPojo1 = productApi.getCheck(productPojo.getProductId());
+        ProductPojo productPojo1 = productApi.getCheckProduct(productPojo.getProductId());
         assertEquals(productPojo1.getBrandId(),brandId);
         assertEquals(productPojo1.getBarcode(),barcode);
         assertEquals(productPojo1.getMrp(),mrp);
@@ -113,7 +113,7 @@ public class ProductApiTest extends AbstractUnitTest{
         ProductPojo productPojo = PojoUtil.getProductPojo(brandId,barcode,mrp,productName);
         productDao.insert(productPojo);
 
-        ProductPojo productPojo1 = productApi.getProductPojoFromBarcode(barcode);
+        ProductPojo productPojo1 = productApi.getCheckProductPojoFromBarcode(barcode);
         assertEquals(productPojo1,productPojo);
     }
 
@@ -147,7 +147,7 @@ public class ProductApiTest extends AbstractUnitTest{
 
         exceptionRule.expect(ApiException.class);
         exceptionRule.expectMessage("No such product with given id exists !");
-        productApi.getCheck(productPojo.getProductId()+1);
+        productApi.getCheckProduct(productPojo.getProductId()+1);
     }
 
     @Test
@@ -161,7 +161,7 @@ public class ProductApiTest extends AbstractUnitTest{
 
         exceptionRule.expect(ApiException.class);
         exceptionRule.expectMessage("The product with given barcode doesn't exists");
-        productApi.getProductPojoFromBarcode("barcode");
+        productApi.getCheckProductPojoFromBarcode("barcode");
     }
 
 

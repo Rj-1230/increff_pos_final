@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.increff.pos.helper.InventoryDtoHelper.*;
+import static com.increff.pos.helper.dtoHelper.InventoryDtoHelper.*;
 
 @Service
 public class InventoryFlow {
@@ -24,7 +24,7 @@ public class InventoryFlow {
 
     @Transactional(rollbackOn = ApiException.class)
     public void update(InventoryPojo newInventoryPojo) throws ApiException {
-        ProductPojo productPojo = productApi.getProductPojoFromBarcode(newInventoryPojo.getBarcode());
+        ProductPojo productPojo = productApi.getCheckProductPojoFromBarcode(newInventoryPojo.getBarcode());
         newInventoryPojo.setProductId(productPojo.getProductId());
         inventoryApi.updateInventory(newInventoryPojo, newInventoryPojo.getQuantity());
     }
@@ -32,7 +32,7 @@ public class InventoryFlow {
     @Transactional(rollbackOn = ApiException.class)
     public InventoryData get(Integer id) throws ApiException {
         InventoryPojo inventoryPojo = inventoryApi.getCheck(id);
-        ProductPojo productPojo = productApi.getCheck(id);
+        ProductPojo productPojo = productApi.getCheckProduct(id);
         InventoryData inventoryData = convert(inventoryPojo);
         inventoryData.setProductName(productPojo.getName());
         inventoryData.setProductId(productPojo.getProductId());
@@ -44,7 +44,7 @@ public class InventoryFlow {
         List<InventoryPojo> inventoryPojoList = inventoryApi.getAll();
         List<InventoryData> list2 = new ArrayList<InventoryData>();
         for(InventoryPojo inventoryPojo: inventoryPojoList){
-            ProductPojo productPojo = productApi.getCheck(inventoryPojo.getProductId());
+            ProductPojo productPojo = productApi.getCheckProduct(inventoryPojo.getProductId());
             InventoryData inventoryData = convert(inventoryPojo);
             inventoryData.setProductName(productPojo.getName());
             inventoryData.setProductId(productPojo.getProductId());

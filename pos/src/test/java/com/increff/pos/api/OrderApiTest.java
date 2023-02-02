@@ -107,7 +107,7 @@ public class OrderApiTest extends AbstractUnitTest{
         orderPojo.setOrderCode(createRandomOrderCode());
         orderDao.insertOrder(orderPojo);
 
-        OrderPojo orderPojo1 = orderApi.getCheckOrder(orderPojo.getOrderId());
+        OrderPojo orderPojo1 = orderApi.getCheckOrderByOrderId(orderPojo.getOrderId());
         assertEquals(orderPojo1,orderPojo);
     }
 
@@ -147,7 +147,7 @@ public class OrderApiTest extends AbstractUnitTest{
 
         exceptionRule.expect(ApiException.class);
         exceptionRule.expectMessage("No order with given Order Id exists");
-        orderApi.getCheckOrder(orderPojo.getOrderId()+1);
+        orderApi.getCheckOrderByOrderId(orderPojo.getOrderId()+1);
     }
 
     @Test
@@ -161,83 +161,4 @@ public class OrderApiTest extends AbstractUnitTest{
         orderApi.getCheckOrderByOrderCode(orderPojo.getOrderCode()+"abc");
     }
 
-
-//
-//    @Test
-//    public void testGetBrandIdFromName() throws ApiException {
-//        String brand= "testBrand";
-//        String category ="testCategory";
-//        OrderPojo orderPojo = PojoUtil.getOrderPojo(brand,category);
-//        orderDao.insert(orderPojo);
-//
-//        Integer brandId = orderService.getBrandIdFromName(brand,category);
-//        assertEquals(orderPojo.getId(),brandId);
-//    }
-//@Test
-//    public void testBrandCategoryUniquenessOnAdd() throws ApiException {
-//        String brand= "testBrand";
-//        String category ="testCategory";
-//        OrderPojo orderPojo = PojoUtil.getOrderPojo(brand,category);
-//        orderDao.insert(orderPojo);
-//
-//        exceptionRule.expect(ApiException.class);
-//        exceptionRule.expectMessage("The given brand-category already exists");
-//        orderService.addBrand(orderPojo);
-//    }
-//
-//    @Test
-//    public void testBrandCategoryUniquenessOnUpdate() throws ApiException {
-//        String brand= "testBrand";
-//        String category ="testCategory";
-//        OrderPojo orderPojo = PojoUtil.getOrderPojo(brand,category);
-//        orderDao.insert(orderPojo);
-//
-//        exceptionRule.expect(ApiException.class);
-//        exceptionRule.expectMessage("The given brand-category already exists");
-//        orderService.updateBrand(orderPojo.getId(),orderPojo);
-//    }
-//
-//
-//
-//    @Test
-//    public void testBrandCategoryExistence() throws ApiException {
-//        String brand= "testBrand";
-//        String category ="testCategory";
-//        OrderPojo orderPojo = PojoUtil.getOrderPojo(brand,category);
-//        orderDao.insert(orderPojo);
-//
-//        exceptionRule.expect(ApiException.class);
-//        exceptionRule.expectMessage("No such brand-category with given id exists !");
-//        orderService.getCheckBrand(orderPojo.getId()+1);
-//
-//
-//        exceptionRule.expect(ApiException.class);
-//        exceptionRule.expectMessage("The given brand-category does not exist");
-//        orderService.getBrandIdFromName("brand","category");
-//    }
-//
-//
-//    @Test
-//    public void testBrandCategoryExistenceFromBrandCategoryName() throws ApiException {
-//        String brand= "testBrand";
-//        String category ="testCategory";
-//        OrderPojo orderPojo = PojoUtil.getOrderPojo(brand,category);
-//        orderDao.insert(orderPojo);
-//
-//        exceptionRule.expect(ApiException.class);
-//        exceptionRule.expectMessage("The given brand-category does not exist");
-//        orderService.getBrandIdFromName("brand","category");
-//    }
-//
-//
-//    @Test
-//    public void testGetOrderPojo() throws ApiException {
-//        String brand= "testBrand";
-//        String category ="testCategory";
-//        OrderPojo orderPojo = PojoUtil.getOrderPojo(brand,category);
-//        orderDao.insert(orderPojo);
-//
-//        OrderPojo orderPojo1 = orderService.getOrderPojo(orderPojo.getId());
-//        assertEquals(orderPojo, orderPojo1);
-//    }
 }

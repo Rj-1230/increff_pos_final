@@ -36,7 +36,6 @@ public class ProductApi {
         return productDao.select(id);
     }
 
-
     @Transactional
     public List<ProductPojo> getAll() {
         return productDao.selectAll();
@@ -44,13 +43,13 @@ public class ProductApi {
 
     @Transactional(rollbackOn = ApiException.class)
     public void update(Integer id, ProductPojo p) throws ApiException {
-        ProductPojo ex = getCheck(id);
+        ProductPojo ex = getCheckProduct(id);
         ex.setName(p.getName());
         ex.setMrp(p.getMrp());
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public  ProductPojo getCheck(Integer id) throws ApiException {
+    public  ProductPojo getCheckProduct(Integer id) throws ApiException {
         ProductPojo a = productDao.select(id);
         if(Objects.isNull(a)){
             throw new ApiException("No such product with given id exists !");
@@ -59,7 +58,7 @@ public class ProductApi {
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public ProductPojo getProductPojoFromBarcode(String barcode) throws ApiException {
+    public ProductPojo getCheckProductPojoFromBarcode(String barcode) throws ApiException {
         ProductPojo a = productDao.getProductPojoFromBarcode(barcode);
         if(Objects.isNull(a)){
             throw new ApiException("The product with given barcode doesn't exists");

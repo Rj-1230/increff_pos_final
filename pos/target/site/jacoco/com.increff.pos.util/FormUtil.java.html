@@ -3,29 +3,28 @@
 import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.InvoiceForm;
 import com.increff.pos.model.OrderItemData;
-import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.OrderPojo;
-import com.increff.pos.service.ApiException;
+import com.increff.pos.api.ApiException;
 
 import java.util.List;
 
-<span class="nc" id="L12">public class FormUtil {</span>
+<span class="nc" id="L11">public class FormUtil {</span>
     public static BrandForm getBrandForm(String brand, String category){
-<span class="nc" id="L14">        BrandForm brandForm = new BrandForm();</span>
-<span class="nc" id="L15">        brandForm.setBrand(brand);</span>
-<span class="nc" id="L16">        brandForm.setCategory(category);</span>
-<span class="nc" id="L17">        return brandForm;</span>
+<span class="nc" id="L13">        BrandForm brandForm = new BrandForm();</span>
+<span class="nc" id="L14">        brandForm.setBrand(brand);</span>
+<span class="nc" id="L15">        brandForm.setCategory(category);</span>
+<span class="nc" id="L16">        return brandForm;</span>
     }
 
     public static InvoiceForm convertToInvoiceForm(OrderPojo orderPojo, List&lt;OrderItemData&gt; orderItemDataList) throws ApiException
     {
-<span class="nc" id="L22">        InvoiceForm invoiceForm = new InvoiceForm();</span>
-<span class="nc" id="L23">        invoiceForm.setOrderId(orderPojo.getOrderId());</span>
-<span class="nc" id="L24">        invoiceForm.setCustomerName(orderPojo.getCustomerName());</span>
-<span class="nc" id="L25">        invoiceForm.setCustomerPhone(orderPojo.getCustomerPhone());</span>
-<span class="nc" id="L26">        invoiceForm.setInvoiceTime(orderPojo.getOrderInvoiceTime().toString());</span>
-<span class="nc" id="L27">        invoiceForm.setOrderItemList(orderItemDataList);</span>
-<span class="nc" id="L28">        return invoiceForm;</span>
+<span class="nc" id="L21">        InvoiceForm invoiceForm = new InvoiceForm();</span>
+<span class="nc" id="L22">        invoiceForm.setOrderId(orderPojo.getOrderId());</span>
+<span class="nc" id="L23">        invoiceForm.setCustomerName(orderPojo.getCustomerName());</span>
+<span class="nc" id="L24">        invoiceForm.setCustomerPhone(orderPojo.getCustomerPhone());</span>
+<span class="nc" id="L25">        invoiceForm.setInvoiceTime(orderPojo.getOrderInvoiceTime().toString());</span>
+<span class="nc" id="L26">        invoiceForm.setOrderItemList(orderItemDataList);</span>
+<span class="nc" id="L27">        return invoiceForm;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

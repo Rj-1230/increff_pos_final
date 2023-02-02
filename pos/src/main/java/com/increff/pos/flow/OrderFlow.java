@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
-import static com.increff.pos.helper.OrderItemDtoHelper.getAllOrderItemsOfAgivenOrder;
+import static com.increff.pos.helper.dtoHelper.OrderItemDtoHelper.getAllOrderItemsOfAgivenOrder;
 import static com.increff.pos.util.SecurityUtil.getPrincipal;
-import static com.increff.pos.helper.OrderItemDtoHelper.convert;
+import static com.increff.pos.helper.dtoHelper.OrderItemDtoHelper.convert;
 
 @Service
 public class OrderFlow {
@@ -48,14 +48,14 @@ public class OrderFlow {
     @Transactional(rollbackOn = Exception.class)
     public void invoiceOrder(Integer id) throws Exception {
         orderApi.invoiceOrder(id);
-        OrderPojo orderPojo = orderApi.getCheckOrder(id);
+        OrderPojo orderPojo = orderApi.getCheckOrderByOrderId(id);
         List<OrderItemPojo>orderItemsList = orderApi.getAllOrderItems(id);
         invoiceClientApi.invoiceOrder(orderPojo,getAllOrderItemsOfAgivenOrder(orderItemsList));
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public void addOrderItem(OrderItemPojo orderItemPojo,String barcode) throws ApiException {
-        ProductPojo productPojo= productApi.getProductPojoFromBarcode(barcode);
+        ProductPojo productPojo= productApi.getCheckProductPojoFromBarcode(barcode);
         orderItemPojo.setProductId(productPojo.getProductId());
         orderItemPojo.setProductName(productPojo.getName());
         checkSufficientInventoryToAddOrderItem(orderItemPojo,productPojo.getMrp());
@@ -88,7 +88,7 @@ public class OrderFlow {
     public void updateOrderItem(Integer id, OrderItemPojo orderItemPojo) throws ApiException {
         OrderItemPojo ex = orderApi.getCheckOrderItem(id);
         InventoryPojo inventoryPojo = inventoryApi.getCheck(ex.getProductId());
-        ProductPojo productPojo= productApi.getCheck(ex.getProductId());
+        ProductPojo productPojo= productApi.getCheckProduct(ex.getProductId());
         if(orderItemPojo.getSellingPrice()>productPojo.getMrp()){
             throw new ApiException("Item can't be updated to order as selling price must be less than MRP. Product's MRP :"+productPojo.getMrp());
         }

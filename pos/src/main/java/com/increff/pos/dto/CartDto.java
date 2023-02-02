@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-import static com.increff.pos.helper.CartDtoHelper.*;
+import static com.increff.pos.helper.dtoHelper.CartDtoHelper.*;
 import static com.increff.pos.helper.NullCheckHelper.*;
 import static com.increff.pos.util.SecurityUtil.getPrincipal;
 

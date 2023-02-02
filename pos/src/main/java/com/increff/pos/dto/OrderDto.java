@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import java.util.List;
 
 import static com.increff.pos.helper.NullCheckHelper.*;
-import static com.increff.pos.helper.OrderDtoHelper.*;
-import static com.increff.pos.helper.OrderItemDtoHelper.*;
-import static com.increff.pos.helper.OrderItemDtoHelper.getAllOrderItemsOfAgivenOrder;
+import static com.increff.pos.helper.dtoHelper.OrderDtoHelper.*;
+import static com.increff.pos.helper.dtoHelper.OrderItemDtoHelper.*;
+import static com.increff.pos.helper.dtoHelper.OrderItemDtoHelper.getAllOrderItemsOfAgivenOrder;
 
 @Service
 
@@ -34,10 +34,6 @@ public class OrderDto {
         return convert(p);
     }
 
-    public OrderData getOrderDetails(Integer id) throws ApiException {
-        return convert(orderApi.getCheckOrder(id));
-    }
-
     public void updateCustomerDetails(@PathVariable Integer id, @RequestBody OrderForm f) throws ApiException {
         checkNullable(f);
         normalize(f);
@@ -46,7 +42,7 @@ public class OrderDto {
 
     public OrderData getOrderById(Integer id) throws ApiException
     {
-        return convert(orderApi.getCheckOrder(id));
+        return convert(orderApi.getCheckOrderByOrderId(id));
     }
 
     public List<OrderData> getAllOrdersByCounterId(){

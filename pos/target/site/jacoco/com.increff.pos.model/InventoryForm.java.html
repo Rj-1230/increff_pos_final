@@ -3,12 +3,21 @@
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-<span class="nc" id="L7">@Setter</span>
-<span class="nc" id="L8">public class InventoryForm {</span>
-<span class="nc" id="L9">   private String barcode;</span>
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-<span class="nc" id="L11">    private Integer quantity;</span>
+@Getter
+<span class="nc" id="L12">@Setter</span>
+<span class="nc" id="L13">public class InventoryForm {</span>
+    @NotNull
+    @Size(min=1, max=15)
+<span class="nc" id="L16">   private String barcode;</span>
+    @NotNull
+    @Min(1)
+    @Max(99)
+<span class="nc" id="L20">    private Integer quantity;</span>
 
 
 

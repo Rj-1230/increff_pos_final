@@ -21,7 +21,7 @@ public class CartFlow {
 
     @Transactional(rollbackOn = ApiException.class)
     public void add(CartPojo cartPojo,String barcode) throws ApiException {
-        ProductPojo productPojo= productApi.getProductPojoFromBarcode(barcode);
+        ProductPojo productPojo= productApi.getCheckProductPojoFromBarcode(barcode);
         cartPojo.setProductId(productPojo.getProductId());
         cartPojo.setProductName(productPojo.getName());
         Integer inventoryQuantity = checkMrpAndInventoryForCartPojo(cartPojo,productPojo);
@@ -33,7 +33,7 @@ public class CartFlow {
     public void update(Integer id, CartPojo newCartPojo) throws ApiException {
         CartPojo exCartPojo = cartApi.getCheck(id);
         System.out.println(newCartPojo.getProductId());
-        ProductPojo productPojo = productApi.getCheck(exCartPojo.getProductId());
+        ProductPojo productPojo = productApi.getCheckProduct(exCartPojo.getProductId());
         if(newCartPojo.getSellingPrice()>productPojo.getMrp()){
             throw new ApiException("Item can't be added to cart as selling price must be less than MRP. Product's MRP :"+productPojo.getMrp());
 

@@ -2,51 +2,45 @@
 
 import com.increff.pos.model.UserData;
 import com.increff.pos.model.UserForm;
-import com.increff.pos.model.UserData;
-import com.increff.pos.model.UserForm;
-import com.increff.pos.pojo.UserPojo;
-import com.increff.pos.pojo.UserPojo;
-import com.increff.pos.service.ApiException;
-import com.increff.pos.service.UserService;
+import com.increff.pos.api.ApiException;
+import com.increff.pos.api.UserApi;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.increff.pos.helper.NullCheckHelper.checkNullable;
-import static com.increff.pos.helper.UserDtoHelper.*;
+import static com.increff.pos.helper.dtoHelper.UserDtoHelper.*;
 @Service
-<span class="fc" id="L23">public class UserDto {</span>
+<span class="fc" id="L17">public class UserDto {</span>
     @Autowired
-    UserService userService;
+    UserApi userApi;
 
     public void addUser(UserForm f) throws ApiException
     {
-<span class="nc" id="L29">        checkNullable(f);</span>
-<span class="nc" id="L30">        normalize(f);</span>
-<span class="nc" id="L31">        userService.add(convert(f));</span>
-<span class="nc" id="L32">    }</span>
+<span class="nc" id="L23">        checkNullable(f);</span>
+<span class="nc" id="L24">        normalize(f);</span>
+<span class="nc" id="L25">        userApi.add(convert(f));</span>
+<span class="nc" id="L26">    }</span>
 
     public void deleteUser(Integer id) throws ApiException {
-<span class="nc" id="L35">        userService.delete(id);</span>
-<span class="nc" id="L36">    }</span>
+<span class="nc" id="L29">        userApi.delete(id);</span>
+<span class="nc" id="L30">    }</span>
 
     public UserData getUser(Integer id) throws ApiException {
-<span class="nc" id="L39">        return convert(userService.getCheck(id));</span>
+<span class="nc" id="L33">        return convert(userApi.getCheck(id));</span>
     }
 
     public void updateUser(@PathVariable Integer id, @RequestBody UserForm f) throws ApiException {
-<span class="nc" id="L43">        checkNullable(f);</span>
-<span class="nc" id="L44">        normalize(f);</span>
-<span class="nc" id="L45">        userService.update(id,convert(f));</span>
-<span class="nc" id="L46">    }</span>
+<span class="nc" id="L37">        checkNullable(f);</span>
+<span class="nc" id="L38">        normalize(f);</span>
+<span class="nc" id="L39">        userApi.update(id,convert(f));</span>
+<span class="nc" id="L40">    }</span>
 
     public List&lt;UserData&gt; getAllUsers(){
-<span class="nc" id="L49">        return getAllUserData(userService.getAll());</span>
+<span class="nc" id="L43">        return getAllUserData(userApi.getAll());</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
