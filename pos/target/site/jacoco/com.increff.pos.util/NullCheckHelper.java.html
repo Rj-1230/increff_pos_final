@@ -104,25 +104,49 @@ import java.util.Objects;
         }
 <span class="nc" id="L105">    }</span>
 
+    public static void checkNullable(DateBrandCategoryFilterForm f) throws ApiException {
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        if(Objects.equals(f.getStart(), &quot;&quot;)){</span>
+<span class="nc" id="L109">            throw new ApiException(&quot;Start Date can't be empty&quot;);</span>
+        }
+<span class="nc bnc" id="L111" title="All 2 branches missed.">        if(Objects.equals(f.getEnd(), &quot;&quot;)){</span>
+<span class="nc" id="L112">            throw new ApiException(&quot;End date can't be empty&quot;);</span>
+        }
+<span class="nc bnc" id="L114" title="All 2 branches missed.">        if(Objects.equals(f.getBrand(), &quot;&quot;)){</span>
+<span class="nc" id="L115">            throw new ApiException(&quot;The brand can't be empty&quot;);</span>
+        }
+<span class="nc bnc" id="L117" title="All 2 branches missed.">        if(Objects.equals(f.getCategory(), &quot;&quot;)){</span>
+<span class="nc" id="L118">            throw new ApiException(&quot;The category can't be empty&quot;);</span>
+        }
+<span class="nc" id="L120">    }</span>
 
-    public static void checkDate(DateFilterForm f) throws ApiException {
+    public static void checkNullable(DateFilterForm f) throws ApiException {
+<span class="nc bnc" id="L123" title="All 2 branches missed.">        if(Objects.equals(f.getStart(), &quot;&quot;)){</span>
+<span class="nc" id="L124">            throw new ApiException(&quot;Start Date can't be empty&quot;);</span>
+        }
+<span class="nc bnc" id="L126" title="All 2 branches missed.">        if(Objects.equals(f.getEnd(), &quot;&quot;)){</span>
+<span class="nc" id="L127">            throw new ApiException(&quot;End date can't be empty&quot;);</span>
+        }
+<span class="nc" id="L129">    }</span>
+
+
+    public static void checkDate(String startDate, String endDate) throws ApiException {
         try {
-<span class="nc" id="L110">            SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);</span>
-<span class="nc bnc" id="L111" title="All 2 branches missed.">            if(!sdf.parse(f.getStart()).before(sdf.parse(f.getEnd()))){</span>
-<span class="nc" id="L112">                throw new ApiException(&quot;The end date must be ahead of start date&quot;);</span>
+<span class="nc" id="L134">            SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);</span>
+<span class="nc bnc" id="L135" title="All 2 branches missed.">            if(!sdf.parse(startDate).before(sdf.parse(endDate))){</span>
+<span class="nc" id="L136">                throw new ApiException(&quot;The end date must be ahead of start date&quot;);</span>
             }
-<span class="nc" id="L114">            DateTimeFormatter dtf = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
-<span class="nc" id="L115">            LocalDateTime date1 = LocalDate.parse(f.getStart(), dtf).atStartOfDay();</span>
-<span class="nc" id="L116">            LocalDateTime date2 = LocalDate.parse(f.getEnd(), dtf).atStartOfDay();</span>
-<span class="nc" id="L117">            long daysBetween = Duration.between(date1, date2).toDays();</span>
-<span class="nc bnc" id="L118" title="All 2 branches missed.">            if(daysBetween&gt;31){</span>
-<span class="nc" id="L119">                throw new ApiException(&quot;The end date must be only a month ahead of start date&quot;);</span>
+<span class="nc" id="L138">            DateTimeFormatter dtf = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
+<span class="nc" id="L139">            LocalDateTime date1 = LocalDate.parse(startDate, dtf).atStartOfDay();</span>
+<span class="nc" id="L140">            LocalDateTime date2 = LocalDate.parse(endDate, dtf).atStartOfDay();</span>
+<span class="nc" id="L141">            long daysBetween = Duration.between(date1, date2).toDays();</span>
+<span class="nc bnc" id="L142" title="All 2 branches missed.">            if(daysBetween&gt;31){</span>
+<span class="nc" id="L143">                throw new ApiException(&quot;The end date must be only a month ahead of start date&quot;);</span>
             }
         }
-<span class="nc" id="L122">        catch(Exception e){</span>
-<span class="nc" id="L123">            return;</span>
-<span class="nc" id="L124">        }</span>
-<span class="nc" id="L125">    }</span>
+<span class="nc" id="L146">        catch(Exception e){</span>
+<span class="nc" id="L147">            return;</span>
+<span class="nc" id="L148">        }</span>
+<span class="nc" id="L149">    }</span>
 
 
 }

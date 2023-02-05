@@ -29,7 +29,8 @@ public class InventoryApi {
     }
 
 
-    public void delete(Integer id) {
+    public void delete(Integer id) throws ApiException {
+        getCheck(id);
         inventoryDao.delete(id);
     }
 

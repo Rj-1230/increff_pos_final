@@ -27,7 +27,7 @@ public class ProductController {
 
     @ApiOperation(value="Deleting a product")
     @RequestMapping(path="/api/supervisor/product/{productId}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable Integer productId){
+    public void delete(@PathVariable Integer productId) throws ApiException {
         productDto.deleteProduct(productId);
     }
 

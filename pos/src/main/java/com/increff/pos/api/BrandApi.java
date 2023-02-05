@@ -25,7 +25,8 @@ public class BrandApi {
         }
         brandDao.insert(brandPojo);
     }
-    public void deleteBrand(Integer id) {
+    public void deleteBrand(Integer id) throws ApiException {
+        getCheckBrand(id);
         brandDao.delete(id);
     }
 

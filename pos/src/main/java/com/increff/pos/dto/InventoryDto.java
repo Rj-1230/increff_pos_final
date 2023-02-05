@@ -30,7 +30,7 @@ public class InventoryDto {
         inventoryFlow.update(convert(f),f.getBarcode());
     }
 
-    public void delete(@PathVariable Integer id){
+    public void delete(Integer id) throws ApiException {
         inventoryApi.delete(id);
     }
 

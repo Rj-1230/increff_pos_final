@@ -68,7 +68,7 @@ public class OrderDto {
         orderFlow.addOrderItem(convert(f),f.getBarcode());
     }
 
-    public void deleteOrderItem(@PathVariable Integer id) throws ApiException {
+    public void deleteOrderItem(Integer id) throws ApiException {
         orderFlow.deleteOrderItem(id);
     }
 
@@ -76,7 +76,7 @@ public class OrderDto {
         return convert(orderApi.getCheckOrderItem(id));
     }
 
-    public void updateOrderItem(@PathVariable Integer id, @RequestBody OrderItemForm f) throws ApiException {
+    public void updateOrderItem(Integer id,OrderItemForm f) throws ApiException {
         checkNullable(f);
         normalize(f);
         orderFlow.updateOrderItem(id,convert(f));

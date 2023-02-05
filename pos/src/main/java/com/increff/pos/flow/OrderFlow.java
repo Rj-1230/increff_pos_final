@@ -59,18 +59,6 @@ public class OrderFlow {
         orderApi.addOrderItem(orderItemPojo);
     }
 
-    private void checkSufficientInventoryToAddOrderItem(OrderItemPojo orderItemPojo, Double mrp) throws ApiException {
-    InventoryPojo inventoryPojo = inventoryApi.getCheck(orderItemPojo.getProductId());
-    if(orderItemPojo.getQuantity()>inventoryPojo.getQuantity()){
-        throw new ApiException("Item can't be added to order as it exceeds the inventory. Present inventory count : "+inventoryPojo.getQuantity());
-    }
-    if(orderItemPojo.getSellingPrice()>mrp){
-        throw new ApiException("Item can't be added to order as selling price must be less than MRP. Product's MRP :"+mrp);
-    }
-    inventoryApi.updateInventory(inventoryPojo,inventoryPojo.getQuantity()-orderItemPojo.getQuantity());
-    }
-
-
     @Transactional(rollbackOn = ApiException.class)
     public void deleteOrderItem(Integer id) throws ApiException {
         OrderItemPojo ex = orderApi.getCheckOrderItem(id);
@@ -127,5 +115,16 @@ public class OrderFlow {
         Path pdfPath = Paths.get("./src/main/resources/pdf/" + orderData.getOrderId() + "_invoice.pdf");
         Files.write(pdfPath, contents);
     }
+    private void checkSufficientInventoryToAddOrderItem(OrderItemPojo orderItemPojo, Double mrp) throws ApiException {
+        InventoryPojo inventoryPojo = inventoryApi.getCheck(orderItemPojo.getProductId());
+        if(orderItemPojo.getQuantity()>inventoryPojo.getQuantity()){
+            throw new ApiException("Item can't be added to order as it exceeds the inventory. Present inventory count : "+inventoryPojo.getQuantity());
+        }
+        if(orderItemPojo.getSellingPrice()>mrp){
+            throw new ApiException("Item can't be added to order as selling price must be less than MRP. Product's MRP :"+mrp);
+        }
+        inventoryApi.updateInventory(inventoryPojo,inventoryPojo.getQuantity()-orderItemPojo.getQuantity());
+    }
+
 
 }

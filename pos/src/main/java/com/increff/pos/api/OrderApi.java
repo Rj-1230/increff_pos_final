@@ -94,6 +94,7 @@ public class OrderApi {
     }
 
     public void deleteOrderItem(Integer id) throws ApiException {
+        getCheckOrderItem(id);
         String status =getCheckOrder(getCheckOrderItem(id).getOrderId()).getStatus();
         if(Objects.equals(status,"invoiced")){
             throw new ApiException("Invoiced order can't be deleted");

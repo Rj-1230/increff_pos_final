@@ -59,7 +59,7 @@ public class BrandDtoTest extends AbstractUnitTest {
     }
 
     @Test
-    public void testDeleteBrand(){
+    public void testDeleteBrand() throws ApiException {
         String brand= "test_brand";
         String category ="test_category";
         for(int i=0;i<4;i++){

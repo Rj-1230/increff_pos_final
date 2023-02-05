@@ -34,7 +34,6 @@ com\increff\pos\helper\dtoHelper\OrderItemDtoHelper.class
 com\increff\pos\api\ProductApi.class
 com\increff\pos\helper\flowHelper\OrderFlowHelper.class
 com\increff\pos\pojo\UserPojo.class
-com\increff\pos\model\data\BrandReportData.class
 com\increff\pos\model\data\BrandData.class
 com\increff\pos\model\data\InventoryData.class
 com\increff\pos\model\form\CustomerDetailsForm.class
@@ -51,6 +50,7 @@ com\increff\pos\dto\OrderDto.class
 com\increff\pos\model\form\InvoiceForm.class
 com\increff\pos\model\form\DateFilterForm.class
 com\increff\pos\pojo\OrderItemPojo.class
+com\increff\pos\helper\flowHelper\ProductFlowHelper.class
 com\increff\pos\dao\UserDao.class
 com\increff\pos\model\form\BrandForm.class
 com\increff\pos\controller\CartItemController.class
@@ -90,6 +90,7 @@ com\increff\pos\api\InvoiceClientApi.class
 com\increff\pos\helper\dtoHelper\BrandDtoHelper.class
 com\increff\pos\pojo\OrderPojo.class
 com\increff\pos\dao\DailyReportDao.class
+com\increff\pos\helper\dtoHelper\ReportDtoHelper.class
 com\increff\pos\model\data\CartItemData.class
 com\increff\pos\spring\DbConfig.class
 com\increff\pos\controller\AppRestControllerAdvice.class

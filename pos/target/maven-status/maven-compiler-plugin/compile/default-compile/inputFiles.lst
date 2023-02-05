@@ -41,7 +41,6 @@ C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\po
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\api\OrderApi.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\dto\BrandDto.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\flow\CartItemFlow.java
-C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\model\data\BrandReportData.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\dao\OrderDao.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\dto\UserDto.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\helper\dtoHelper\OrderItemDtoHelper.java
@@ -64,6 +63,7 @@ C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\po
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\model\form\ProductForm.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\util\UserPrincipal.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\api\ApiException.java
+C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\helper\flowHelper\ProductFlowHelper.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\helper\dtoHelper\CartItemDtoHelper.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\pojo\CartItemPojo.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\model\data\MessageData.java
@@ -97,6 +97,7 @@ C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\po
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\spring\SchedulerInitializer.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\util\FormUtil.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\flow\InventoryFlow.java
+C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\helper\dtoHelper\ReportDtoHelper.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\pojo\AbstractPojo.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\api\DailyReportApi.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\spring\SpringConfig.java

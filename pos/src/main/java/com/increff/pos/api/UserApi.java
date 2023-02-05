@@ -37,6 +37,7 @@ public class UserApi {
 
 
     public void delete(Integer id) throws ApiException {
+        getCheckUser(id);
         userDao.delete(id);
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Repository
 public class InventoryDao extends AbstractDao{
-    private static String delete_inventory_pojo_by_id = "delete from InventoryPojo p where inventoryId=:id";
+    private static String delete_inventory_pojo_by_id = "delete from InventoryPojo p where productId=:id";
     private static String select_inventory_pojo_by_product_id = "select p from InventoryPojo p where productId=:id";
     private static String select_all_inventory_pojo = "select p from InventoryPojo p";
 

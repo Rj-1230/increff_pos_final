@@ -12,10 +12,11 @@ import java.util.List;
 
 import static com.increff.pos.helper.flowHelper.CartItemFlowHelper.checkMrpAndInventoryForCartPojo;
 import static com.increff.pos.helper.dtoHelper.CartItemDtoHelper.convert;
+import static com.increff.pos.helper.flowHelper.CartItemFlowHelper.convertCartPojoToCartData;
 import static com.increff.pos.util.SecurityUtil.getPrincipal;
 
 @Service
-<span class="fc" id="L18">public class CartItemFlow {</span>
+<span class="fc" id="L19">public class CartItemFlow {</span>
     @Autowired
     private InventoryApi inventoryApi;
     @Autowired
@@ -25,35 +26,32 @@ import static com.increff.pos.util.SecurityUtil.getPrincipal;
 
     @Transactional(rollbackOn = ApiException.class)
     public void add(CartItemPojo cartItemPojo, String barcode) throws ApiException {
-<span class="nc" id="L28">        ProductPojo productPojo= productApi.getCheckProduct(barcode);</span>
-<span class="nc" id="L29">        cartItemPojo.setProductId(productPojo.getProductId());</span>
-<span class="nc" id="L30">        InventoryPojo inventoryPojo = inventoryApi.getCheck(cartItemPojo.getProductId());</span>
-<span class="nc" id="L31">        Integer inventoryQuantity = checkMrpAndInventoryForCartPojo(cartItemPojo,productPojo,inventoryPojo);</span>
-<span class="nc" id="L32">        cartItemApi.add(cartItemPojo,inventoryQuantity);</span>
-<span class="nc" id="L33">    }</span>
+<span class="nc" id="L29">        ProductPojo productPojo= productApi.getCheckProduct(barcode);</span>
+<span class="nc" id="L30">        cartItemPojo.setProductId(productPojo.getProductId());</span>
+<span class="nc" id="L31">        InventoryPojo inventoryPojo = inventoryApi.getCheck(cartItemPojo.getProductId());</span>
+<span class="nc" id="L32">        Integer inventoryQuantity = checkMrpAndInventoryForCartPojo(cartItemPojo,productPojo,inventoryPojo);</span>
+<span class="nc" id="L33">        cartItemApi.add(cartItemPojo,inventoryQuantity);</span>
+<span class="nc" id="L34">    }</span>
 
 
     @Transactional(rollbackOn  = ApiException.class)
     public void update(Integer id, CartItemPojo newCartItemPojo) throws ApiException {
-<span class="nc" id="L38">        CartItemPojo exCartItemPojo = cartItemApi.getCheck(id);</span>
-<span class="nc" id="L39">        ProductPojo productPojo = productApi.getCheckProduct(exCartItemPojo.getProductId());</span>
-<span class="nc" id="L40">        InventoryPojo inventoryPojo = inventoryApi.getCheck(newCartItemPojo.getProductId());</span>
-<span class="nc" id="L41">        checkMrpAndInventoryForCartPojo(newCartItemPojo,productPojo,inventoryPojo);</span>
-<span class="nc" id="L42">        cartItemApi.update(exCartItemPojo, newCartItemPojo);</span>
-<span class="nc" id="L43">    }</span>
+<span class="nc" id="L39">        CartItemPojo exCartItemPojo = cartItemApi.getCheck(id);</span>
+<span class="nc" id="L40">        ProductPojo productPojo = productApi.getCheckProduct(exCartItemPojo.getProductId());</span>
+<span class="nc" id="L41">        InventoryPojo inventoryPojo = inventoryApi.getCheck(newCartItemPojo.getProductId());</span>
+<span class="nc" id="L42">        checkMrpAndInventoryForCartPojo(newCartItemPojo,productPojo,inventoryPojo);</span>
+<span class="nc" id="L43">        cartItemApi.update(exCartItemPojo, newCartItemPojo);</span>
+<span class="nc" id="L44">    }</span>
 
     @Transactional(rollbackOn = ApiException.class)
     public List&lt;CartItemData&gt; getAllCartItemsOfCounterId() throws ApiException {
-<span class="nc" id="L47">        List&lt;CartItemPojo&gt; cartItemPojoList = cartItemApi.getAllItemsInCart(getPrincipal().getId());</span>
-<span class="nc" id="L48">        List&lt;CartItemData&gt; list2 = new ArrayList&lt;CartItemData&gt;();</span>
-<span class="nc bnc" id="L49" title="All 2 branches missed.">        for(CartItemPojo cartItemPojo: cartItemPojoList){</span>
-<span class="nc" id="L50">            String productName = productApi.getCheckProduct(cartItemPojo.getProductId()).getName();</span>
-<span class="nc" id="L51">            CartItemData cartItemData = convert(cartItemPojo);</span>
-<span class="nc" id="L52">            cartItemData.setProductName(productName);</span>
-<span class="nc" id="L53">            list2.add(cartItemData);</span>
-<span class="nc" id="L54">        }</span>
-<span class="nc" id="L55">        return list2;</span>
-
+<span class="nc" id="L48">        List&lt;CartItemPojo&gt; cartItemPojoList = cartItemApi.getAllItemsInCart(getPrincipal().getId());</span>
+<span class="nc" id="L49">        List&lt;CartItemData&gt; list2 = new ArrayList&lt;CartItemData&gt;();</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        for(CartItemPojo cartItemPojo: cartItemPojoList){</span>
+<span class="nc" id="L51">            String productName = productApi.getCheckProduct(cartItemPojo.getProductId()).getName();</span>
+<span class="nc" id="L52">            list2.add(convertCartPojoToCartData(cartItemPojo,productName));</span>
+<span class="nc" id="L53">        }</span>
+<span class="nc" id="L54">        return list2;</span>
     }
 
 }

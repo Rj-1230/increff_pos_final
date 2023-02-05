@@ -26,13 +26,11 @@ import static com.increff.pos.util.FormUtil.convertToInvoiceForm;
     @Autowired
     private Properties properties;
     @Transactional(rollbackOn = Exception.class)
-    public void downloadInvoice(OrderData orderData, List&lt;OrderItemData&gt;orderItemsList) throws Exception {
+    public byte[] downloadInvoice(OrderData orderData, List&lt;OrderItemData&gt;orderItemsList) throws Exception {
 <span class="nc" id="L30">        InvoiceForm invoiceForm = convertToInvoiceForm(orderData,orderItemsList);</span>
 <span class="nc" id="L31">        RestTemplate restTemplate = new RestTemplate();</span>
-<span class="nc" id="L32">        byte[] contents = restTemplate.postForEntity(properties.getInvoice_appUrl(), invoiceForm, byte[].class).getBody();</span>
-<span class="nc" id="L33">        Path pdfPath = Paths.get(&quot;./src/main/resources/pdf/&quot; + orderData.getOrderId() + &quot;_invoice.pdf&quot;);</span>
-<span class="nc" id="L34">        Files.write(pdfPath, contents);</span>
-<span class="nc" id="L35">    }</span>
+<span class="nc" id="L32">        return restTemplate.postForEntity(properties.getInvoice_appUrl(), invoiceForm, byte[].class).getBody();</span>
+    }
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

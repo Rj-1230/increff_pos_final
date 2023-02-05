@@ -14,11 +14,13 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+import static com.increff.pos.helper.dtoHelper.BrandDtoHelper.normalize;
 import static com.increff.pos.util.NullCheckHelper.checkDate;
-import static com.increff.pos.helper.flowHelper.ReportFlowHelper.convert;
+import static com.increff.pos.helper.dtoHelper.ReportDtoHelper.normalize;
+import static com.increff.pos.util.NullCheckHelper.checkNullable;
 
 @Service
-<span class="fc" id="L21">public class ReportDto {</span>
+<span class="fc" id="L23">public class ReportDto {</span>
     @Autowired
     ReportFlow reportFlow;
 
@@ -27,26 +29,34 @@ import static com.increff.pos.helper.flowHelper.ReportFlowHelper.convert;
 
 
     public List&lt;ProductRevenueData&gt; getRevenueBrandCategoryWise(DateBrandCategoryFilterForm form) throws ApiException {
-<span class="nc" id="L30">        return reportFlow.getRevenueBrandCategoryWise(form);</span>
+<span class="nc" id="L32">        checkNullable(form);</span>
+<span class="nc" id="L33">        checkDate(form.getStart(),form.getEnd());</span>
+<span class="nc" id="L34">        normalize(form);</span>
+<span class="nc" id="L35">        return reportFlow.getRevenueBrandCategoryWise(form);</span>
     }
 
     public List&lt;InventoryReportData&gt; getInventoryBrandCategoryWise(BrandForm form) throws ApiException {
-<span class="nc" id="L34">        return reportFlow.getInventoryBrandCategoryWise(form);</span>
+<span class="nc" id="L39">        checkNullable(form);</span>
+<span class="nc" id="L40">        normalize(form);</span>
+<span class="nc" id="L41">        return reportFlow.getInventoryBrandCategoryWise(form);</span>
     }
 
     public List&lt;BrandData&gt; getBrandReport(BrandForm form) throws ApiException {
-<span class="nc" id="L38">       return reportFlow.getBrandReport(form);</span>
+<span class="nc" id="L45">        checkNullable(form);</span>
+<span class="nc" id="L46">        normalize(form);</span>
+<span class="nc" id="L47">       return reportFlow.getBrandReport(form);</span>
     }
 
     public List&lt;DailyReportData&gt; getDailySalesFilteredReport(DateFilterForm form) throws ApiException
     {
-<span class="nc" id="L43">        checkDate(form);</span>
-<span class="nc" id="L44">       return reportFlow.getDailySalesFilteredReport(form);</span>
+<span class="nc" id="L52">        checkNullable(form);</span>
+<span class="nc" id="L53">        checkDate(form.getStart(),form.getEnd());</span>
+<span class="nc" id="L54">       return reportFlow.getDailySalesFilteredReport(form);</span>
     }
 
     public void createDailyReport() throws ApiException {
-<span class="nc" id="L48">        reportFlow.createDailyReport();</span>
-<span class="nc" id="L49">    }</span>
+<span class="nc" id="L58">        reportFlow.createDailyReport();</span>
+<span class="nc" id="L59">    }</span>
 
 
 }

@@ -16,7 +16,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.increff.pos.helper.dtoHelper.ProductDtoHelper.convert;
+import static com.increff.pos.helper.flowHelper.ProductFlowHelper.convertProductPojoToProductData;
 
 @Service
 <span class="fc" id="L22">public class ProductFlow {</span>
@@ -31,38 +31,35 @@ import static com.increff.pos.helper.dtoHelper.ProductDtoHelper.convert;
     public void add(ProductPojo productPojo,String brand,String category) throws ApiException {
 <span class="nc" id="L32">        Integer brandId = brandApi.getCheckBrand(brand,category);</span>
 <span class="nc" id="L33">        productPojo.setBrandId(brandId);</span>
-
-<span class="nc" id="L35">        Integer productId = productApi.add(productPojo);</span>
-<span class="nc" id="L36">        InventoryPojo inventoryPojo = new InventoryPojo();</span>
-<span class="nc" id="L37">        inventoryPojo.setProductId(productId);</span>
-<span class="nc" id="L38">        inventoryPojo.setQuantity(0);</span>
-<span class="nc" id="L39">        inventoryApi.addNewItemToInventory(inventoryPojo);</span>
-<span class="nc" id="L40">    }</span>
+<span class="nc" id="L34">        Integer productId = productApi.add(productPojo);</span>
+<span class="nc" id="L35">        initializeInventoryForProduct(productId);</span>
+<span class="nc" id="L36">    }</span>
 
 
     @Transactional(rollbackOn = ApiException.class)
     public ProductData get(Integer id) throws ApiException {
-<span class="nc" id="L45">        ProductPojo productPojo = productApi.getCheckProduct(id);</span>
-<span class="nc" id="L46">        BrandPojo brandPojo = brandApi.getCheckBrand(productPojo.getBrandId());</span>
-<span class="nc" id="L47">        ProductData productData = convert(productPojo);</span>
-<span class="nc" id="L48">        productData.setBrand(brandPojo.getBrand());</span>
-<span class="nc" id="L49">        productData.setCategory(brandPojo.getCategory());</span>
-<span class="nc" id="L50">        return productData;</span>
+<span class="nc" id="L41">        ProductPojo productPojo = productApi.getCheckProduct(id);</span>
+<span class="nc" id="L42">        BrandPojo brandPojo = brandApi.getCheckBrand(productPojo.getBrandId());</span>
+<span class="nc" id="L43">        return convertProductPojoToProductData(productPojo,brandPojo);</span>
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public List&lt;ProductData&gt; getAll() throws ApiException {
-<span class="nc" id="L55">        List&lt;ProductPojo&gt; productPojoList = productApi.getAll();</span>
-<span class="nc" id="L56">        List&lt;ProductData&gt; list2 = new ArrayList&lt;ProductData&gt;();</span>
-<span class="nc bnc" id="L57" title="All 2 branches missed.">        for(ProductPojo productPojo: productPojoList){</span>
-<span class="nc" id="L58">            BrandPojo brandPojo = brandApi.getCheckBrand(productPojo.getBrandId());</span>
-<span class="nc" id="L59">            ProductData productData = convert(productPojo);</span>
-<span class="nc" id="L60">            productData.setBrand(brandPojo.getBrand());</span>
-<span class="nc" id="L61">            productData.setCategory(brandPojo.getCategory());</span>
-<span class="nc" id="L62">            list2.add(productData);</span>
-<span class="nc" id="L63">        }</span>
-<span class="nc" id="L64">        return list2;</span>
+<span class="nc" id="L48">        List&lt;ProductPojo&gt; productPojoList = productApi.getAll();</span>
+<span class="nc" id="L49">        List&lt;ProductData&gt; list2 = new ArrayList&lt;ProductData&gt;();</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        for(ProductPojo productPojo: productPojoList){</span>
+<span class="nc" id="L51">            BrandPojo brandPojo = brandApi.getCheckBrand(productPojo.getBrandId());</span>
+<span class="nc" id="L52">            list2.add(convertProductPojoToProductData(productPojo,brandPojo));</span>
+<span class="nc" id="L53">        }</span>
+<span class="nc" id="L54">        return list2;</span>
     }
+
+    private void initializeInventoryForProduct(Integer productId) throws ApiException {
+<span class="nc" id="L58">        InventoryPojo inventoryPojo = new InventoryPojo();</span>
+<span class="nc" id="L59">        inventoryPojo.setProductId(productId);</span>
+<span class="nc" id="L60">        inventoryPojo.setQuantity(0);</span>
+<span class="nc" id="L61">        inventoryApi.addNewItemToInventory(inventoryPojo);</span>
+<span class="nc" id="L62">    }</span>
 
 }
 

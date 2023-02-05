@@ -8,17 +8,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.increff.pos.helper.flowHelper.CartItemFlowHelper.convertCartPojoToOrderItemPojo;
 import static com.increff.pos.helper.flowHelper.OrderFlowHelper.convertOrderItemPojoToOrderItemData;
 import static com.increff.pos.util.SecurityUtil.getPrincipal;
-import static com.increff.pos.helper.dtoHelper.OrderItemDtoHelper.convert;
 import static com.increff.pos.helper.dtoHelper.OrderDtoHelper.convert;
 
 @Service
-<span class="fc" id="L21">public class OrderFlow {</span>
+<span class="fc" id="L23">public class OrderFlow {</span>
     @Autowired
     private OrderApi orderApi;
     @Autowired
@@ -32,22 +34,20 @@ import static com.increff.pos.helper.dtoHelper.OrderDtoHelper.convert;
 
     @Transactional(rollbackOn  = ApiException.class)
     public void addNewOrder(OrderPojo orderPojo) throws ApiException {
-<span class="nc" id="L35">        List&lt;CartItemPojo&gt; cartItemPojoList = cartItemApi.getAllItemsInCart(getPrincipal().getId());</span>
-<span class="nc bnc" id="L36" title="All 2 branches missed.">        if(cartItemPojoList.size()==0){</span>
-<span class="nc" id="L37">            throw new ApiException(&quot;The order can't be created as the cart is empty&quot;);</span>
+<span class="nc" id="L37">        List&lt;CartItemPojo&gt; cartItemPojoList = cartItemApi.getAllItemsInCart(getPrincipal().getId());</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">        if(cartItemPojoList.size()==0){</span>
+<span class="nc" id="L39">            throw new ApiException(&quot;The order can't be created as the cart is empty&quot;);</span>
         }
-<span class="nc" id="L39">        checkSufficientInventoryToCreateOrder(cartItemPojoList);</span>
-<span class="nc" id="L40">        Integer orderId = orderApi.addOrder(orderPojo, cartItemPojoList);</span>
-<span class="nc" id="L41">        createNewOrderByAddingItemsToTheOrder(orderId,cartItemPojoList);</span>
-<span class="nc" id="L42">        cartItemApi.deleteAll(cartItemPojoList);</span>
-<span class="nc" id="L43">    }</span>
+<span class="nc" id="L41">        checkSufficientInventoryToCreateOrder(cartItemPojoList);</span>
+<span class="nc" id="L42">        Integer orderId = orderApi.addOrder(orderPojo, cartItemPojoList);</span>
+<span class="nc" id="L43">        createNewOrderByAddingItemsToTheOrder(orderId,cartItemPojoList);</span>
+<span class="nc" id="L44">        cartItemApi.deleteAll(cartItemPojoList);</span>
+<span class="nc" id="L45">    }</span>
 
     @Transactional(rollbackOn = Exception.class)
     public void invoiceOrder(Integer orderId) throws Exception {
-<span class="nc" id="L47">        orderApi.invoiceOrder(orderId);</span>
-<span class="nc" id="L48">        OrderData orderData = convert(orderApi.getCheckOrder(orderId));</span>
-<span class="nc" id="L49">        List&lt;OrderItemData&gt;orderItemsList = getAllOrderItemsOfAnOrder(orderId);</span>
-<span class="nc" id="L50">        invoiceClientApi.invoiceOrder(orderData,orderItemsList);</span>
+<span class="nc" id="L49">        orderApi.invoiceOrder(orderId);</span>
+<span class="nc" id="L50">        createInvoiceForOrder(orderId);</span>
 <span class="nc" id="L51">    }</span>
 
 
@@ -119,6 +119,14 @@ import static com.increff.pos.helper.dtoHelper.OrderDtoHelper.convert;
             }
 <span class="nc" id="L120">        }</span>
 <span class="nc" id="L121">    }</span>
+
+    private void  createInvoiceForOrder(Integer orderId) throws Exception {
+<span class="nc" id="L124">        OrderData orderData = convert(orderApi.getCheckOrder(orderId));</span>
+<span class="nc" id="L125">        List&lt;OrderItemData&gt;orderItemsList = getAllOrderItemsOfAnOrder(orderId);</span>
+<span class="nc" id="L126">        byte[] contents = invoiceClientApi.invoiceOrder(orderData,orderItemsList);</span>
+<span class="nc" id="L127">        Path pdfPath = Paths.get(&quot;./src/main/resources/pdf/&quot; + orderData.getOrderId() + &quot;_invoice.pdf&quot;);</span>
+<span class="nc" id="L128">        Files.write(pdfPath, contents);</span>
+<span class="nc" id="L129">    }</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
