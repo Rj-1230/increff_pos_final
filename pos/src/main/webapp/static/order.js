@@ -32,6 +32,7 @@ function addOrder(event){
        },
 	   success: function(response) {
             getOrderList();
+            getCartItemList();
             	$('#customerModal').modal('toggle');
             	$('#create-order-modal').modal('toggle');
                 document.getElementById('cart-form').reset();
@@ -50,7 +51,7 @@ function addOrder(event){
 
 
 function placeOrder (orderId) {
-	var url = getOrderUrl() + "/place/" + orderId;
+	var url = getOrderUrl() + "/invoice/" + orderId;
     $.ajax({
     	   url: url,
     	   type: 'PUT',
@@ -171,7 +172,7 @@ function displayCartItemList(data){
 		+ '<td>' +j + '</td>'
 		+ '<td>' + e.productName + '</td>'
 		+ '<td>' + e.quantity + '</td>'
-		+ '<td>' + e.sellingPrice+ '</td>'
+		+ '<td>' + e.sellingPrice.toFixed(2)+ '</td>'
 		+ '<td>' + e.counterId + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
@@ -334,13 +335,11 @@ function getAllOrders(){
 function downloadInvoice(orderCode)
 {
     var url = getInvoiceUrl() + "/" + orderCode;
-    console.log(url);
     window.location.href = url;
 }
 
 
 function dateToISOLikeButLocal(date) {
-//Iska koi kaam ni h : method sahi h but return hi kr ra h ISt me
 //    console.log(date);
     const offsetMs = date.getTimezoneOffset() * 60 * 1000;
 //    console.log(offsetMs);

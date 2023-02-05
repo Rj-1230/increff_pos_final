@@ -1,16 +1,23 @@
 package com.increff.pos.flow;
 
+import com.increff.pos.model.data.OrderData;
+import com.increff.pos.model.data.OrderItemData;
 import com.increff.pos.pojo.*;
 import com.increff.pos.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.increff.pos.helper.dtoHelper.OrderItemDtoHelper.getAllOrderItemsOfAgivenOrder;
+import static com.increff.pos.helper.flowHelper.CartItemFlowHelper.convertCartPojoToOrderItemPojo;
+import static com.increff.pos.helper.flowHelper.OrderFlowHelper.convertOrderItemPojoToOrderItemData;
 import static com.increff.pos.util.SecurityUtil.getPrincipal;
-import static com.increff.pos.helper.dtoHelper.OrderItemDtoHelper.convert;
+import static com.increff.pos.helper.dtoHelper.OrderDtoHelper.convert;
 
 @Service
 public class OrderFlow {
@@ -23,52 +30,40 @@ public class OrderFlow {
     @Autowired
     private ProductApi productApi;
     @Autowired
-    private CartApi cartApi;
+    private CartItemApi cartItemApi;
 
     @Transactional(rollbackOn  = ApiException.class)
     public void addNewOrder(OrderPojo orderPojo) throws ApiException {
-        List<CartPojo> cartPojoList = cartApi.getAll(getPrincipal().getId());
-        if(cartPojoList.size()==0){
+        List<CartItemPojo> cartItemPojoList = cartItemApi.getAllItemsInCart(getPrincipal().getId());
+        if(cartItemPojoList.size()==0){
             throw new ApiException("The order can't be created as the cart is empty");
         }
-        checkSufficientInventoryToCreateOrder(cartPojoList);
-        orderApi.addOrder(orderPojo,cartPojoList);
-        cartApi.deleteAll(cartPojoList);
-    }
-
-    private void checkSufficientInventoryToCreateOrder(List<CartPojo> cartPojoList) throws ApiException {
-        for(CartPojo d : cartPojoList){
-            InventoryPojo inventoryPojo = inventoryApi.getCheck(d.getProductId());
-            if(d.getQuantity()>inventoryPojo.getQuantity()){
-                throw new ApiException("The item "+d.getProductName()+" can't be added to order because sufficient amount not present in inventory. Inventory count = "+inventoryPojo.getQuantity()+"Cart count ="+d.getQuantity());
-            }
-        }
+        checkSufficientInventoryToCreateOrder(cartItemPojoList);
+        Integer orderId = orderApi.addOrder(orderPojo, cartItemPojoList);
+        createNewOrderByAddingItemsToTheOrder(orderId,cartItemPojoList);
+        cartItemApi.deleteAll(cartItemPojoList);
     }
 
     @Transactional(rollbackOn = Exception.class)
-    public void invoiceOrder(Integer id) throws Exception {
-        orderApi.invoiceOrder(id);
-        OrderPojo orderPojo = orderApi.getCheckOrderByOrderId(id);
-        List<OrderItemPojo>orderItemsList = orderApi.getAllOrderItems(id);
-        invoiceClientApi.invoiceOrder(orderPojo,getAllOrderItemsOfAgivenOrder(orderItemsList));
+    public void invoiceOrder(Integer orderId) throws Exception {
+        orderApi.invoiceOrder(orderId);
+        createInvoiceForOrder(orderId);
     }
+
 
     @Transactional(rollbackOn = ApiException.class)
     public void addOrderItem(OrderItemPojo orderItemPojo,String barcode) throws ApiException {
-        ProductPojo productPojo= productApi.getCheckProductPojoFromBarcode(barcode);
+        ProductPojo productPojo= productApi.getCheckProduct(barcode);
         orderItemPojo.setProductId(productPojo.getProductId());
-        orderItemPojo.setProductName(productPojo.getName());
         checkSufficientInventoryToAddOrderItem(orderItemPojo,productPojo.getMrp());
         orderApi.addOrderItem(orderItemPojo);
     }
 
-    @Transactional
     private void checkSufficientInventoryToAddOrderItem(OrderItemPojo orderItemPojo, Double mrp) throws ApiException {
     InventoryPojo inventoryPojo = inventoryApi.getCheck(orderItemPojo.getProductId());
     if(orderItemPojo.getQuantity()>inventoryPojo.getQuantity()){
         throw new ApiException("Item can't be added to order as it exceeds the inventory. Present inventory count : "+inventoryPojo.getQuantity());
     }
-
     if(orderItemPojo.getSellingPrice()>mrp){
         throw new ApiException("Item can't be added to order as selling price must be less than MRP. Product's MRP :"+mrp);
     }
@@ -96,5 +91,41 @@ public class OrderFlow {
         orderApi.updateOrderItem(ex,orderItemPojo);
     }
 
+
+    @Transactional(rollbackOn = ApiException.class)
+    public List<OrderItemData> getAllOrderItemsOfAnOrder(Integer orderId) throws ApiException {
+        List<OrderItemPojo> orderItemPojoList = orderApi.getAllOrderItems(orderId);
+        List<OrderItemData> list2 = new ArrayList<OrderItemData>();
+        for(OrderItemPojo orderItemPojo: orderItemPojoList){
+            String productName = productApi.getCheckProduct(orderItemPojo.getProductId()).getName();
+            list2.add(convertOrderItemPojoToOrderItemData(orderItemPojo,productName));
+        }
+        return list2;
+    }
+
+    private void createNewOrderByAddingItemsToTheOrder(Integer orderId,List<CartItemPojo> cartItemPojoList) throws ApiException {
+        for(CartItemPojo cartItemPojo : cartItemPojoList){
+            OrderItemPojo orderItemPojo = convertCartPojoToOrderItemPojo(cartItemPojo,orderId);
+            checkSufficientInventoryToAddOrderItem(orderItemPojo,orderItemPojo.getSellingPrice());
+            orderApi.addOrderItem(orderItemPojo);
+        }
+    }
+
+    private void checkSufficientInventoryToCreateOrder(List<CartItemPojo> cartItemPojoList) throws ApiException {
+        for(CartItemPojo cartItemPojo : cartItemPojoList){
+            InventoryPojo inventoryPojo = inventoryApi.getCheck(cartItemPojo.getProductId());
+            if(cartItemPojo.getQuantity()>inventoryPojo.getQuantity()){
+                throw new ApiException("The item "+productApi.getCheckProduct(cartItemPojo.getProductId())+" can't be added to order because sufficient amount not present in inventory. Inventory count = "+inventoryPojo.getQuantity()+"Cart count ="+cartItemPojo.getQuantity());
+            }
+        }
+    }
+
+    private void  createInvoiceForOrder(Integer orderId) throws Exception {
+        OrderData orderData = convert(orderApi.getCheckOrder(orderId));
+        List<OrderItemData>orderItemsList = getAllOrderItemsOfAnOrder(orderId);
+        byte[] contents = invoiceClientApi.invoiceOrder(orderData,orderItemsList);
+        Path pdfPath = Paths.get("./src/main/resources/pdf/" + orderData.getOrderId() + "_invoice.pdf");
+        Files.write(pdfPath, contents);
+    }
 
 }

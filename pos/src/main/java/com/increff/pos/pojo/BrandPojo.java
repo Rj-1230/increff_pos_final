@@ -6,18 +6,17 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name="brand", uniqueConstraints={@UniqueConstraint(columnNames={"Brand_Id"})})
+@Table(name="brand", uniqueConstraints={@UniqueConstraint(columnNames={"brand","category"})})
 
 @Getter
 @Setter
 public class BrandPojo extends AbstractPojo{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="Brand_Id")
-    private Integer id;
-    @Column(name="Brand", nullable=false)
+    private Integer brandId;
+    @Column(nullable=false)
     private String brand;
-    @Column(name="Category", nullable=false)
+    @Column(nullable=false)
     private String category;
 
 }

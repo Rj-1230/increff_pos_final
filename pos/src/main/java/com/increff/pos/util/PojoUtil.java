@@ -22,21 +22,19 @@ public class PojoUtil {
         return  productPojo;
     }
 
-    public static InventoryPojo getInventoryPojo(Integer productId, String barcode, Integer quantity){
+    public static InventoryPojo getInventoryPojo(Integer productId, Integer quantity){
         InventoryPojo inventoryPojo = new InventoryPojo();
         inventoryPojo.setProductId(productId);
-        inventoryPojo.setBarcode(barcode);
         inventoryPojo.setQuantity(quantity);
         return  inventoryPojo;
     }
-    public static CartPojo getCartPojo(Integer productId,Integer counterId, String productName, Double sellingPrice, Integer quantity){
-        CartPojo cartPojo = new CartPojo();
-        cartPojo.setProductId(productId);
-        cartPojo.setCounterId(counterId);
-        cartPojo.setProductName(productName);
-        cartPojo.setSellingPrice(sellingPrice);
-        cartPojo.setQuantity(quantity);
-        return  cartPojo;
+    public static CartItemPojo getCartPojo(Integer productId, Integer counterId, Double sellingPrice, Integer quantity){
+        CartItemPojo cartItemPojo = new CartItemPojo();
+        cartItemPojo.setProductId(productId);
+        cartItemPojo.setCounterId(counterId);
+        cartItemPojo.setSellingPrice(sellingPrice);
+        cartItemPojo.setQuantity(quantity);
+        return cartItemPojo;
     }
 
     public static UserPojo getUserPojo(String email, String password){

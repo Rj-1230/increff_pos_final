@@ -17,7 +17,6 @@ public class PDFFromFOP {
             File pdfDir = new File("./src/main/resources/pdf");
             pdfDir.mkdirs();
             File pdfFile = new File(pdfDir, "invoice.pdf");
-            System.out.println(pdfFile.getAbsolutePath());
             // configure fopFactory as desired
             final FopFactory fopFactory = FopFactory.newInstance(new File(".").toURI());
             FOUserAgent foUserAgent = fopFactory.newFOUserAgent();

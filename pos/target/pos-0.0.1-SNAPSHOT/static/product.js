@@ -154,7 +154,7 @@ function displayProductList(data){
 		+ '<td>'  + e.brand + '</td>'
 		+ '<td>'  + e.category + '</td>'
 		+ '<td>'  + e.name + '</td>'
-		+ '<td>'  + e.mrp + '</td>'
+		+ '<td>'  + e.mrp.toFixed(2) + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
         $tbody.append(row);

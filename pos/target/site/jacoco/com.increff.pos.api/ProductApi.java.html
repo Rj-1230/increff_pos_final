@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-<span class="fc" id="L13">public class ProductApi {</span>
+@Transactional(rollbackOn = ApiException.class)
+<span class="fc" id="L14">public class ProductApi {</span>
 
     @Autowired
     private ProductDao productDao;
 
 
-    @Transactional(rollbackOn = ApiException.class)
     public Integer add(ProductPojo p) throws ApiException {
 <span class="fc" id="L21">        ProductPojo a = productDao.getProductPojoFromBarcode(p.getBarcode());</span>
 <span class="fc bfc" id="L22" title="All 2 branches covered.">        if(Objects.nonNull(a)){</span>
@@ -26,44 +26,41 @@ import java.util.Objects;
 
     }
 
-    @Transactional
+
     public void delete(Integer id) {
 <span class="fc" id="L31">        productDao.delete(id);</span>
 <span class="fc" id="L32">    }</span>
 
-    @Transactional
+
     public ProductPojo get(Integer id) {
 <span class="fc" id="L36">        return productDao.select(id);</span>
     }
 
-    @Transactional
+
     public List&lt;ProductPojo&gt; getAll() {
 <span class="fc" id="L41">        return productDao.selectAll();</span>
     }
 
-    @Transactional(rollbackOn = ApiException.class)
     public void update(Integer id, ProductPojo p) throws ApiException {
-<span class="fc" id="L46">        ProductPojo ex = getCheckProduct(id);</span>
-<span class="fc" id="L47">        ex.setName(p.getName());</span>
-<span class="fc" id="L48">        ex.setMrp(p.getMrp());</span>
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L45">        ProductPojo ex = getCheckProduct(id);</span>
+<span class="fc" id="L46">        ex.setName(p.getName());</span>
+<span class="fc" id="L47">        ex.setMrp(p.getMrp());</span>
+<span class="fc" id="L48">    }</span>
 
-    @Transactional(rollbackOn = ApiException.class)
     public  ProductPojo getCheckProduct(Integer id) throws ApiException {
-<span class="fc" id="L53">        ProductPojo a = productDao.select(id);</span>
-<span class="fc bfc" id="L54" title="All 2 branches covered.">        if(Objects.isNull(a)){</span>
-<span class="fc" id="L55">            throw new ApiException(&quot;No such product with given id exists !&quot;);</span>
+<span class="fc" id="L51">        ProductPojo a = productDao.select(id);</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if(Objects.isNull(a)){</span>
+<span class="fc" id="L53">            throw new ApiException(&quot;No such product with given id exists !&quot;);</span>
         }
-<span class="fc" id="L57">        return a;</span>
+<span class="fc" id="L55">        return a;</span>
     }
 
-    @Transactional(rollbackOn = ApiException.class)
-    public ProductPojo getCheckProductPojoFromBarcode(String barcode) throws ApiException {
-<span class="fc" id="L62">        ProductPojo a = productDao.getProductPojoFromBarcode(barcode);</span>
-<span class="fc bfc" id="L63" title="All 2 branches covered.">        if(Objects.isNull(a)){</span>
-<span class="fc" id="L64">            throw new ApiException(&quot;The product with given barcode doesn't exists&quot;);</span>
+    public ProductPojo getCheckProduct(String barcode) throws ApiException {
+<span class="fc" id="L59">        ProductPojo a = productDao.getProductPojoFromBarcode(barcode);</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">        if(Objects.isNull(a)){</span>
+<span class="fc" id="L61">            throw new ApiException(&quot;The product with given barcode doesn't exists&quot;);</span>
         }
-<span class="fc" id="L66">        return a;</span>
+<span class="fc" id="L63">        return a;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

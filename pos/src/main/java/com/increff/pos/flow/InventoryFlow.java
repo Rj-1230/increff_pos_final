@@ -1,6 +1,6 @@
 package com.increff.pos.flow;
 
-import com.increff.pos.model.InventoryData;
+import com.increff.pos.model.data.InventoryData;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.api.ApiException;
@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.increff.pos.helper.dtoHelper.InventoryDtoHelper.*;
+import static com.increff.pos.helper.flowHelper.InventoryFlowHelper.*;
 
 @Service
 public class InventoryFlow {
@@ -23,8 +23,8 @@ public class InventoryFlow {
     private ProductApi productApi;
 
     @Transactional(rollbackOn = ApiException.class)
-    public void update(InventoryPojo newInventoryPojo) throws ApiException {
-        ProductPojo productPojo = productApi.getCheckProductPojoFromBarcode(newInventoryPojo.getBarcode());
+    public void update(InventoryPojo newInventoryPojo,String barcode) throws ApiException {
+        ProductPojo productPojo = productApi.getCheckProduct(barcode);
         newInventoryPojo.setProductId(productPojo.getProductId());
         inventoryApi.updateInventory(newInventoryPojo, newInventoryPojo.getQuantity());
     }
@@ -33,10 +33,7 @@ public class InventoryFlow {
     public InventoryData get(Integer id) throws ApiException {
         InventoryPojo inventoryPojo = inventoryApi.getCheck(id);
         ProductPojo productPojo = productApi.getCheckProduct(id);
-        InventoryData inventoryData = convert(inventoryPojo);
-        inventoryData.setProductName(productPojo.getName());
-        inventoryData.setProductId(productPojo.getProductId());
-        return inventoryData;
+        return convertInventoryPojoToInventoryData(inventoryPojo,productPojo);
     }
 
     @Transactional(rollbackOn = ApiException.class)
@@ -45,10 +42,7 @@ public class InventoryFlow {
         List<InventoryData> list2 = new ArrayList<InventoryData>();
         for(InventoryPojo inventoryPojo: inventoryPojoList){
             ProductPojo productPojo = productApi.getCheckProduct(inventoryPojo.getProductId());
-            InventoryData inventoryData = convert(inventoryPojo);
-            inventoryData.setProductName(productPojo.getName());
-            inventoryData.setProductId(productPojo.getProductId());
-            list2.add(inventoryData);
+            list2.add(convertInventoryPojoToInventoryData(inventoryPojo,productPojo));
         }
         return list2;
     }

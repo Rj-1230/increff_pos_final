@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CartItemFlowHelper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.helper.flowHelper</a> &gt; <span class="el_source">CartItemFlowHelper.java</span></div><h1>CartItemFlowHelper.java</h1><pre class="source lang-java linenums">package com.increff.pos.helper.flowHelper;
+
+import com.increff.pos.api.ApiException;
+import com.increff.pos.pojo.CartItemPojo;
+import com.increff.pos.pojo.InventoryPojo;
+import com.increff.pos.pojo.OrderItemPojo;
+import com.increff.pos.pojo.ProductPojo;
+
+<span class="nc" id="L9">public class CartItemFlowHelper {</span>
+    public static OrderItemPojo convertCartPojoToOrderItemPojo(CartItemPojo cartItemPojo, Integer orderId){
+<span class="nc" id="L11">        OrderItemPojo orderItemPojo =new OrderItemPojo();</span>
+<span class="nc" id="L12">        orderItemPojo.setOrderId(orderId);</span>
+<span class="nc" id="L13">        orderItemPojo.setProductId(cartItemPojo.getProductId());</span>
+<span class="nc" id="L14">        orderItemPojo.setQuantity(cartItemPojo.getQuantity());</span>
+<span class="nc" id="L15">        orderItemPojo.setSellingPrice(cartItemPojo.getSellingPrice());</span>
+<span class="nc" id="L16">        return orderItemPojo;</span>
+    }
+
+
+    public static Integer checkMrpAndInventoryForCartPojo(CartItemPojo cartItemPojo, ProductPojo productPojo, InventoryPojo inventoryPojo) throws ApiException {
+<span class="nc bnc" id="L21" title="All 2 branches missed.">        if(cartItemPojo.getSellingPrice()&gt;productPojo.getMrp()){</span>
+<span class="nc" id="L22">            throw new ApiException(&quot;Selling price must be less than MRP. Product's MRP :&quot;+productPojo.getMrp());</span>
+        }
+<span class="nc bnc" id="L24" title="All 2 branches missed.">        if (cartItemPojo.getQuantity() &gt; inventoryPojo.getQuantity()) {</span>
+<span class="nc" id="L25">            throw new ApiException(&quot;Not sufficient inventory. Present inventory count : &quot; + inventoryPojo.getQuantity());</span>
+        }
+<span class="nc" id="L27">        return inventoryPojo.getQuantity();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,9 +1,8 @@
 package com.increff.pos.helper.dtoHelper;
 
-import com.increff.pos.model.*;
-import com.increff.pos.pojo.BrandPojo;
+import com.increff.pos.model.data.OrderItemData;
+import com.increff.pos.model.form.OrderItemForm;
 import com.increff.pos.pojo.OrderItemPojo;
-import com.increff.pos.pojo.ProductPojo;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
@@ -37,7 +36,6 @@ public class OrderItemDtoHelper {
         d.setOrderItemId(p.getOrderItemId());
         d.setOrderId(p.getOrderId());
         d.setProductId(p.getProductId());
-        d.setProductName(p.getProductName());
         d.setQuantity(p.getQuantity());
         d.setSellingPrice(p.getSellingPrice());
         return d;

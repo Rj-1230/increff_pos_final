@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="10" failures="0" name="com.increff.pos.api.ProductApiTest" time="0.053" errors="0" skipped="0">
+<testsuite tests="10" failures="0" name="com.increff.pos.api.ProductApiTest" time="0.569" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_351\jre\bin"/>
@@ -66,14 +66,14 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="com.increff.pos.api.ProductApiTest" name="updateProduct" time="0.014"/>
-  <testcase classname="com.increff.pos.api.ProductApiTest" name="testSizeOfProductList" time="0.007"/>
-  <testcase classname="com.increff.pos.api.ProductApiTest" name="testBarcodeUniqueness" time="0.005"/>
-  <testcase classname="com.increff.pos.api.ProductApiTest" name="testGetProduct" time="0.003"/>
-  <testcase classname="com.increff.pos.api.ProductApiTest" name="testGetProductPojoFromBarcode" time="0.003"/>
+  <testcase classname="com.increff.pos.api.ProductApiTest" name="updateProduct" time="0.483"/>
+  <testcase classname="com.increff.pos.api.ProductApiTest" name="testSizeOfProductList" time="0.011"/>
+  <testcase classname="com.increff.pos.api.ProductApiTest" name="testBarcodeUniqueness" time="0.02"/>
+  <testcase classname="com.increff.pos.api.ProductApiTest" name="testGetProduct" time="0.005"/>
+  <testcase classname="com.increff.pos.api.ProductApiTest" name="testGetProductPojoFromBarcode" time="0.005"/>
   <testcase classname="com.increff.pos.api.ProductApiTest" name="testAddProduct" time="0.005"/>
-  <testcase classname="com.increff.pos.api.ProductApiTest" name="testGetCheckProduct" time="0.003"/>
-  <testcase classname="com.increff.pos.api.ProductApiTest" name="testProductWithWrongBarcode" time="0.003"/>
-  <testcase classname="com.increff.pos.api.ProductApiTest" name="testDeleteProduct" time="0.006"/>
-  <testcase classname="com.increff.pos.api.ProductApiTest" name="testProductExistence" time="0.004"/>
+  <testcase classname="com.increff.pos.api.ProductApiTest" name="testGetCheckProduct" time="0.006"/>
+  <testcase classname="com.increff.pos.api.ProductApiTest" name="testProductWithWrongBarcode" time="0.005"/>
+  <testcase classname="com.increff.pos.api.ProductApiTest" name="testDeleteProduct" time="0.02"/>
+  <testcase classname="com.increff.pos.api.ProductApiTest" name="testProductExistence" time="0.009"/>
 </testsuite>

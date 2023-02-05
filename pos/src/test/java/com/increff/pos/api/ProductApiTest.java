@@ -1,5 +1,6 @@
 package com.increff.pos.api;
 
+import com.increff.pos.config.AbstractUnitTest;
 import com.increff.pos.dao.ProductDao;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.util.PojoUtil;
@@ -12,7 +13,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class ProductApiTest extends AbstractUnitTest{
+public class ProductApiTest extends AbstractUnitTest {
     @Autowired
     private ProductApi productApi;
     @Autowired
@@ -113,7 +114,7 @@ public class ProductApiTest extends AbstractUnitTest{
         ProductPojo productPojo = PojoUtil.getProductPojo(brandId,barcode,mrp,productName);
         productDao.insert(productPojo);
 
-        ProductPojo productPojo1 = productApi.getCheckProductPojoFromBarcode(barcode);
+        ProductPojo productPojo1 = productApi.getCheckProduct(barcode);
         assertEquals(productPojo1,productPojo);
     }
 
@@ -161,7 +162,7 @@ public class ProductApiTest extends AbstractUnitTest{
 
         exceptionRule.expect(ApiException.class);
         exceptionRule.expectMessage("The product with given barcode doesn't exists");
-        productApi.getCheckProductPojoFromBarcode("barcode");
+        productApi.getCheckProduct("barcode");
     }
 
 

@@ -1,5 +1,7 @@
 package com.increff.invoice_app.service;
 import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -113,11 +115,11 @@ public class CreateXMLFileJava {
                 orderItem.appendChild(quantity);
 
                 Element sellingPrice = document.createElement("sellingPrice");
-                sellingPrice.appendChild(document.createTextNode(o.getSellingPrice().toString()));
+                sellingPrice.appendChild(document.createTextNode(String.format("%.2f",new BigDecimal(o.getSellingPrice()).setScale(2, RoundingMode.HALF_UP).doubleValue())));
                 orderItem.appendChild(sellingPrice);
 
                 Element total = document.createElement("total");
-                total.appendChild(document.createTextNode(String.valueOf(o.getSellingPrice() * o.getQuantity())));
+                total.appendChild(document.createTextNode(String.format("%.2f",new BigDecimal(o.getSellingPrice()*o.getQuantity()).setScale(2, RoundingMode.HALF_UP).doubleValue())));
                 orderItem.appendChild(total);
 
                 amount += o.getSellingPrice() * o.getQuantity();
@@ -125,7 +127,7 @@ public class CreateXMLFileJava {
             }
 
             Element totalAmount = document.createElement("totalAmount");
-            totalAmount.appendChild(document.createTextNode(String.valueOf(amount)));
+            totalAmount.appendChild(document.createTextNode(String.format("%.2f",new BigDecimal(amount).setScale(2, RoundingMode.HALF_UP).doubleValue())));
             root.appendChild(totalAmount);
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();

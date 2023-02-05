@@ -6,7 +6,7 @@ import java.util.Set;
 public class ValidationUtil {
 
     private static final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-    public static <T> void validateForms(T form){
+    public static <T> void validateForm(T form){
         Validator validator = factory.getValidator();
         Set<ConstraintViolation<T>> violations = validator.validate(form);
         if (!violations.isEmpty()) {
@@ -42,6 +42,6 @@ public class ValidationUtil {
 //            error.setMessage(violation.getMessage());
 //            errorList.add(error);
 //        }
-//        throw new ApiException(ApiStatus.BAD_DATA, "Input validation failed", errorList);
+//        throw new ApiException("Input validation failed", errorList);
 //    }
 }

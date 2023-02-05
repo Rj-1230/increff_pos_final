@@ -7,12 +7,11 @@ import javax.persistence.*;
 import java.util.List;
 
 @Repository
-public class ProductDao {
-//This is JPQL : Java Persistence Query language
-    private static String delete_productPojo_by_id = "delete from ProductPojo p where productId=:id";
-    private static String select_productPojo_by_id = "select p from ProductPojo p where productId=:id";
-    private static String select_productPojo_by_barcode = "select p from ProductPojo p where barcode=:barcode";
-    private static String select_all_productPojo = "select p from ProductPojo p";
+public class ProductDao extends AbstractDao{
+    private static String delete_product_pojo_by_id = "delete from ProductPojo p where productId=:id";
+    private static String select_product_pojo_by_id = "select p from ProductPojo p where productId=:id";
+    private static String select_product_pojo_by_barcode = "select p from ProductPojo p where barcode=:barcode";
+    private static String select_all_product_pojo = "select p from ProductPojo p";
 
     @PersistenceContext
     EntityManager em;
@@ -22,27 +21,15 @@ public class ProductDao {
         em.flush();
         return p.getProductId();
     }
-
-    public ProductPojo getProductPojoFromBarcode(String barcode) {
-        try{
-            TypedQuery<ProductPojo> query = getQuery(select_productPojo_by_barcode);
-            query.setParameter("barcode", barcode);
-            return query.getSingleResult();
-        }
-        catch(NoResultException e){
-            return null;
-        }
-    }
-
     public Integer delete(Integer id) {
-        Query query = em.createQuery(delete_productPojo_by_id);
+        Query query = em.createQuery(delete_product_pojo_by_id);
         query.setParameter("id", id);
         return query.executeUpdate();
     }
 
     public ProductPojo select(Integer id) {
         try {
-            TypedQuery<ProductPojo> query = getQuery(select_productPojo_by_id);
+            TypedQuery<ProductPojo> query = getQuery(select_product_pojo_by_id, ProductPojo.class);
             query.setParameter("id", id);
             return query.getSingleResult();
         }
@@ -50,15 +37,20 @@ public class ProductDao {
             return null;
         }
     }
-
     public List<ProductPojo> selectAll() {
-        TypedQuery<ProductPojo> query = getQuery(select_all_productPojo);
+        TypedQuery<ProductPojo> query = getQuery(select_all_product_pojo, ProductPojo.class);
         return query.getResultList();
     }
-
-
-    TypedQuery<ProductPojo> getQuery(String jpql) {
-        return em.createQuery(jpql, ProductPojo.class);
+    
+    public ProductPojo getProductPojoFromBarcode(String barcode) {
+        try{
+            TypedQuery<ProductPojo> query = getQuery(select_product_pojo_by_barcode, ProductPojo.class);
+            query.setParameter("barcode", barcode);
+            return query.getSingleResult();
+        }
+        catch(NoResultException e){
+            return null;
+        }
     }
 
 }

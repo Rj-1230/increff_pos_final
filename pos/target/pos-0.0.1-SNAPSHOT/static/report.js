@@ -1,15 +1,17 @@
 var newBrands = [];
 var newCategs = [];
 var reportData;
+var fileName="";
 function getBasicUrl()
 {
     var baseUrl = $("meta[name=baseUrl]").attr("content")
-     	return baseUrl + "/api/";
+     	return baseUrl + "/api/report/";
 }
 
 function getBrandsList()
 {
-    var url = getBasicUrl()+"brand";
+    var baseUrl = $("meta[name=baseUrl]").attr("content")
+    var url = baseUrl+"/api/brand";
     $.ajax({
     	   url: url,
     	   type: 'GET',
@@ -55,7 +57,7 @@ function displayInventoryReportList(data)
 {
 if(data.length>0){
 	    document.getElementById("inventory-report-table-container").style.display = "block";
-	    document.getElementById("download-inventory-report").style.display = "block";
+	    document.getElementById("download-report").style.display = "block";
 	}
 	else{
                 document.getElementById('toast-container').classList.remove('bg-warning','bg-danger','bg-success');
@@ -67,11 +69,14 @@ if(data.length>0){
     var $tbody = $('#inventory-report-table').find('tbody');
         $tbody.empty();
         var total_quantity =0;
+        var j=1;
         for(var i in data){
         		var e = data[i];
         		var row = '<tr>'
+        		+ '<td>' + j + '</td>'
         		+ '<td>' + e.brand + '</td>'
         		+ '<td>'  + e.category + '</td>'
+        		+ '<td>'  + e.productName + '</td>'
         		+ '<td>'  + e.quantity + '</td>'
         		+ '</tr>';
                 $tbody.append(row);
@@ -79,7 +84,7 @@ if(data.length>0){
 
         	}
         	var row = '<tr>'
-                                    		+ '<td colspan=2>' + "<font size='+2'><b>Total</b></font>"+ '</td>'
+                                    		+ '<td colspan=4>' + "<font size='+2'><b>Total</b></font>"+ '</td>'
 
                                     		+ '<td>'  +  "<b><font size='+2'>"+total_quantity +  "</b></font>"+'</td>'
 
@@ -92,7 +97,9 @@ function getFilteredInventoryReport(event)
     var $form = $("#filter-brand-category-form");
     	var json = toJson($form);
     	var url = getBasicUrl()+"inventory-brand-category";
-
+        var data_arr = JSON.parse(json);
+        fileName = "inventory_report_"+data_arr.brand+"_"+data_arr.category+".tsv";
+        console.log(fileName);
     	$.ajax({
     	   url: url,
     	   type: 'POST',
@@ -116,9 +123,8 @@ function getFilteredInventoryReport(event)
     	return false;
 }
 
-function downloadInventoryReport(){
-//    reportData.forEach(function(v){delete v.id;})
-	writeReportData(reportData);
+function downloadReport(){
+	writeReportData(reportData,fileName);
 }
 
 
@@ -126,7 +132,7 @@ function displayDailySalesReportList(data)
 {
 if(data.length>0){
 	    document.getElementById("dailySales-report-table-container").style.display = "block";
-	    document.getElementById("download-dailySales-report").style.display = "block";
+	    document.getElementById("download-report").style.display = "block";
 	}
 	else{
                 document.getElementById('toast-container').classList.remove('bg-warning','bg-danger','bg-success');
@@ -137,15 +143,19 @@ if(data.length>0){
 
     var $tbody = $('#dailySales-report-table').find('tbody');
         $tbody.empty();
+        var j=1;
         for(var i in data){
         		var e = data[i];
+
+                    var invoiceDate = dateToISOLikeButLocal(new Date(e.invoiceDate*1000));
 //        		var invoiceDate = e.date.dayOfMonth +"-"+e.date.monthValue+"-"+e.date.year;
         		var row = '<tr>'
-        		+ '<td>' + e.date + '</td>'
-        		        		+ '<td>'  + e.invoicedItemsCount + '</td>'
+        		+ '<td>' + j + '</td>'
+        		+ '<td>' + invoiceDate + '</td>'
+        		+ '<td>'  + e.invoicedItemsCount + '</td>'
         		+ '<td>'  + e.invoicedOrderCount + '</td>'
 
-        		+ '<td>'  + e.totalRevenue + '</td>'
+        		+ '<td>'  + e.totalRevenue.toFixed(2) + '</td>'
         		+ '</tr>';
                 $tbody.append(row);
         	}
@@ -156,6 +166,8 @@ function getFilteredDailySalesReport(event)
     var $form = $("#filter-date-form");
     	var json = toJson($form);
     	var url = getBasicUrl()+"dailyReportFilter";
+    	        var data_arr = JSON.parse(json);
+                fileName = "daily_sales_report_"+data_arr.start+"_to_"+data_arr.end+".tsv";
     	$.ajax({
     	   url: url,
     	   type: 'POST',
@@ -164,6 +176,8 @@ function getFilteredDailySalesReport(event)
            	'Content-Type': 'application/json'
            },
     	   success: function(data) {
+            $('#daily-sales-report-filter-modal').modal('hide');
+
     	   reportData=data;
     	   displayDailySalesReportList(data);
     	   },
@@ -175,17 +189,11 @@ function getFilteredDailySalesReport(event)
     	return false;
 }
 
-function downloadDailySalesReport(){
-//    reportData.forEach(function(v){delete v.id;})
-	writeReportData(reportData);
-}
-
-
 function displayRevenueProductList(data)
 {
 if(data.length>0){
 	    document.getElementById("revenue-report-table-container").style.display = "block";
-	    document.getElementById("download-revenue-report").style.display = "block";
+	    document.getElementById("download-report").style.display = "block";
 	}
 	else{
                 document.getElementById('toast-container').classList.remove('bg-warning','bg-danger','bg-success');
@@ -197,29 +205,27 @@ if(data.length>0){
     var $tbody = $('#product-revenue-list-table').find('tbody');
     $tbody.empty();
     var total_prod_quantity =0;
+    var j=1;
     var total_prod_revenue=0;
     for(var i in data){
     		var e = data[i];
     		console.log(e);
     		var row = '<tr>'
-    		+ '<td>' + e.productId + '</td>'
-    		+ '<td>' + e.barcode + '</td>'
-    		+ '<td>'  + e.name + '</td>'
-    		+ '<td>'  + e.mrp + '</td>'
+    		+ '<td>' + j + '</td>'
+    		+ '<td>' + e.brand + '</td>'
+    		+ '<td>' + e.category + '</td>'
+    		+ '<td>'  + e.productName + '</td>'
     		+ '<td>'  + e.quantity + '</td>'
-    		+ '<td>'  + e.total + '</td>'
+    		+ '<td>'  + e.total.toFixed(2) + '</td>'
     		+ '</tr>';
             $tbody.append(row);
             total_prod_quantity+=e.quantity;
             total_prod_revenue+=e.total;
     	}
     	var row = '<tr>'
-            		+ '<td>' + "<font size='+2'><b>Total</b></font>"+ '</td>'
-            		+ '<td>' +"" + '</td>'
-            		+ '<td>'  + "" + '</td>'
-            		+ '<td>'  + "" + '</td>'
+            		+ '<td colspan=4>' + "<font size='+2'><b>Total</b></font>"+ '</td>'
             		+ '<td>'  +  "<b><font size='+2'>"+total_prod_quantity +  "</b></font>"+'</td>'
-            		+ '<td>'  + "<b><font size='+2'>&#8377;"+total_prod_revenue +"</b></font>"+ '</td>'
+            		+ '<td>'  + "<b><font size='+2'>&#8377;"+total_prod_revenue.toFixed(2) +"</b></font>"+ '</td>'
             		+ '</tr>';
             		$tbody.append(row);
 }
@@ -230,6 +236,8 @@ function getFilteredRevenueReport(event)
     var $form = $("#filter-date-brand-category-form");
     	var json = toJson($form);
     	var url = getBasicUrl()+"revenue-brand-category";
+    	        var data_arr = JSON.parse(json);
+                fileName = "revenue_report_"+data_arr.start+"_to_"+data_arr.end+"_"+data_arr.brand+"_"+data_arr.category+".tsv";
     	$.ajax({
     	   url: url,
     	   type: 'POST',
@@ -238,6 +246,7 @@ function getFilteredRevenueReport(event)
            	'Content-Type': 'application/json'
            },
     	   success: function(data) {
+           $('#revenue-report-filter-modal').modal('hide');
     	   reportData=data;
     	   displayRevenueProductList(data);
     	   },
@@ -249,18 +258,13 @@ function getFilteredRevenueReport(event)
     	return false;
 }
 
-function downloadRevneueReport(){
-    reportData.forEach(function(v){delete v.productId;})
-	writeReportData(reportData);
-}
-
 
 
 function displayBrandReportList(data)
 {
 if(data.length>0){
 	    document.getElementById("brand-report-table-container").style.display = "block";
-	    document.getElementById("download-brand-report").style.display = "block";
+	    document.getElementById("download-report").style.display = "block";
 	}
 	else{
                 document.getElementById('toast-container').classList.remove('bg-warning','bg-danger','bg-success');
@@ -268,15 +272,18 @@ if(data.length>0){
                 document.getElementById('my-message').innerHTML="There is no such existing brand-category combination";
                 $(".toast").toast('show');
 	}
+	var j=1;
     var $tbody = $('#brand-report-table').find('tbody');
         $tbody.empty();
         for(var i in data){
         		var e = data[i];
         		var row = '<tr>'
+        		+ '<td>' + j + '</td>'
         		+ '<td>' + e.brand + '</td>'
         		+ '<td>'  + e.category + '</td>'
         		+ '</tr>';
                 $tbody.append(row);
+                j++;
         	}
 }
 
@@ -287,6 +294,8 @@ function getFilteredBrandReport(event)
 //document.getElementById("brand-report-table").style.display="block";
     var $form = $("#filter-brand-category-form");
     	var json = toJson($form);
+    	var data_arr = JSON.parse(json);
+    	fileName = "brand_report_"+data_arr.brand+"_"+data_arr.category+".tsv";
     	var url = getBasicUrl()+"brand-category";
 
     	$.ajax({
@@ -296,8 +305,9 @@ function getFilteredBrandReport(event)
     	   headers: {
            	'Content-Type': 'application/json'
            },
-    	   success: function(data) {
-    	   reportData=data;
+    	   success: function(data,fileName) {
+           $('#brand-report-filter-modal').modal('hide');
+           reportData=data;
     	   displayBrandReportList(data);
     	   },
     	   error: function(response){
@@ -310,40 +320,46 @@ function getFilteredBrandReport(event)
 
 var reportData = [];
 
-function writeReportData(arr){
+function writeReportData(arr,fileName){
 	var config = {
 		quoteChar: '',
 		escapeChar: '',
 		delimiter: "\t"
 	};
-
+    console.log(fileName);
 	var data = Papa.unparse(arr, config);
     var blob = new Blob([data], {type: 'text/tsv;charset=utf-8;'});
     var fileUrl =  null;
 
     if (navigator.msSaveBlob) {
-        fileUrl = navigator.msSaveBlob(blob, 'report.tsv');
+        fileUrl = navigator.msSaveBlob(blob, fileName);
     } else {
         fileUrl = window.URL.createObjectURL(blob);
     }
     var tempLink = document.createElement('a');
     tempLink.href = fileUrl;
-    tempLink.setAttribute('download', 'report.tsv');
+    tempLink.setAttribute('download', fileName);
     tempLink.click();
 }
 
-function downloadBrandReport(){
-    reportData.forEach(function(v){delete v.id;})
-	writeReportData(reportData);
+function dateToISOLikeButLocal(date) {
+//Iska koi kaam ni h : method sahi h but return hi kr ra h ISt me
+//    console.log(date);
+    const offsetMs = date.getTimezoneOffset() * 60 * 1000;
+//    console.log(offsetMs);
+    const msLocal =  date.getTime() - offsetMs;
+//    console.log(msLocal);
+    const dateLocal = new Date(msLocal);
+//    console.log(dateLocal);
+    const iso = dateLocal.toISOString();
+//    console.log(iso);
+    const isoLocal = iso.slice(0, 10);
+    return isoLocal;
 }
-
 
 function init()
 {
-    $('#download-inventory-report').click(downloadInventoryReport);
-    $('#download-dailySales-report').click(downloadDailySalesReport);
-    $('#download-revenue-report').click(downloadRevneueReport);
-    $('#download-brand-report').click(downloadBrandReport);
+    $('#download-report').click(downloadReport);
     $('#get-inventory-report').click(getFilteredInventoryReport);
     $('#get-dailySales-report').click(getFilteredDailySalesReport);
     $('#get-brand-report').click(getFilteredBrandReport);

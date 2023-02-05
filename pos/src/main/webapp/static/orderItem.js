@@ -46,7 +46,10 @@ function getOrder()
     	   url: url,
     	   type: 'GET',
     	   success: function(data) {
+    	   customerName=data.customerName;
     	   status = data.status;
+           document.getElementById('customerName').innerHTML = customerName;
+           document.getElementById('customerName2').innerHTML = customerName;
     	   disableButtons();
     	   getOrderItemList();
     	   },
@@ -70,8 +73,7 @@ function disableButtons(){
 }
 
 function placeOrder () {
-    console.log(orderId);
-	var url = getOrderUrl() + "/place/" + orderId;
+	var url = getOrderUrl() + "/invoice/" + orderId;
     $.ajax({
     	   url: url,
     	   type: 'PUT',
@@ -144,7 +146,7 @@ function displayOrderItemList(data){
         }
         else{
 	   		document.getElementById('invoiced-action').innerHTML = 'Total';
-	   		buttonHtml+= (e.quantity*e.sellingPrice);
+	   		buttonHtml+= (e.quantity*e.sellingPrice).toFixed(2);
 	   		total+=(e.quantity*e.sellingPrice);
         }
 		var row = '<tr>'
@@ -152,7 +154,7 @@ function displayOrderItemList(data){
 		+ '<td>' + e.orderId + '</td>'
 		+ '<td>' + e.productName + '</td>'
 		+ '<td>' + e.quantity + '</td>'
-		+ '<td>' + e.sellingPrice+ '</td>'
+		+ '<td>' + e.sellingPrice.toFixed(2)+ '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
         $tbody.append(row);
@@ -161,7 +163,7 @@ function displayOrderItemList(data){
 	if(status=='invoiced'){
 	var row = '<tr>'
     		+ '<td colspan=5>' + '<b>Total</b>'+ '</td>'
-    		+ '<td><b>' + total + '</b></td>'
+    		+ '<td><b>' + total.toFixed(2) + '</b></td>'
     		+ '</tr>';
   $tbody.append(row);
   }
@@ -276,8 +278,6 @@ function updateCustomer (event) {
 function init(){
 	$('#add-orderItem').click(addOrderItem);
 	orderId= $("meta[name=orderId]").attr("content");
-	customerName= $("meta[name=customerName]").attr("content");
-	customerName[0].toUpperCase();
 	document.getElementById('inputOrderId').value=orderId;
     $('#updateCustomerDetails').click(updateCustomerDetails)
 	$('#update-customer').click(updateCustomer)

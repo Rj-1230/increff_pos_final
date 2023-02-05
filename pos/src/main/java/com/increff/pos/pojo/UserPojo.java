@@ -8,16 +8,16 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name="user", indexes = @Index(columnList = "User_Email") , uniqueConstraints={@UniqueConstraint(columnNames={"User_Email"})})
+@Table(name="user", indexes = @Index(columnList = "email") , uniqueConstraints={@UniqueConstraint(columnNames={"email"})})
 public class UserPojo{
 
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name="User_Id", nullable=false)
-        private Integer id;
-        @Column(name="User_Email", nullable=false)
+        @Column(nullable=false)
+        private Integer userId;
+        @Column(nullable=false)
         private String email;
-        @Column(name="User_Password", nullable=false)
+        @Column(nullable=false)
         private String password;
 
 }

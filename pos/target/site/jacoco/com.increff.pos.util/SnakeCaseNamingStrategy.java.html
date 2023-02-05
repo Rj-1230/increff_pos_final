@@ -8,30 +8,30 @@ public class SnakeCaseNamingStrategy extends PhysicalNamingStrategyStandardImpl 
     private static final long serialVersionUID = 1L;
     private String tablePrefix;
 
-<span class="nc" id="L11">    public SnakeCaseNamingStrategy(String tablePrefix) {</span>
-<span class="nc" id="L12">        this.tablePrefix = tablePrefix;</span>
-<span class="nc" id="L13">    }</span>
+<span class="fc" id="L11">    public SnakeCaseNamingStrategy(String tablePrefix) {</span>
+<span class="fc" id="L12">        this.tablePrefix = tablePrefix;</span>
+<span class="fc" id="L13">    }</span>
 
     public Identifier toPhysicalTableName(Identifier name, JdbcEnvironment context) {
-<span class="nc" id="L16">        return new Identifier(this.addUnderscoresWithPrefix(name.getText()), name.isQuoted());</span>
+<span class="fc" id="L16">        return new Identifier(this.addUnderscoresWithPrefix(name.getText()), name.isQuoted());</span>
     }
 
     public Identifier toPhysicalColumnName(Identifier name, JdbcEnvironment context) {
-<span class="nc" id="L20">        return new Identifier(this.addUnderscores(name.getText()), name.isQuoted());</span>
+<span class="fc" id="L20">        return new Identifier(this.addUnderscores(name.getText()), name.isQuoted());</span>
     }
 
     protected String addUnderscoresWithPrefix(String name) {
-<span class="nc" id="L24">        String regex = &quot;([a-z])([A-Z])&quot;;</span>
-<span class="nc" id="L25">        String replacement = &quot;$1_$2&quot;;</span>
-<span class="nc" id="L26">        String newName = name.replaceAll(regex, replacement).toLowerCase();</span>
-<span class="nc" id="L27">        return this.tablePrefix + newName;</span>
+<span class="fc" id="L24">        String regex = &quot;([a-z])([A-Z])&quot;;</span>
+<span class="fc" id="L25">        String replacement = &quot;$1_$2&quot;;</span>
+<span class="fc" id="L26">        String newName = name.replaceAll(regex, replacement).toLowerCase();</span>
+<span class="fc" id="L27">        return this.tablePrefix + newName;</span>
     }
 
     protected String addUnderscores(String name) {
-<span class="nc" id="L31">        String regex = &quot;([a-z])([A-Z])&quot;;</span>
-<span class="nc" id="L32">        String replacement = &quot;$1_$2&quot;;</span>
-<span class="nc" id="L33">        String newName = name.replaceAll(regex, replacement).toLowerCase();</span>
-<span class="nc" id="L34">        return newName;</span>
+<span class="fc" id="L31">        String regex = &quot;([a-z])([A-Z])&quot;;</span>
+<span class="fc" id="L32">        String replacement = &quot;$1_$2&quot;;</span>
+<span class="fc" id="L33">        String newName = name.replaceAll(regex, replacement).toLowerCase();</span>
+<span class="fc" id="L34">        return newName;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

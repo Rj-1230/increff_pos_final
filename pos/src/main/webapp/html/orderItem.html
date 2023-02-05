@@ -3,7 +3,6 @@
 <html lang="en">
 
 <head th:replace="snippets.html :: name_head">
-    <title>Order - [[${customerName}]] </title>
 </head>
 
 <body>
@@ -17,7 +16,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title">Add Order Items for [[${customerName}]]  </h4>
+                    <h4 class="modal-title">Add Order Items for <span id="customerName"></span>  </h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -63,7 +62,7 @@
             <!--      Blank row-->
         </div>
         <div class="col-12" id="main">
-            <h3 class="alignleftt" id="customer-container">Order Items for [[${customerName}]]  </h3>
+            <h3 class="alignleftt" id="customer-container">Order Items for  <span id="customerName2"></span>  </h3>
             <div class="alignright">
                 <button type="button" class="btn btn-primary hideUponInvoiced" id="open-orderItem-modal" data-toggle="modal" data-target="#add-orderItems-modal" ><i class="bi bi-file-earmark-plus"></i></button>
 <!--                <button type="button" class="btn btn-success hideUponInvoiced" id="refresh-data" ><i class="bi bi-arrow-clockwise"></i></button>-->

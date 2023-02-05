@@ -1,13 +1,12 @@
 package com.increff.pos.helper.dtoHelper;
 
-import com.increff.pos.model.*;
+import com.increff.pos.model.data.ProductData;
+import com.increff.pos.model.form.ProductForm;
 import com.increff.pos.pojo.ProductPojo;
 import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class ProductDtoHelper {

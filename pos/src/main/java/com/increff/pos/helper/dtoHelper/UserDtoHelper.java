@@ -1,9 +1,7 @@
 package com.increff.pos.helper.dtoHelper;
 
-import com.increff.pos.model.BrandData;
-import com.increff.pos.model.UserData;
-import com.increff.pos.model.UserForm;
-import com.increff.pos.pojo.BrandPojo;
+import com.increff.pos.model.data.UserData;
+import com.increff.pos.model.form.UserForm;
 import com.increff.pos.pojo.UserPojo;
 
 import java.util.ArrayList;
@@ -12,9 +10,10 @@ import java.util.List;
 public class UserDtoHelper {
     public static UserData convert(UserPojo p) {
         UserData d = new UserData();
+        d.setUserId(p.getUserId());
         d.setEmail(p.getEmail());
         d.setPassword(p.getPassword());
-        d.setId(p.getId());
+
         return d;
     }
 

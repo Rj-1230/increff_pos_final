@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CartItemApi.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.api</a> &gt; <span class="el_source">CartItemApi.java</span></div><h1>CartItemApi.java</h1><pre class="source lang-java linenums">package com.increff.pos.api;
+
+import com.increff.pos.dao.CartItemDao;
+import com.increff.pos.pojo.CartItemPojo;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Objects;
+
+@Service
+@Transactional(rollbackOn = ApiException.class)
+<span class="fc" id="L14">public class CartItemApi {</span>
+    @Autowired
+    private CartItemDao cartItemDao;
+
+    public void add(CartItemPojo cartItemPojo, Integer quantity) throws ApiException {
+<span class="nc" id="L19">        CartItemPojo exCartItemPojo = cartItemDao.getCartPojoFromProductIdAndCounterId(cartItemPojo.getProductId(), cartItemPojo.getCounterId());</span>
+<span class="nc bnc" id="L20" title="All 2 branches missed.">        if(Objects.nonNull(exCartItemPojo)){</span>
+<span class="nc bnc" id="L21" title="All 2 branches missed.">            if(exCartItemPojo.getQuantity()+ cartItemPojo.getQuantity()&gt;quantity){</span>
+<span class="nc" id="L22">                throw new ApiException(&quot;Item can't be added to cart as it exceeds the inventory. Items already in cart : &quot;+ exCartItemPojo.getQuantity() +&quot; Present inventory count :&quot;+quantity);</span>
+            }
+<span class="nc" id="L24">            exCartItemPojo.setQuantity(exCartItemPojo.getQuantity()+ cartItemPojo.getQuantity());</span>
+<span class="nc" id="L25">            exCartItemPojo.setSellingPrice(cartItemPojo.getSellingPrice());</span>
+        }
+        else{
+<span class="nc" id="L28">            cartItemDao.insert(cartItemPojo);</span>
+        }
+<span class="nc" id="L30">    }</span>
+    public void delete(int id) throws ApiException {
+<span class="nc" id="L32">        getCheck(id);</span>
+<span class="nc" id="L33">        cartItemDao.delete(id);</span>
+<span class="nc" id="L34">    }</span>
+
+    public List&lt;CartItemPojo&gt; getAllItemsInCart(Integer id) {
+<span class="nc" id="L37">        return cartItemDao.selectAllCartPojoByCounterId(id);</span>
+    }
+
+    public void deleteAll(List&lt;CartItemPojo&gt; cartItemPojoList) throws ApiException{
+<span class="nc bnc" id="L41" title="All 2 branches missed.">        for(CartItemPojo cartItemPojo : cartItemPojoList){</span>
+<span class="nc" id="L42">            delete(cartItemPojo.getCartItemId());</span>
+<span class="nc" id="L43">        }</span>
+<span class="nc" id="L44">    }</span>
+
+    public void update(CartItemPojo exCartItemPojo, CartItemPojo newCartItemPojo) throws ApiException {
+<span class="nc" id="L47">        exCartItemPojo.setSellingPrice(newCartItemPojo.getSellingPrice());</span>
+<span class="nc" id="L48">        exCartItemPojo.setQuantity(newCartItemPojo.getQuantity());</span>
+<span class="nc" id="L49">    }</span>
+
+    public CartItemPojo getCheck(Integer id) throws ApiException {
+<span class="nc" id="L52">            CartItemPojo cartItemPojo = cartItemDao.select(id);</span>
+<span class="nc bnc" id="L53" title="All 2 branches missed.">            if(!Objects.nonNull(cartItemPojo)){</span>
+<span class="nc" id="L54">                throw new ApiException(&quot;No such item exists in cart with given Id&quot;);</span>
+            }
+<span class="nc" id="L56">            return cartItemPojo;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

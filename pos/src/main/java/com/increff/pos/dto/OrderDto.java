@@ -1,7 +1,10 @@
 package com.increff.pos.dto;
 
 import com.increff.pos.flow.OrderFlow;
-import com.increff.pos.model.*;
+import com.increff.pos.model.data.OrderData;
+import com.increff.pos.model.data.OrderItemData;
+import com.increff.pos.model.form.CustomerDetailsForm;
+import com.increff.pos.model.form.OrderItemForm;
 import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-import static com.increff.pos.helper.NullCheckHelper.*;
+import static com.increff.pos.util.NullCheckHelper.*;
 import static com.increff.pos.helper.dtoHelper.OrderDtoHelper.*;
 import static com.increff.pos.helper.dtoHelper.OrderItemDtoHelper.*;
-import static com.increff.pos.helper.dtoHelper.OrderItemDtoHelper.getAllOrderItemsOfAgivenOrder;
+import static com.increff.pos.util.SecurityUtil.getPrincipal;
 
 @Service
 
@@ -23,18 +26,18 @@ public class OrderDto {
     private OrderApi orderApi;
     @Autowired
     private OrderFlow orderFlow;
-    public void pushToNewOrder(OrderForm f) throws ApiException {
+    public void pushToNewOrder(CustomerDetailsForm f) throws ApiException {
         checkNullable(f);
         normalize(f);
         orderFlow.addNewOrder(convert(f));
     }
 
     public OrderData getOrderByOrderCode(String orderCode) throws ApiException {
-        OrderPojo p = orderApi.getCheckOrderByOrderCode(orderCode);
+        OrderPojo p = orderApi.getCheckOrder(orderCode);
         return convert(p);
     }
 
-    public void updateCustomerDetails(@PathVariable Integer id, @RequestBody OrderForm f) throws ApiException {
+    public void updateCustomerDetails(@PathVariable Integer id, @RequestBody CustomerDetailsForm f) throws ApiException {
         checkNullable(f);
         normalize(f);
         orderApi.updateCustomerDetails(id,convert(f));
@@ -42,11 +45,11 @@ public class OrderDto {
 
     public OrderData getOrderById(Integer id) throws ApiException
     {
-        return convert(orderApi.getCheckOrderByOrderId(id));
+        return convert(orderApi.getCheckOrder(id));
     }
 
     public List<OrderData> getAllOrdersByCounterId(){
-        return getAllOrders(orderApi.getAllOrdersByCounterId());
+        return getAllOrders(orderApi.getAllOrdersByCounterId(getPrincipal().getId()));
     }
 
     public List<OrderData> getAll(){
@@ -79,8 +82,8 @@ public class OrderDto {
         orderFlow.updateOrderItem(id,convert(f));
     }
 
-    public List<OrderItemData> getAllOrderItems(Integer orderId){
-        return getAllOrderItemsOfAgivenOrder(orderApi.getAllOrderItems(orderId));
+    public List<OrderItemData> getAllOrderItems(Integer orderId)throws  ApiException{
+        return orderFlow.getAllOrderItemsOfAnOrder(orderId);
     }
 
 

@@ -1,5 +1,6 @@
 package com.increff.pos.spring;
 
+import com.increff.pos.util.SnakeCaseNamingStrategy;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,8 +36,8 @@ public class DbConfig {
     private String hibernateHbm2ddl;
     @Value("${hibernate.jdbc.time_zone}")
     private String hibernate_time_zone;
-    @Value("${hibernate.physical_naming_strategy}")
-    private String hibernateNamingStrategy;
+//    @Value("${hibernate.physical_naming_strategy}")
+//    private String hibernateNamingStrategy;
 
     @Bean(name = "dataSource")
     public DataSource getDataSource() {
@@ -70,7 +71,7 @@ public class DbConfig {
         jpaProperties.put("hibernate.show_sql", hibernateShowSql);
         jpaProperties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddl);
         jpaProperties.put("hibernate.jdbc.time_zone", hibernate_time_zone);
-        jpaProperties.put("hibernate.physical_naming_strategy",hibernateNamingStrategy);
+        jpaProperties.put("hibernate.physical_naming_strategy",new SnakeCaseNamingStrategy(""));
         bean.setJpaProperties(jpaProperties);
         return bean;
     }

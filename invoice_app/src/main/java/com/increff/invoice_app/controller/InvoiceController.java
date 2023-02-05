@@ -26,7 +26,7 @@ public class InvoiceController {
 
         @ApiOperation(value = "Generate Invoice")
         @RequestMapping(path = "/api/invoice", method = RequestMethod.POST)
-        public ResponseEntity<byte[]> getPDF(@RequestBody InvoiceForm form) throws IOException {
+        public ResponseEntity<byte[]> getPDF(@RequestBody InvoiceForm form) throws Exception {
             invoiceService.generateInvoice(form);
             Path pdfPath = Paths.get("./src/main/resources/pdf/invoice.pdf");
             byte[] contents = Files.readAllBytes(pdfPath);

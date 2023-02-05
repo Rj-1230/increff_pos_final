@@ -114,10 +114,10 @@
                             <fo:block>Quantity</fo:block>
                         </fo:table-cell>
                         <fo:table-cell border="1px solid #b8b6b6">
-                            <fo:block>Unit Price</fo:block>
+                            <fo:block text-align="right">Unit Price</fo:block>
                         </fo:table-cell>
                         <fo:table-cell border="1px solid #b8b6b6">
-                            <fo:block>Total</fo:block>
+                            <fo:block text-align="right">Total</fo:block>
                         </fo:table-cell>
                     </fo:table-row>
                 </fo:table-header>

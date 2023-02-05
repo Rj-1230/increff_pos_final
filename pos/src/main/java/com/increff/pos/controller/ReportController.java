@@ -1,8 +1,14 @@
 package com.increff.pos.controller;
 
 import com.increff.pos.dto.ReportDto;
-import com.increff.pos.model.*;
 import com.increff.pos.api.ApiException;
+import com.increff.pos.model.data.BrandData;
+import com.increff.pos.model.data.DailyReportData;
+import com.increff.pos.model.data.InventoryReportData;
+import com.increff.pos.model.data.ProductRevenueData;
+import com.increff.pos.model.form.BrandForm;
+import com.increff.pos.model.form.DateBrandCategoryFilterForm;
+import com.increff.pos.model.form.DateFilterForm;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,32 +26,32 @@ public class ReportController {
     @Autowired
     private ReportDto reportDto;
 
-    @ApiOperation(value = "Get Revenue on product items with date,brand,category as filter")
-    @RequestMapping(path = "/api/revenue-brand-category", method = RequestMethod.POST)
-    public List<ProductRevenueData> getRevenueBrandCategoryWise(@RequestBody DateBrandCategoryFilterForm f) throws ApiException
+    @ApiOperation(value = "Get Revenue of invoiced order items with date,brand,category as filter")
+    @RequestMapping(path = "/api/report/revenue-brand-category", method = RequestMethod.POST)
+    public List<ProductRevenueData> getRevenueBrandCategoryWise(@RequestBody DateBrandCategoryFilterForm dateBrandCategoryFilterForm) throws ApiException
     {
-        return reportDto.getRevenueBrandCategoryWise(f);
+        return reportDto.getRevenueBrandCategoryWise(dateBrandCategoryFilterForm);
     }
 
     @ApiOperation(value = "Get Inventory filtered by Brand and category")
-    @RequestMapping(path = "/api/inventory-brand-category", method = RequestMethod.POST)
-    public List<InventoryReportData> getInventoryBrandCategoryWise(@RequestBody BrandForm f) throws ApiException
+    @RequestMapping(path = "/api/report/inventory-brand-category", method = RequestMethod.POST)
+    public List<InventoryReportData> getInventoryBrandCategoryWise(@RequestBody BrandForm brandForm) throws ApiException
     {
-        return reportDto.getInventoryBrandCategoryWise(f);
+        return reportDto.getInventoryBrandCategoryWise(brandForm);
     }
 
     @ApiOperation(value = "Get Brand filtered by Brand and category")
-    @RequestMapping(path = "/api/brand-category", method = RequestMethod.POST)
-    public List<BrandData> getBrandReport(@RequestBody BrandForm f) throws ApiException
+    @RequestMapping(path = "/api/report/brand-category", method = RequestMethod.POST)
+    public List<BrandData> getBrandReport(@RequestBody BrandForm brandForm) throws ApiException
     {
-        return reportDto.getBrandReport(f);
+        return reportDto.getBrandReport(brandForm);
     }
 
-    @ApiOperation(value = "Get Daily Sales reported filtered by date")
-    @RequestMapping(path = "/api/dailyReportFilter", method = RequestMethod.POST)
-    public List<DailyReportData> getDailySalesFilteredReport(@RequestBody DateFilterForm f) throws ApiException
+    @ApiOperation(value = "Get Daily Sales report filtered by date")
+    @RequestMapping(path = "/api/report/dailyReportFilter", method = RequestMethod.POST)
+    public List<DailyReportData> getDailySalesFilteredReport(@RequestBody DateFilterForm dateFilterForm) throws ApiException
     {
-        return reportDto.getDailySalesFilteredReport(f);
+        return reportDto.getDailySalesFilteredReport(dateFilterForm);
     }
 
 }

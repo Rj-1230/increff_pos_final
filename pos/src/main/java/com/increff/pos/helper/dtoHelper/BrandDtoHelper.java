@@ -1,7 +1,7 @@
 package com.increff.pos.helper.dtoHelper;
 
-import com.increff.pos.model.BrandData;
-import com.increff.pos.model.BrandForm;
+import com.increff.pos.model.data.BrandData;
+import com.increff.pos.model.form.BrandForm;
 import com.increff.pos.pojo.BrandPojo;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +21,7 @@ public class BrandDtoHelper {
         BrandData d = new BrandData();
         d.setBrand(p.getBrand());
         d.setCategory(p.getCategory());
-        d.setId(p.getId());
+        d.setId(p.getBrandId());
         return d;
     }
 

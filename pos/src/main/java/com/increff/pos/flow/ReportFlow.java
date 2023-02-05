@@ -1,27 +1,30 @@
 package com.increff.pos.flow;
 
-import com.increff.pos.model.*;
+import com.increff.pos.model.data.*;
+import com.increff.pos.model.form.BrandForm;
+import com.increff.pos.model.form.DateBrandCategoryFilterForm;
+import com.increff.pos.model.form.DateFilterForm;
 import com.increff.pos.pojo.*;
 import com.increff.pos.api.*;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.increff.pos.helper.ReportFlowHelper.*;
+import static com.increff.pos.helper.flowHelper.ReportFlowHelper.*;
 import static com.increff.pos.util.GetCurrentDateTime.*;
 
-//import static com.increff.pos.helper.ReportFlowHelper.filterByBrandCategory;
 @Service
 public class ReportFlow {
-
     private static final NumberFormat formatter = new DecimalFormat("#0.00");
     @Autowired
-    ReportApi reportApi;
+    DailyReportApi dailyReportApi;
     @Autowired
     OrderApi orderApi;
     @Autowired
@@ -31,52 +34,139 @@ public class ReportFlow {
     @Autowired
     InventoryApi inventoryApi;
 
+    @Transactional(rollbackOn = ApiException.class)
     public List<ProductRevenueData> getRevenueBrandCategoryWise(DateBrandCategoryFilterForm form) throws ApiException {
-        List<ProductRevenueData> list1 = new ArrayList<ProductRevenueData>();
-        HashMap<Integer, ProductRevenueData> map = new HashMap<>();
-        ZonedDateTime startDate = convertStringToZonedDateTime(form.getStart() + " 00:00:00");
-        ZonedDateTime endDate = convertStringToZonedDateTime(form.getEnd() + " 23:59:59");
+        HashMap<Integer, ProductRevenueData> finalProductRevenueDataMap = new HashMap<>();
+        List<OrderPojo> orderPojoList = getOrderListInDateRange(form);
+        getProductRevenueDataForEveryOrderInDateRange(finalProductRevenueDataMap, orderPojoList);
+        return convertMapToList(finalProductRevenueDataMap, form);
+    }
 
-        List<OrderPojo> orderPojoList = orderApi.selectOrderByDateFilter(startDate, endDate);
+    @Transactional(rollbackOn = ApiException.class)
+    public List<InventoryReportData> getInventoryBrandCategoryWise(BrandForm form) throws ApiException {
+        HashMap<Integer, InventoryReportData> inventoryReportDataMap = new HashMap<>();
+        List<InventoryPojo> inventoryPojoList = inventoryApi.getAll();
+        getInventoryReportDataMap(inventoryReportDataMap, inventoryPojoList);
+        return convertMapToList(inventoryReportDataMap, form);
+    }
+
+    @Transactional(rollbackOn = ApiException.class)
+    public List<BrandData> getBrandReport(BrandForm form) throws ApiException {
+        HashMap<Integer, BrandData> brandReportDataMap = new HashMap<>();
+        List<BrandPojo> brandPojoList = brandApi.getAll();
+        getBrandReportDataMap(brandReportDataMap, brandPojoList);
+        return convertMapToList(brandReportDataMap, form);
+    }
+
+
+    @Transactional(rollbackOn = ApiException.class)
+    public List<DailyReportData> getDailySalesFilteredReport(DateFilterForm form) throws ApiException {
+        HashMap<ZonedDateTime, DailyReportData> dailyReportDataMap = new HashMap<>();
+        List<DailyReportPojo> dailyReportPojoList = getInvoicedOrdersInDateRange(form);
+        getDailyReportDataMap(dailyReportDataMap, dailyReportPojoList);
+        return convertMapToList(dailyReportDataMap);
+    }
+
+
+    @Transactional(rollbackOn = ApiException.class)
+    public void createDailyReport() throws ApiException {
+        List<OrderPojo> orderPojoList = getInvoicedOrdersInDateRange();
+        Integer totalItems = 0;
+        Double totalRevenue = 0.0;
+        Integer totalOrders = orderPojoList.size();
+        updateTotalCountAndRevenue(orderPojoList, totalItems, totalRevenue);
+        DailyReportPojo reportPojo = convertToReportPojo(totalItems, totalRevenue, totalOrders);
+        updateDailyReportPojo(reportPojo);
+    }
+
+    private void updateDailyReportPojo(DailyReportPojo reportPojo) throws ApiException {
+        DailyReportPojo existingPojo = dailyReportApi.getReportByDate(getStartOfDay());
+        if (existingPojo == null) {
+            dailyReportApi.addReport(reportPojo);
+        } else {
+            dailyReportApi.update(getStartOfDay(), reportPojo);
+        }
+    }
+
+    private void updateTotalCountAndRevenue(List<OrderPojo> orderPojoList, Integer totalItems, Double totalRevenue) {
+        for (OrderPojo orderPojo : orderPojoList) {
+            List<OrderItemPojo> orderItemPojoList = orderApi.getAllOrderItems(orderPojo.getOrderId());
+            for (OrderItemPojo i : orderItemPojoList) {
+                totalItems += i.getQuantity();
+                totalRevenue += i.getQuantity() * i.getSellingPrice();
+            }
+        }
+    }
+
+    private DailyReportPojo convertToReportPojo(Integer totalItems, Double totalRevenue, Integer totalOrders) {
+        DailyReportPojo reportPojo = new DailyReportPojo();
+        totalRevenue = Double.parseDouble(formatter.format(totalRevenue));
+        reportPojo.setInvoiceDate(getStartOfDay());
+        reportPojo.setTotalRevenue(totalRevenue);
+        reportPojo.setInvoicedItemsCount(totalItems);
+        reportPojo.setInvoicedOrderCount(totalOrders);
+        return reportPojo;
+    }
+
+    private List<OrderPojo> getInvoicedOrdersInDateRange() {
+        ZonedDateTime start = getStartOfDay();
+        ZonedDateTime end = getEndOfDay();
+        return orderApi.selectOrderByDateFilter(start, end);
+    }
+
+    private void updateOrAddProductRevenueData(Map<Integer, ProductRevenueData> finalProductRevenueDataMap, Set<Integer> productIds, Map<Integer, ProductRevenueData> productRevenueDataMap) {
+        productIds.forEach(productId -> {
+            if (finalProductRevenueDataMap.containsKey(productId)) {
+                finalProductRevenueDataMap.get(productId).setQuantity(finalProductRevenueDataMap.get(productId).getQuantity() + productRevenueDataMap.get(productId).getQuantity());
+                finalProductRevenueDataMap.get(productId).setTotal(finalProductRevenueDataMap.get(productId).getTotal() + productRevenueDataMap.get(productId).getTotal());
+            } else {
+                finalProductRevenueDataMap.put(productId, productRevenueDataMap.get(productId));
+            }
+        });
+    }
+
+    private void getProductRevenueDataForEveryOrderInDateRange(Map<Integer, ProductRevenueData> finalProductRevenueDataMap, List<OrderPojo> orderPojoList) {
         for (OrderPojo e : orderPojoList) {
             Integer orderId = e.getOrderId();
             List<OrderItemPojo> orderItemPojoList = orderApi.getAllOrderItems(orderId);
             Set<Integer> productIds = orderItemPojoList.stream().map(OrderItemPojo::getProductId).collect(Collectors.toSet());
-            Map<Integer,ProductPojo> productIdPojoMap = productIds.stream().collect(Collectors.toMap(value-> value,
-                    value -> productApi.get(value)));
-            Map<Integer,BrandPojo> productIdBrandPojoMap = productIds.stream().collect(Collectors.toMap(value-> value,
-                    value -> brandApi.getBrandPojo(productApi.get(value).getBrandId())));
-//            Set<ProductPojo> productPojos = productIds.stream().map(x->productService.get(x)).collect(Collectors.toSet());
-//            Set<BrandPojo> brandPojos = productPojos.stream().map(x->brandService.getBrand(x.getBrandId())).collect(Collectors.toSet());
-
-//            Map<Integer,ProductRevenueData> productRevenueDataMap = productIds.stream().collect(Collectors.toMap(value-> value,
-//                    value -> convert(productIdPojoMap.get(value),productIdBrandPojoMap.get(value))));
-
-            Map<Integer,ProductRevenueData> productRevenueDataMap = productIds.stream().collect(Collectors.toMap(value-> value,
-                    value -> convert(productApi.get(value), brandApi.getBrandPojo(productApi.get(value).getBrandId()))));
-
-
-            for(Map.Entry<Integer,ProductRevenueData> entry : productRevenueDataMap.entrySet()){
-                System.out.println(entry.getKey() + " --------------"+ entry.getValue().getBrand() +entry.getValue().getCategory());
-            }
-
-//            Set<ProductRevenueData> productRevenueDataSet = productIds.stream().filter(productId -> Objects.equals(productId,productPojos.))
-//            ProductRevenueData productRevenueData = convert(productPojo, brandPojo);
-//                map.put(p.getProductId(), productRevenueData);
-//
-//                Integer productId = p.getProductId();
-//                Integer quantity = map.get(productId).getQuantity();
-//                double total = map.get(productId).getTotal();
-//                map.get(productId).setQuantity(quantity + p.getQuantity());
-//                map.get(productId).setTotal(total + p.getQuantity() * p.getSellingPrice());
+            Map<Integer, ProductRevenueData> productRevenueDataMap = productIds.stream().collect(Collectors.toMap(value -> value,
+                    value -> convert(productApi.get(value), brandApi.getBrandPojo(productApi.get(value).getBrandId()), orderItemPojoList)));
+            updateOrAddProductRevenueData(finalProductRevenueDataMap, productIds, productRevenueDataMap);
         }
+    }
 
+    private List<OrderPojo> getOrderListInDateRange(DateBrandCategoryFilterForm form) {
+        ZonedDateTime startDate = convertStringToZonedDateTime(form.getStart() + " 00:00:00");
+        ZonedDateTime endDate = convertStringToZonedDateTime(form.getEnd() + " 23:59:59");
+        return orderApi.selectOrderByDateFilter(startDate, endDate);
+    }
 
-//        Converting map to list
-        for (Map.Entry<Integer, ProductRevenueData> e : map.entrySet()) {
+    private List<ProductRevenueData> convertMapToList(Map<Integer, ProductRevenueData> finalProductRevenueDataMap, DateBrandCategoryFilterForm form) {
+        List<ProductRevenueData> list1 = new ArrayList<>();
+        for (Map.Entry<Integer, ProductRevenueData> e : finalProductRevenueDataMap.entrySet()) {
             e.getValue().setTotal(Double.parseDouble(formatter.format(e.getValue().getTotal())));
             if (e.getValue().getQuantity() == 0)
                 continue;
+            if (filterByBrandCategory(e.getValue().getBrand(), e.getValue().getCategory(), form.getBrand(), form.getCategory())) {
+                list1.add(e.getValue());
+            }
+        }
+        return list1;
+    }
+
+    private void getInventoryReportDataMap(HashMap<Integer, InventoryReportData> inventoryReportDataMap, List<InventoryPojo> inventoryPojoList) throws ApiException {
+        for (InventoryPojo p : inventoryPojoList) {
+            ProductPojo productPojo = productApi.getCheckProduct(p.getProductId());
+            BrandPojo brandPojo = brandApi.getCheckBrand(productPojo.getBrandId());
+            InventoryReportData inventoryReportData = convert(p, brandPojo, productPojo);
+            inventoryReportDataMap.put(p.getProductId(), inventoryReportData);
+        }
+    }
+
+    private List<InventoryReportData> convertMapToList(Map<Integer, InventoryReportData> inventoryReportDataMap, BrandForm form) {
+        List<InventoryReportData> list1 = new ArrayList<>();
+        for (Map.Entry<Integer, InventoryReportData> e : inventoryReportDataMap.entrySet()) {
             if (filterByBrandCategory(e.getValue().getBrand(), e.getValue().getCategory(), form.getBrand(), form.getCategory()))
                 list1.add(e.getValue());
         }
@@ -84,105 +174,43 @@ public class ReportFlow {
     }
 
 
-    public List<InventoryReportData> getInventoryBrandCategoryWise(BrandForm form) throws ApiException {
-        List<InventoryReportData> list1 = new ArrayList<InventoryReportData>();
-
-        List<InventoryPojo> inventoryPojoList = inventoryApi.getAll();
-        HashMap<Integer, InventoryReportData> map = new HashMap<>();
-
-//        getting the list of all available products in map
-        for(InventoryPojo p: inventoryPojoList) {
-            ProductPojo productPojo = productApi.getCheckProduct(p.getProductId());
-            BrandPojo brandPojo = brandApi.getCheckBrand(productPojo.getBrandId());
-            InventoryReportData inventoryReportData = convert(p,brandPojo);
-            map.put(p.getProductId(), inventoryReportData);
-        }
-//        Converting map to list
-        for (Map.Entry<Integer, InventoryReportData> e: map.entrySet())
-        {
-            if(filterByBrandCategory(e.getValue().getBrand(),e.getValue().getCategory(),form.getBrand(),form.getCategory()))
-                list1.add(e.getValue());
-        }
-
-        return list1;
-    }
-
-
-    public List<BrandData> getBrandReport(BrandForm form) throws ApiException {
-        List<BrandData> list1 = new ArrayList<BrandData>();
-
-        List<BrandPojo> brandPojoList = brandApi.getAll();
-        HashMap<Integer, BrandData> map = new HashMap<>();
-        for(BrandPojo p: brandPojoList) {
+    private void getBrandReportDataMap(HashMap<Integer, BrandData> brandReportDataMap, List<BrandPojo> brandPojoList) throws ApiException {
+        for (BrandPojo p : brandPojoList) {
             BrandData brandData = convert(p);
-            map.put(p.getId(), brandData);
+            brandReportDataMap.put(p.getBrandId(), brandData);
         }
-        for (Map.Entry<Integer,BrandData> e: map.entrySet())
-        {
-            if(filterByBrandCategory(e.getValue().getBrand(),e.getValue().getCategory(),form.getBrand(),form.getCategory()))
+    }
+
+    private List<BrandData> convertMapToList(HashMap<Integer, BrandData> brandReportDataMap, BrandForm form) {
+        List<BrandData> list1 = new ArrayList<>();
+        for (Map.Entry<Integer, BrandData> e : brandReportDataMap.entrySet()) {
+            if (filterByBrandCategory(e.getValue().getBrand(), e.getValue().getCategory(), form.getBrand(), form.getCategory()))
                 list1.add(e.getValue());
         }
         return list1;
     }
 
+    private List<DailyReportPojo> getInvoicedOrdersInDateRange(DateFilterForm form) {
+        ZonedDateTime startDate = convertStringToZonedDateTime(form.getStart() + " 00:00:00");
+        ZonedDateTime endDate = convertStringToZonedDateTime(form.getEnd() + " 23:59:59");
+        return dailyReportApi.selectReportByDateFilter(startDate, endDate);
+    }
 
-
-    public List<DailyReportData> getDailySalesFilteredReport(DateFilterForm form) throws ApiException
-    {
-        List<DailyReportData> list1 = new ArrayList<DailyReportData>();
-        HashMap<ZonedDateTime, DailyReportData> map = new HashMap<>();
-
-        ZonedDateTime startDate = convertStringToZonedDateTime(form.getStart()+" 00:00:00");
-        ZonedDateTime endDate = convertStringToZonedDateTime(form.getEnd()+" 23:59:59");
-
-        List<DailyReportPojo> dailyReportPojoList = reportApi.selectReportByDateFilter(startDate,endDate);
-        for(DailyReportPojo p: dailyReportPojoList) {
+    private void getDailyReportDataMap(HashMap<ZonedDateTime, DailyReportData> dailyReportDataMap, List<DailyReportPojo> dailyReportPojoList) throws ApiException {
+        for (DailyReportPojo p : dailyReportPojoList) {
             DailyReportData dailyReportData = convert(p);
-            map.put(p.getInvoiceDate(),dailyReportData);
+            dailyReportDataMap.put(p.getInvoiceDate(), dailyReportData);
         }
+    }
 
-        for (Map.Entry<ZonedDateTime, DailyReportData> e: map.entrySet())
-        {
+    private List<DailyReportData> convertMapToList(HashMap<ZonedDateTime, DailyReportData> dailyReportDataMap) {
+        List<DailyReportData> list1 = new ArrayList<>();
+        for (Map.Entry<ZonedDateTime, DailyReportData> e : dailyReportDataMap.entrySet()) {
             e.getValue().setTotalRevenue(Double.parseDouble(formatter.format(e.getValue().getTotalRevenue())));
             list1.add(e.getValue());
-
         }
-
         return list1;
-    }
-
-
-    public void createDailyReport() throws ApiException {
-        DailyReportPojo reportPojo = new DailyReportPojo();
-//        ZonedDateTime start = ZonedDateTime.now().withHour(0).withMinute(0).withSecond(0);
-        ZonedDateTime start = getStartOfDay();
-        ZonedDateTime end = getEndOfDay();
-//        ZonedDateTime end = ZonedDateTime.now().withHour(23).withMinute(59).withSecond(59);
-        Integer totalItems = 0;
-        Double totalRevenue = 0.0;
-        List<OrderPojo> orderPojoList = orderApi.selectOrderByDateFilter(start, end);
-
-        Integer totalOrders = orderPojoList.size();
-        for (OrderPojo o : orderPojoList) {
-            Integer id = o.getOrderId();
-            List<OrderItemPojo> orderItemPojoList = orderApi.getAllOrderItems(id);
-            for (OrderItemPojo i : orderItemPojoList) {
-                totalItems += i.getQuantity();
-                totalRevenue += i.getQuantity() * i.getSellingPrice();
-            }
-        }
-        totalRevenue = Double.parseDouble(formatter.format(totalRevenue));
-
-        reportPojo.setInvoiceDate(start);
-        reportPojo.setTotalRevenue(totalRevenue);
-        reportPojo.setInvoicedItemsCount(totalItems);
-        reportPojo.setInvoicedOrderCount(totalOrders);
-        DailyReportPojo pojo = reportApi.getReportByDate(start);
-        if (pojo == null) {
-            reportApi.addReport(reportPojo);
-        } else {
-            reportApi.update(start, reportPojo);
-        }
     }
 
 }
+

@@ -1,9 +1,14 @@
 package com.increff.pos.client;
 
-import com.increff.pos.model.InvoiceForm;
-import com.increff.pos.model.OrderItemData;
+import com.fasterxml.jackson.databind.annotation.JsonAppend;
+import com.increff.pos.model.data.OrderData;
+import com.increff.pos.model.form.InvoiceForm;
+import com.increff.pos.model.data.OrderItemData;
 import com.increff.pos.pojo.OrderPojo;
+import com.increff.pos.properties.Properties;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -16,18 +21,15 @@ import javax.transaction.Transactional;
 
 import static com.increff.pos.util.FormUtil.convertToInvoiceForm;
 
-@Service
+@Component
 public class InvoiceClient {
-    @Value("${invoice_app.url}")
-    private String invoice_appUrl;
-
+    @Autowired
+    private Properties properties;
     @Transactional(rollbackOn = Exception.class)
-    public void downloadInvoice(OrderPojo orderPojo,List<OrderItemData>orderItemsList) throws Exception {
-        InvoiceForm invoiceForm = convertToInvoiceForm(orderPojo,orderItemsList);
+    public byte[] downloadInvoice(OrderData orderData, List<OrderItemData>orderItemsList) throws Exception {
+        InvoiceForm invoiceForm = convertToInvoiceForm(orderData,orderItemsList);
         RestTemplate restTemplate = new RestTemplate();
-        byte[] contents = restTemplate.postForEntity(invoice_appUrl, invoiceForm, byte[].class).getBody();
-        Path pdfPath = Paths.get("./src/main/resources/pdf/" + orderPojo.getOrderId() + "_invoice.pdf");
-        Files.write(pdfPath, contents);
+        return restTemplate.postForEntity(properties.getInvoice_appUrl(), invoiceForm, byte[].class).getBody();
     }
 
 }

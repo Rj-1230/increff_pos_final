@@ -5,5 +5,7 @@ com\increff\invoice_app\spring\SpringConfig.class
 com\increff\invoice_app\spring\ControllerConfig.class
 com\increff\invoice_app\spring\WebInitializer.class
 com\increff\invoice_app\model\InvoiceForm.class
+com\increff\invoice_app\model\MessageData.class
 com\increff\invoice_app\service\InvoiceService.class
 com\increff\invoice_app\controller\InvoiceController.class
+com\increff\invoice_app\controller\AppRestControllerAdvice.class

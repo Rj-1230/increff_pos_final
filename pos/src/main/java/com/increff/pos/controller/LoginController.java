@@ -1,15 +1,15 @@
 package com.increff.pos.controller;
 
-import com.increff.pos.model.InfoData;
-import com.increff.pos.model.LoginForm;
+import com.increff.pos.model.data.InfoData;
+import com.increff.pos.model.form.LoginForm;
 import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.api.ApiException;
 import com.increff.pos.api.UserApi;
+import com.increff.pos.properties.Properties;
 import com.increff.pos.util.SecurityUtil;
 import com.increff.pos.util.UserPrincipal;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -29,17 +29,17 @@ import java.util.Objects;
 public class LoginController {
 
     @Autowired
-    private UserApi service;
+    private UserApi userApi;
     @Autowired
     private InfoData info;
+    @Autowired
+    private Properties properties;
 
-    @Value("${supervisorEmail}")
-    private String supervisorEmail;
     @ApiOperation(value = "Logs in a user")
     @RequestMapping(path = "/session/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ModelAndView login(HttpServletRequest request, LoginForm f) throws ApiException {
-        UserPojo userPojo = service.getByEmail(f.getEmail());
-        boolean authenticated = (userPojo != null && Objects.equals(userPojo.getPassword(), f.getPassword()));
+    public ModelAndView login(HttpServletRequest request, LoginForm loginForm) throws ApiException {
+        UserPojo userPojo = userApi.getUserPojoByEmail(loginForm.getEmail());
+        boolean authenticated = (userPojo != null && Objects.equals(userPojo.getPassword(), loginForm.getPassword()));
         if (!authenticated) {
             info.setMessage("Invalid username or password");
             return new ModelAndView("redirect:/site/login");
@@ -47,12 +47,9 @@ public class LoginController {
 
         Authentication authentication = convert(userPojo);
         HttpSession session = request.getSession(true);
-        // Attach Spring SecurityContext to this new session
         SecurityUtil.createContext(session);
-        // Attach Authentication object to the Security Context
         SecurityUtil.setAuthentication(authentication);
         return new ModelAndView("redirect:/ui/home");
-
     }
 
     @RequestMapping(path = "/session/logout", method = RequestMethod.GET)
@@ -61,23 +58,18 @@ public class LoginController {
         return new ModelAndView("redirect:/site/logout");
     }
 
-    private Authentication convert(UserPojo p) {
-        // Create principal
+    private Authentication convert(UserPojo userPojo) {
         UserPrincipal principal = new UserPrincipal();
-        principal.setEmail(p.getEmail());
-        principal.setId(p.getId());
+        principal.setEmail(userPojo.getEmail());
+        principal.setId(userPojo.getUserId());
 
         String role="operator";
-        if(Objects.equals(supervisorEmail,p.getEmail())){
+        if(Objects.equals(properties.getSupervisorEmail(),userPojo.getEmail())){
             role ="supervisor";
         }
         principal.setRole(role);
-        // Create Authorities
         ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
         authorities.add(new SimpleGrantedAuthority(role));
-        // you can add more roles if required
-
-        // Create Authentication
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, null,
                 authorities);
         return token;

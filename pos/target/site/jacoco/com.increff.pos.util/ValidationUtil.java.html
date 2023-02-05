@@ -6,7 +6,7 @@ import java.util.Set;
 <span class="nc" id="L6">public class ValidationUtil {</span>
 
 <span class="nc" id="L8">    private static final ValidatorFactory factory = Validation.buildDefaultValidatorFactory();</span>
-    public static &lt;T&gt; void validateForms(T form){
+    public static &lt;T&gt; void validateForm(T form){
 <span class="nc" id="L10">        Validator validator = factory.getValidator();</span>
 <span class="nc" id="L11">        Set&lt;ConstraintViolation&lt;T&gt;&gt; violations = validator.validate(form);</span>
 <span class="nc bnc" id="L12" title="All 2 branches missed.">        if (!violations.isEmpty()) {</span>
@@ -42,7 +42,7 @@ import java.util.Set;
 //            error.setMessage(violation.getMessage());
 //            errorList.add(error);
 //        }
-//        throw new ApiException(ApiStatus.BAD_DATA, &quot;Input validation failed&quot;, errorList);
+//        throw new ApiException(&quot;Input validation failed&quot;, errorList);
 //    }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

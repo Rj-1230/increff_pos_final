@@ -10,43 +10,39 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
-<span class="fc" id="L13">public class InventoryApi {</span>
+@Transactional(rollbackOn = ApiException.class)
+<span class="fc" id="L14">public class InventoryApi {</span>
 
     @Autowired
     private InventoryDao inventoryDao;
 
-    @Transactional(rollbackOn = ApiException.class)
     public void addNewItemToInventory(InventoryPojo newInventoryPojo) throws ApiException {
-<span class="fc" id="L20">        inventoryDao.insert(newInventoryPojo);</span>
+<span class="nc" id="L20">        inventoryDao.insert(newInventoryPojo);</span>
 
-<span class="fc" id="L22">    }</span>
-    @Transactional(rollbackOn = ApiException.class)
+<span class="nc" id="L22">    }</span>
     public void updateInventory(InventoryPojo newInventoryPojo, Integer quantity) throws ApiException {
-<span class="fc" id="L25">        InventoryPojo exInventoryPojo = getCheck(newInventoryPojo.getProductId());</span>
-<span class="fc bfc" id="L26" title="All 2 branches covered.">        if (quantity &lt;0) {</span>
-<span class="fc" id="L27">            throw new ApiException(&quot;The inventory count must not be negative. Current Inventory count :&quot; + exInventoryPojo.getQuantity());</span>
+<span class="nc" id="L24">        InventoryPojo exInventoryPojo = getCheck(newInventoryPojo.getProductId());</span>
+<span class="nc bnc" id="L25" title="All 2 branches missed.">        if (quantity &lt;0) {</span>
+<span class="nc" id="L26">            throw new ApiException(&quot;The inventory must be non-negative after update. Current Inventory count :&quot; + exInventoryPojo.getQuantity()+&quot; User wants to set quantity as : &quot;+quantity);</span>
         }
-<span class="fc" id="L29">        exInventoryPojo.setQuantity(quantity);</span>
-<span class="fc" id="L30">    }</span>
+<span class="nc" id="L28">        exInventoryPojo.setQuantity(quantity);</span>
+<span class="nc" id="L29">    }</span>
 
 
-    @Transactional
     public void delete(Integer id) {
-<span class="fc" id="L35">        inventoryDao.delete(id);</span>
-<span class="fc" id="L36">    }</span>
+<span class="nc" id="L33">        inventoryDao.delete(id);</span>
+<span class="nc" id="L34">    }</span>
 
-    @Transactional
     public List&lt;InventoryPojo&gt; getAll() {
-<span class="fc" id="L40">        return inventoryDao.selectAll();</span>
+<span class="nc" id="L37">        return inventoryDao.selectAll();</span>
     }
 
-    @Transactional(rollbackOn = ApiException.class)
-    public InventoryPojo getCheck(Integer id) throws ApiException {
-<span class="fc" id="L45">        InventoryPojo inventoryPojo = inventoryDao.select(id);</span>
-<span class="fc bfc" id="L46" title="All 2 branches covered.">        if (Objects.isNull(inventoryPojo)) {</span>
-<span class="fc" id="L47">            throw new ApiException(&quot;No such inventory with given Product Id exists !&quot;);</span>
+    public InventoryPojo getCheck(Integer productId) throws ApiException {
+<span class="nc" id="L41">        InventoryPojo inventoryPojo = inventoryDao.select(productId);</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">        if (Objects.isNull(inventoryPojo)) {</span>
+<span class="nc" id="L43">            throw new ApiException(&quot;No such inventory with given Product Id exists !&quot;);</span>
         }
-<span class="fc" id="L49">        return inventoryPojo;</span>
+<span class="nc" id="L45">        return inventoryPojo;</span>
     }
 
 }

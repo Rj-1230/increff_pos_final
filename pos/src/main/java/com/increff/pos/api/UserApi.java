@@ -10,14 +10,15 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@Transactional(rollbackOn = ApiException.class)
 public class UserApi {
 
     @Autowired
     private UserDao userDao;
 
-    @Transactional
+
     public void add(UserPojo userPojo) throws ApiException {
-        UserPojo existing = getByEmail(userPojo.getEmail());
+        UserPojo existing = getUserPojoByEmail(userPojo.getEmail());
         if (existing != null) {
             throw new ApiException("User with given email already exists");
         }
@@ -25,31 +26,28 @@ public class UserApi {
     }
 
 
-    @Transactional(rollbackOn = ApiException.class)
-    public UserPojo getByEmail(String email) throws ApiException {
-        return userDao.select(email);
+    public UserPojo getUserPojoByEmail(String email) throws ApiException {
+        return userDao.selectUserByEmail(email);
     }
 
-    @Transactional
+
     public List<UserPojo> getAll() {
         return userDao.selectAll();
     }
 
-    @Transactional
+
     public void delete(Integer id) throws ApiException {
         userDao.delete(id);
     }
 
-    @Transactional(rollbackOn  = ApiException.class)
     public void update(Integer id, UserPojo userPojo) throws ApiException {
-        UserPojo ex = getCheck(id);
+        UserPojo ex = getCheckUser(id);
         ex.setEmail(userPojo.getEmail());
         ex.setPassword(userPojo.getPassword());
     }
 
-    @Transactional(rollbackOn = ApiException.class)
-    public  UserPojo getCheck(Integer id) throws ApiException {
-        UserPojo userPojo = userDao.select(id);
+    public  UserPojo getCheckUser(Integer id) throws ApiException {
+        UserPojo userPojo = userDao.selectUserById(id);
         if(Objects.isNull(userPojo)){
             throw new ApiException("No such user with given id exists !");
         }

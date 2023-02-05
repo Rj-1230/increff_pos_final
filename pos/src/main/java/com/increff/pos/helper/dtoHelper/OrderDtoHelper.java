@@ -1,15 +1,11 @@
 package com.increff.pos.helper.dtoHelper;
 
-import com.increff.pos.model.BrandData;
-import com.increff.pos.model.BrandForm;
-import com.increff.pos.model.OrderData;
-import com.increff.pos.model.OrderForm;
-import com.increff.pos.pojo.BrandPojo;
+import com.increff.pos.model.data.OrderData;
+import com.increff.pos.model.form.CustomerDetailsForm;
 import com.increff.pos.pojo.OrderPojo;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +15,7 @@ import static com.increff.pos.util.SecurityUtil.getPrincipal;
 @Service
 public class OrderDtoHelper {
 
-    public static OrderPojo convert(OrderForm f){
+    public static OrderPojo convert(CustomerDetailsForm f){
         OrderPojo p = new OrderPojo();
         p.setCustomerPhone(f.getCustomerPhone());
         p.setCustomerName(f.getCustomerName());
@@ -43,7 +39,7 @@ public class OrderDtoHelper {
         return d;
     }
 
-    public static void normalize(OrderForm f) {
+    public static void normalize(CustomerDetailsForm f) {
         f.setCustomerName(f.getCustomerName().toLowerCase().trim());
         if(f.getCustomerName().length()>15){
             f.setCustomerName(f.getCustomerName().substring(0,15));

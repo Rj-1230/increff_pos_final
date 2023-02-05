@@ -1,8 +1,8 @@
 package com.increff.pos.controller;
 
 import com.increff.pos.dto.BrandDto;
-import com.increff.pos.model.BrandData;
-import com.increff.pos.model.BrandForm;
+import com.increff.pos.model.data.BrandData;
+import com.increff.pos.model.form.BrandForm;
 import com.increff.pos.api.ApiException;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,27 +20,27 @@ public class BrandController {
 
     @ApiOperation(value="Adding a brand")
     @RequestMapping(path="/api/supervisor/brand", method = RequestMethod.POST)
-    public void add(@RequestBody BrandForm f) throws ApiException {
-            brandDto.addBrand(f);
+    public void add(@RequestBody BrandForm brandForm) throws ApiException {
+            brandDto.addBrand(brandForm);
     }
 
     //    Although delete is disabled from UI, but method made for future use
     @ApiOperation(value="Deleting a brand")
-    @RequestMapping(path="/api/supervisor/brand/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable Integer id){
-        brandDto.deleteBrand(id);
+    @RequestMapping(path="/api/supervisor/brand/{brandId}", method = RequestMethod.DELETE)
+    public void delete(@PathVariable Integer brandId){
+        brandDto.deleteBrand(brandId);
     }
 
     @ApiOperation(value="Getting details of a brand from brandId")
-    @RequestMapping(path="/api/brand/{id}", method = RequestMethod.GET)
-    public BrandData get(@PathVariable Integer id) throws ApiException {
-        return brandDto.getBrand(id);
+    @RequestMapping(path="/api/brand/{brandId}", method = RequestMethod.GET)
+    public BrandData get(@PathVariable Integer brandId) throws ApiException {
+        return brandDto.getBrand(brandId);
     }
 
     @ApiOperation(value="Updating details of a particular brand-category combo")
-    @RequestMapping(path="/api/supervisor/brand/{id}", method = RequestMethod.PUT)
-    public void update(@PathVariable Integer id, @RequestBody BrandForm f) throws ApiException {
-        brandDto.updateBrand(id,f);
+    @RequestMapping(path="/api/supervisor/brand/{brandId}", method = RequestMethod.PUT)
+    public void update(@PathVariable Integer brandId, @RequestBody BrandForm brandForm) throws ApiException {
+        brandDto.updateBrand(brandId,brandForm);
     }
 
     @ApiOperation(value="Getting details of all the brand-category")

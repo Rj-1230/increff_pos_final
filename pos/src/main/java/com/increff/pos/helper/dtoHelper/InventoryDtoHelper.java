@@ -1,6 +1,7 @@
 package com.increff.pos.helper.dtoHelper;
 
-import com.increff.pos.model.*;
+import com.increff.pos.model.data.InventoryData;
+import com.increff.pos.model.form.InventoryForm;
 import com.increff.pos.pojo.InventoryPojo;
 
 import java.util.ArrayList;
@@ -9,15 +10,14 @@ import java.util.List;
 public class InventoryDtoHelper {
     public static InventoryPojo convert(InventoryForm f){
         InventoryPojo p = new InventoryPojo();
-        p.setBarcode(f.getBarcode());
         p.setQuantity(f.getQuantity());
         return p;
     }
 
     public static InventoryData convert(InventoryPojo p){
         InventoryData d = new InventoryData();
+        d.setInventoryId(p.getInventoryId());
         d.setQuantity(p.getQuantity());
-        d.setBarcode(p.getBarcode());
         return d;
     }
 

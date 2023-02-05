@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>InventoryFlow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.flow</a> &gt; <span class="el_source">InventoryFlow.java</span></div><h1>InventoryFlow.java</h1><pre class="source lang-java linenums">package com.increff.pos.flow;
 
-import com.increff.pos.model.InventoryData;
+import com.increff.pos.model.data.InventoryData;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductPojo;
 import com.increff.pos.api.ApiException;
@@ -13,7 +13,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.increff.pos.helper.dtoHelper.InventoryDtoHelper.*;
+import static com.increff.pos.helper.flowHelper.InventoryFlowHelper.*;
 
 @Service
 <span class="fc" id="L19">public class InventoryFlow {</span>
@@ -23,8 +23,8 @@ import static com.increff.pos.helper.dtoHelper.InventoryDtoHelper.*;
     private ProductApi productApi;
 
     @Transactional(rollbackOn = ApiException.class)
-    public void update(InventoryPojo newInventoryPojo) throws ApiException {
-<span class="nc" id="L27">        ProductPojo productPojo = productApi.getCheckProductPojoFromBarcode(newInventoryPojo.getBarcode());</span>
+    public void update(InventoryPojo newInventoryPojo,String barcode) throws ApiException {
+<span class="nc" id="L27">        ProductPojo productPojo = productApi.getCheckProduct(barcode);</span>
 <span class="nc" id="L28">        newInventoryPojo.setProductId(productPojo.getProductId());</span>
 <span class="nc" id="L29">        inventoryApi.updateInventory(newInventoryPojo, newInventoryPojo.getQuantity());</span>
 <span class="nc" id="L30">    }</span>
@@ -33,24 +33,18 @@ import static com.increff.pos.helper.dtoHelper.InventoryDtoHelper.*;
     public InventoryData get(Integer id) throws ApiException {
 <span class="nc" id="L34">        InventoryPojo inventoryPojo = inventoryApi.getCheck(id);</span>
 <span class="nc" id="L35">        ProductPojo productPojo = productApi.getCheckProduct(id);</span>
-<span class="nc" id="L36">        InventoryData inventoryData = convert(inventoryPojo);</span>
-<span class="nc" id="L37">        inventoryData.setProductName(productPojo.getName());</span>
-<span class="nc" id="L38">        inventoryData.setProductId(productPojo.getProductId());</span>
-<span class="nc" id="L39">        return inventoryData;</span>
+<span class="nc" id="L36">        return convertInventoryPojoToInventoryData(inventoryPojo,productPojo);</span>
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public List&lt;InventoryData&gt; getAll() throws ApiException {
-<span class="nc" id="L44">        List&lt;InventoryPojo&gt; inventoryPojoList = inventoryApi.getAll();</span>
-<span class="nc" id="L45">        List&lt;InventoryData&gt; list2 = new ArrayList&lt;InventoryData&gt;();</span>
-<span class="nc bnc" id="L46" title="All 2 branches missed.">        for(InventoryPojo inventoryPojo: inventoryPojoList){</span>
-<span class="nc" id="L47">            ProductPojo productPojo = productApi.getCheckProduct(inventoryPojo.getProductId());</span>
-<span class="nc" id="L48">            InventoryData inventoryData = convert(inventoryPojo);</span>
-<span class="nc" id="L49">            inventoryData.setProductName(productPojo.getName());</span>
-<span class="nc" id="L50">            inventoryData.setProductId(productPojo.getProductId());</span>
-<span class="nc" id="L51">            list2.add(inventoryData);</span>
-<span class="nc" id="L52">        }</span>
-<span class="nc" id="L53">        return list2;</span>
+<span class="nc" id="L41">        List&lt;InventoryPojo&gt; inventoryPojoList = inventoryApi.getAll();</span>
+<span class="nc" id="L42">        List&lt;InventoryData&gt; list2 = new ArrayList&lt;InventoryData&gt;();</span>
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        for(InventoryPojo inventoryPojo: inventoryPojoList){</span>
+<span class="nc" id="L44">            ProductPojo productPojo = productApi.getCheckProduct(inventoryPojo.getProductId());</span>
+<span class="nc" id="L45">            list2.add(convertInventoryPojoToInventoryData(inventoryPojo,productPojo));</span>
+<span class="nc" id="L46">        }</span>
+<span class="nc" id="L47">        return list2;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

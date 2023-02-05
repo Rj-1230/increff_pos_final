@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Objects;
 
 @Service
+@Transactional(rollbackOn = ApiException.class)
 public class ProductApi {
 
     @Autowired
     private ProductDao productDao;
 
 
-    @Transactional(rollbackOn = ApiException.class)
     public Integer add(ProductPojo p) throws ApiException {
         ProductPojo a = productDao.getProductPojoFromBarcode(p.getBarcode());
         if(Objects.nonNull(a)){
@@ -26,29 +26,27 @@ public class ProductApi {
 
     }
 
-    @Transactional
+
     public void delete(Integer id) {
         productDao.delete(id);
     }
 
-    @Transactional
+
     public ProductPojo get(Integer id) {
         return productDao.select(id);
     }
 
-    @Transactional
+
     public List<ProductPojo> getAll() {
         return productDao.selectAll();
     }
 
-    @Transactional(rollbackOn = ApiException.class)
     public void update(Integer id, ProductPojo p) throws ApiException {
         ProductPojo ex = getCheckProduct(id);
         ex.setName(p.getName());
         ex.setMrp(p.getMrp());
     }
 
-    @Transactional(rollbackOn = ApiException.class)
     public  ProductPojo getCheckProduct(Integer id) throws ApiException {
         ProductPojo a = productDao.select(id);
         if(Objects.isNull(a)){
@@ -57,8 +55,7 @@ public class ProductApi {
         return a;
     }
 
-    @Transactional(rollbackOn = ApiException.class)
-    public ProductPojo getCheckProductPojoFromBarcode(String barcode) throws ApiException {
+    public ProductPojo getCheckProduct(String barcode) throws ApiException {
         ProductPojo a = productDao.getProductPojoFromBarcode(barcode);
         if(Objects.isNull(a)){
             throw new ApiException("The product with given barcode doesn't exists");

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NullCheckHelper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.util</a> &gt; <span class="el_source">NullCheckHelper.java</span></div><h1>NullCheckHelper.java</h1><pre class="source lang-java linenums">package com.increff.pos.util;
+
+import com.increff.pos.api.ApiException;
+import com.increff.pos.model.form.*;
+
+import java.text.SimpleDateFormat;
+import java.time.Duration;
+//import java.time.LocalDate;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
+
+<span class="nc" id="L14">public class NullCheckHelper {</span>
+    public static void checkNullable(BrandForm f) throws ApiException {
+<span class="pc bpc" id="L16" title="1 of 2 branches missed.">        if(Objects.equals(f.getBrand(), &quot;&quot;)){</span>
+<span class="nc" id="L17">            throw new ApiException(&quot;The brand name field can't be empty&quot;);</span>
+        }
+<span class="pc bpc" id="L19" title="1 of 2 branches missed.">        if(Objects.equals(f.getCategory(), &quot;&quot;)){</span>
+<span class="nc" id="L20">            throw new ApiException(&quot;The category name field can't be empty&quot;);</span>
+        }
+<span class="fc" id="L22">    }</span>
+
+    public static void checkNullable(ProductForm f) throws ApiException {
+<span class="nc bnc" id="L25" title="All 2 branches missed.">        if(Objects.equals(f.getBarcode(), &quot;&quot;)){</span>
+<span class="nc" id="L26">            throw new ApiException(&quot;The barcode can't be empty&quot;);</span>
+        }
+<span class="nc bnc" id="L28" title="All 2 branches missed.">        if(Objects.equals(f.getName(), &quot;&quot;)){</span>
+<span class="nc" id="L29">            throw new ApiException(&quot;The product name field can't be empty&quot;);</span>
+        }
+
+<span class="nc bnc" id="L32" title="All 2 branches missed.">        if(f.getMrp()&lt;=0.0d){</span>
+<span class="nc" id="L33">            throw new ApiException(&quot;The MRP of product can't be 0 or negative&quot;);</span>
+        }
+
+<span class="nc" id="L36">    }</span>
+
+
+    public static void checkNullable(InventoryForm f) throws ApiException {
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        if(Objects.equals(f.getBarcode(), &quot;&quot;)){</span>
+<span class="nc" id="L41">            throw new ApiException(&quot;The barcode can't be empty&quot;);</span>
+        }
+<span class="nc bnc" id="L43" title="All 2 branches missed.">        if(f.getQuantity()&lt;=0){</span>
+<span class="nc" id="L44">            throw new ApiException(&quot;The item quantity in the inventory must be positive&quot;);</span>
+        }
+<span class="nc" id="L46">    }</span>
+
+    public static void checkNullable(CartItemForm f) throws ApiException {
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        if(Objects.equals(f.getBarcode(),&quot;&quot;)){</span>
+<span class="nc" id="L50">            throw new ApiException(&quot;The barcode can't be null&quot;);</span>
+        }
+<span class="nc bnc" id="L52" title="All 2 branches missed.">        if(f.getQuantity()&lt;=0){</span>
+<span class="nc" id="L53">            throw new ApiException(&quot;The item quantity to be added in the cart must be positive&quot;);</span>
+        }
+<span class="nc bnc" id="L55" title="All 2 branches missed.">        if(f.getSellingPrice()&lt;=0.0d){</span>
+<span class="nc" id="L56">            throw new ApiException(&quot;The selling price of item must be positive&quot;);</span>
+        }
+<span class="nc" id="L58">    }</span>
+
+    public static void checkNullable(CustomerDetailsForm f) throws ApiException {
+<span class="nc bnc" id="L61" title="All 2 branches missed.">        if(Objects.equals(f.getCustomerName(),&quot;&quot;)){</span>
+<span class="nc" id="L62">            throw new ApiException(&quot;The customer name can't be empty&quot;);</span>
+        }
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        if(Objects.equals(f.getCustomerPhone(),&quot;&quot;)){</span>
+<span class="nc" id="L65">            throw new ApiException(&quot;The customer phone number must contain 10 digits&quot;);</span>
+        }
+<span class="nc bnc" id="L67" title="All 2 branches missed.">        if (!onlyDigits(f.getCustomerPhone(),f.getCustomerPhone().length())){</span>
+<span class="nc" id="L68">            throw new ApiException(&quot;The customer phone must be a valid 10 digit number&quot;);</span>
+        }
+<span class="nc" id="L70">    }</span>
+
+    public static boolean onlyDigits(String str, int n)
+    {
+<span class="nc bnc" id="L74" title="All 2 branches missed.">        for (int i = 0; i &lt; n; i++) {</span>
+<span class="nc bnc" id="L75" title="All 4 branches missed.">            if (str.charAt(i) &lt; '0' || str.charAt(i) &gt; '9') {</span>
+<span class="nc" id="L76">                return false;</span>
+            }
+        }
+<span class="nc" id="L79">        return true;</span>
+    }
+
+    public static void checkNullable(OrderItemForm f) throws ApiException {
+<span class="nc bnc" id="L83" title="All 2 branches missed.">        if(Objects.equals(f.getBarcode(),&quot;&quot;)){</span>
+<span class="nc" id="L84">            throw new ApiException(&quot;The barcode can't be empty&quot;);</span>
+        }
+<span class="nc bnc" id="L86" title="All 2 branches missed.">        if(f.getQuantity()&lt;=0){</span>
+<span class="nc" id="L87">            throw new ApiException(&quot;The items to be added to order must be positive&quot;);</span>
+        }
+<span class="nc bnc" id="L89" title="All 2 branches missed.">        if(f.getSellingPrice()&lt;=0.0d){</span>
+<span class="nc" id="L90">            throw new ApiException(&quot;The selling price of item must be positive&quot;);</span>
+        }
+<span class="nc" id="L92">    }</span>
+
+
+    public static void checkNullable(UserForm f) throws ApiException {
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        if(Objects.equals(f.getEmail(), &quot;&quot;)){</span>
+<span class="nc" id="L97">            throw new ApiException(&quot;Email can't be empty&quot;);</span>
+        }
+<span class="nc bnc" id="L99" title="All 2 branches missed.">        if(Objects.equals(f.getPassword(), &quot;&quot;)){</span>
+<span class="nc" id="L100">            throw new ApiException(&quot;The password can't be empty&quot;);</span>
+        }
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        if(f.getPassword().length()&lt;8){</span>
+<span class="nc" id="L103">            throw new ApiException(&quot;The password must be at least 8 characters long&quot;);</span>
+        }
+<span class="nc" id="L105">    }</span>
+
+
+    public static void checkDate(DateFilterForm f) throws ApiException {
+        try {
+<span class="nc" id="L110">            SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">            if(!sdf.parse(f.getStart()).before(sdf.parse(f.getEnd()))){</span>
+<span class="nc" id="L112">                throw new ApiException(&quot;The end date must be ahead of start date&quot;);</span>
+            }
+<span class="nc" id="L114">            DateTimeFormatter dtf = DateTimeFormatter.ofPattern(&quot;yyyy-MM-dd&quot;);</span>
+<span class="nc" id="L115">            LocalDateTime date1 = LocalDate.parse(f.getStart(), dtf).atStartOfDay();</span>
+<span class="nc" id="L116">            LocalDateTime date2 = LocalDate.parse(f.getEnd(), dtf).atStartOfDay();</span>
+<span class="nc" id="L117">            long daysBetween = Duration.between(date1, date2).toDays();</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">            if(daysBetween&gt;31){</span>
+<span class="nc" id="L119">                throw new ApiException(&quot;The end date must be only a month ahead of start date&quot;);</span>
+            }
+        }
+<span class="nc" id="L122">        catch(Exception e){</span>
+<span class="nc" id="L123">            return;</span>
+<span class="nc" id="L124">        }</span>
+<span class="nc" id="L125">    }</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

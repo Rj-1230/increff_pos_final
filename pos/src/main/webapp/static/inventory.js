@@ -78,6 +78,7 @@ function getInventoryList(){
 	   type: 'GET',
 	   success: function(data) {
 	   		displayInventoryList(data);
+
 	   },
 	   error: function(response){
                          handleAjaxError(response);

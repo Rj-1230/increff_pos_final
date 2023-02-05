@@ -1,6 +1,6 @@
 package com.increff.pos.flow;
 
-import com.increff.pos.model.ProductData;
+import com.increff.pos.model.data.ProductData;
 import com.increff.pos.pojo.BrandPojo;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductPojo;
@@ -16,7 +16,7 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.increff.pos.helper.dtoHelper.ProductDtoHelper.convert;
+import static com.increff.pos.helper.flowHelper.ProductFlowHelper.convertProductPojoToProductData;
 
 @Service
 public class ProductFlow {
@@ -29,18 +29,10 @@ public class ProductFlow {
 
     @Transactional(rollbackOn = ApiException.class)
     public void add(ProductPojo productPojo,String brand,String category) throws ApiException {
-//        Putting brandId inside productPojo
-        Integer brandId = brandApi.getCheckBrandIdFromName(brand,category);
+        Integer brandId = brandApi.getCheckBrand(brand,category);
         productPojo.setBrandId(brandId);
-
         Integer productId = productApi.add(productPojo);
-
-//        Creating an inventory corresponding to the product added with quantity 0
-        InventoryPojo inventoryPojo = new InventoryPojo();
-        inventoryPojo.setProductId(productId);
-        inventoryPojo.setQuantity(0);
-        inventoryPojo.setBarcode(productPojo.getBarcode());
-        inventoryApi.addNewItemToInventory(inventoryPojo);
+        initializeInventoryForProduct(productId);
     }
 
 
@@ -48,10 +40,7 @@ public class ProductFlow {
     public ProductData get(Integer id) throws ApiException {
         ProductPojo productPojo = productApi.getCheckProduct(id);
         BrandPojo brandPojo = brandApi.getCheckBrand(productPojo.getBrandId());
-        ProductData productData = convert(productPojo);
-        productData.setBrand(brandPojo.getBrand());
-        productData.setCategory(brandPojo.getCategory());
-        return productData;
+        return convertProductPojoToProductData(productPojo,brandPojo);
     }
 
     @Transactional(rollbackOn = ApiException.class)
@@ -60,12 +49,16 @@ public class ProductFlow {
         List<ProductData> list2 = new ArrayList<ProductData>();
         for(ProductPojo productPojo: productPojoList){
             BrandPojo brandPojo = brandApi.getCheckBrand(productPojo.getBrandId());
-            ProductData productData = convert(productPojo);
-            productData.setBrand(brandPojo.getBrand());
-            productData.setCategory(brandPojo.getCategory());
-            list2.add(productData);
+            list2.add(convertProductPojoToProductData(productPojo,brandPojo));
         }
         return list2;
+    }
+
+    private void initializeInventoryForProduct(Integer productId) throws ApiException {
+        InventoryPojo inventoryPojo = new InventoryPojo();
+        inventoryPojo.setProductId(productId);
+        inventoryPojo.setQuantity(0);
+        inventoryApi.addNewItemToInventory(inventoryPojo);
     }
 
 }

@@ -7,23 +7,22 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name="product", indexes = @Index(columnList = "Barcode") , uniqueConstraints={@UniqueConstraint(columnNames={"Barcode", "Brand_Id"})})
+@Table(name="product", indexes = @Index(columnList = "barcode") , uniqueConstraints={@UniqueConstraint(columnNames={"barcode", "brandId"})})
 
 @Getter
 @Setter
 public class ProductPojo extends AbstractPojo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="Product_Id", nullable=false)
+    @Column(nullable=false)
     private Integer productId;
-    @Column(name="Barcode", nullable=false)
+    @Column(nullable=false)
     private String barcode;
-    @Column(name="Brand_Id", nullable=false)
+    @Column(nullable=false)
     private Integer brandId;
-    @Column(name="Product_Name")
-    @NotNull
+    @Column(nullable=false)
     private String name;
-    @Column(name="Mrp", nullable=false)
+    @Column(nullable=false)
     private Double mrp;
 
 
