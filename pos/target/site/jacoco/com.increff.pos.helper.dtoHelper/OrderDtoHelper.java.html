@@ -16,45 +16,45 @@ import static com.increff.pos.util.SecurityUtil.getPrincipal;
 <span class="fc" id="L16">public class OrderDtoHelper {</span>
 
     public static OrderPojo convert(CustomerDetailsForm f){
-<span class="nc" id="L19">        OrderPojo p = new OrderPojo();</span>
-<span class="nc" id="L20">        p.setCustomerPhone(f.getCustomerPhone());</span>
-<span class="nc" id="L21">        p.setCustomerName(f.getCustomerName());</span>
-<span class="nc" id="L22">        p.setOrderCreateTime(ZonedDateTime.now());</span>
-<span class="nc" id="L23">        p.setCounterId(getPrincipal().getId());</span>
-<span class="nc" id="L24">        p.setStatus(&quot;created&quot;);</span>
+<span class="fc" id="L19">        OrderPojo p = new OrderPojo();</span>
+<span class="fc" id="L20">        p.setCustomerPhone(f.getCustomerPhone());</span>
+<span class="fc" id="L21">        p.setCustomerName(f.getCustomerName());</span>
+<span class="fc" id="L22">        p.setOrderCreateTime(ZonedDateTime.now());</span>
+<span class="fc" id="L23">        p.setCounterId(getPrincipal().getId());</span>
+<span class="fc" id="L24">        p.setStatus(&quot;created&quot;);</span>
 
-<span class="nc" id="L26">        return p;</span>
+<span class="fc" id="L26">        return p;</span>
     }
 
     public static OrderData convert(OrderPojo p){
-<span class="nc" id="L30">        OrderData d = new OrderData();</span>
-<span class="nc" id="L31">        d.setOrderId(p.getOrderId());</span>
-<span class="nc" id="L32">        d.setStatus(p.getStatus());</span>
-<span class="nc" id="L33">        d.setCounterId(p.getCounterId());</span>
-<span class="nc" id="L34">        d.setOrderCreateTime(p.getOrderCreateTime().withZoneSameInstant(ZoneId.of(&quot;Asia/Calcutta&quot;)));</span>
-<span class="nc" id="L35">        d.setOrderInvoiceTime(p.getOrderInvoiceTime());</span>
-<span class="nc" id="L36">        d.setCustomerName(p.getCustomerName());</span>
-<span class="nc" id="L37">        d.setCustomerPhone(p.getCustomerPhone());</span>
-<span class="nc" id="L38">        d.setOrderCode(p.getOrderCode());</span>
-<span class="nc" id="L39">        return d;</span>
+<span class="fc" id="L30">        OrderData d = new OrderData();</span>
+<span class="fc" id="L31">        d.setOrderId(p.getOrderId());</span>
+<span class="fc" id="L32">        d.setStatus(p.getStatus());</span>
+<span class="fc" id="L33">        d.setCounterId(p.getCounterId());</span>
+<span class="fc" id="L34">        d.setOrderCreateTime(p.getOrderCreateTime().withZoneSameInstant(ZoneId.of(&quot;Asia/Calcutta&quot;)));</span>
+<span class="fc" id="L35">        d.setOrderInvoiceTime(p.getOrderInvoiceTime());</span>
+<span class="fc" id="L36">        d.setCustomerName(p.getCustomerName());</span>
+<span class="fc" id="L37">        d.setCustomerPhone(p.getCustomerPhone());</span>
+<span class="fc" id="L38">        d.setOrderCode(p.getOrderCode());</span>
+<span class="fc" id="L39">        return d;</span>
     }
 
     public static void normalize(CustomerDetailsForm f) {
-<span class="nc" id="L43">        f.setCustomerName(f.getCustomerName().toLowerCase().trim());</span>
-<span class="nc bnc" id="L44" title="All 2 branches missed.">        if(f.getCustomerName().length()&gt;15){</span>
+<span class="fc" id="L43">        f.setCustomerName(f.getCustomerName().toLowerCase().trim());</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if(f.getCustomerName().length()&gt;15){</span>
 <span class="nc" id="L45">            f.setCustomerName(f.getCustomerName().substring(0,15));</span>
         }
-<span class="nc bnc" id="L47" title="All 2 branches missed.">        if(f.getCustomerPhone().length()&gt;10){</span>
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">        if(f.getCustomerPhone().length()&gt;10){</span>
 <span class="nc" id="L48">            f.setCustomerPhone(f.getCustomerPhone().substring(0,10));</span>
         }
-<span class="nc" id="L50">    }</span>
+<span class="fc" id="L50">    }</span>
 
     public static List&lt;OrderData&gt; getAllOrders(List&lt;OrderPojo&gt; list){
-<span class="nc" id="L53">        List&lt;OrderData&gt; list2 = new ArrayList&lt;OrderData&gt;();</span>
-<span class="nc bnc" id="L54" title="All 2 branches missed.">        for(OrderPojo p: list){</span>
-<span class="nc" id="L55">            list2.add(convert(p));</span>
-<span class="nc" id="L56">        }</span>
-<span class="nc" id="L57">        return list2;</span>
+<span class="fc" id="L53">        List&lt;OrderData&gt; list2 = new ArrayList&lt;OrderData&gt;();</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        for(OrderPojo p: list){</span>
+<span class="fc" id="L55">            list2.add(convert(p));</span>
+<span class="fc" id="L56">        }</span>
+<span class="fc" id="L57">        return list2;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

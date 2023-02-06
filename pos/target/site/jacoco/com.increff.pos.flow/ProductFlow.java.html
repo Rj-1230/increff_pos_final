@@ -29,37 +29,37 @@ import static com.increff.pos.helper.flowHelper.ProductFlowHelper.convertProduct
 
     @Transactional(rollbackOn = ApiException.class)
     public void add(ProductPojo productPojo,String brand,String category) throws ApiException {
-<span class="nc" id="L32">        Integer brandId = brandApi.getCheckBrand(brand,category);</span>
-<span class="nc" id="L33">        productPojo.setBrandId(brandId);</span>
-<span class="nc" id="L34">        Integer productId = productApi.add(productPojo);</span>
-<span class="nc" id="L35">        initializeInventoryForProduct(productId);</span>
-<span class="nc" id="L36">    }</span>
+<span class="fc" id="L32">        Integer brandId = brandApi.getCheckBrand(brand,category);</span>
+<span class="fc" id="L33">        productPojo.setBrandId(brandId);</span>
+<span class="fc" id="L34">        Integer productId = productApi.add(productPojo);</span>
+<span class="fc" id="L35">        initializeInventoryForProduct(productId);</span>
+<span class="fc" id="L36">    }</span>
 
 
     @Transactional(rollbackOn = ApiException.class)
     public ProductData get(Integer id) throws ApiException {
-<span class="nc" id="L41">        ProductPojo productPojo = productApi.getCheckProduct(id);</span>
-<span class="nc" id="L42">        BrandPojo brandPojo = brandApi.getCheckBrand(productPojo.getBrandId());</span>
-<span class="nc" id="L43">        return convertProductPojoToProductData(productPojo,brandPojo);</span>
+<span class="fc" id="L41">        ProductPojo productPojo = productApi.getCheckProduct(id);</span>
+<span class="fc" id="L42">        BrandPojo brandPojo = brandApi.getCheckBrand(productPojo.getBrandId());</span>
+<span class="fc" id="L43">        return convertProductPojoToProductData(productPojo,brandPojo);</span>
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public List&lt;ProductData&gt; getAll() throws ApiException {
-<span class="nc" id="L48">        List&lt;ProductPojo&gt; productPojoList = productApi.getAll();</span>
-<span class="nc" id="L49">        List&lt;ProductData&gt; list2 = new ArrayList&lt;ProductData&gt;();</span>
-<span class="nc bnc" id="L50" title="All 2 branches missed.">        for(ProductPojo productPojo: productPojoList){</span>
-<span class="nc" id="L51">            BrandPojo brandPojo = brandApi.getCheckBrand(productPojo.getBrandId());</span>
-<span class="nc" id="L52">            list2.add(convertProductPojoToProductData(productPojo,brandPojo));</span>
-<span class="nc" id="L53">        }</span>
-<span class="nc" id="L54">        return list2;</span>
+<span class="fc" id="L48">        List&lt;ProductPojo&gt; productPojoList = productApi.getAll();</span>
+<span class="fc" id="L49">        List&lt;ProductData&gt; list2 = new ArrayList&lt;ProductData&gt;();</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">        for(ProductPojo productPojo: productPojoList){</span>
+<span class="fc" id="L51">            BrandPojo brandPojo = brandApi.getCheckBrand(productPojo.getBrandId());</span>
+<span class="fc" id="L52">            list2.add(convertProductPojoToProductData(productPojo,brandPojo));</span>
+<span class="fc" id="L53">        }</span>
+<span class="fc" id="L54">        return list2;</span>
     }
 
     private void initializeInventoryForProduct(Integer productId) throws ApiException {
-<span class="nc" id="L58">        InventoryPojo inventoryPojo = new InventoryPojo();</span>
-<span class="nc" id="L59">        inventoryPojo.setProductId(productId);</span>
-<span class="nc" id="L60">        inventoryPojo.setQuantity(0);</span>
-<span class="nc" id="L61">        inventoryApi.addNewItemToInventory(inventoryPojo);</span>
-<span class="nc" id="L62">    }</span>
+<span class="fc" id="L58">        InventoryPojo inventoryPojo = new InventoryPojo();</span>
+<span class="fc" id="L59">        inventoryPojo.setProductId(productId);</span>
+<span class="fc" id="L60">        inventoryPojo.setQuantity(0);</span>
+<span class="fc" id="L61">        inventoryApi.addNewItemToInventory(inventoryPojo);</span>
+<span class="fc" id="L62">    }</span>
 
 }
 

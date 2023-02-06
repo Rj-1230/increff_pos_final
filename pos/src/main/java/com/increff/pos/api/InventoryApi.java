@@ -21,27 +21,29 @@ public class InventoryApi {
 
     }
     public void updateInventory(InventoryPojo newInventoryPojo, Integer quantity) throws ApiException {
-        InventoryPojo exInventoryPojo = getCheck(newInventoryPojo.getProductId());
+        InventoryPojo exInventoryPojo = getCheckByProductId(newInventoryPojo.getProductId());
         if (quantity <0) {
             throw new ApiException("The inventory must be non-negative after update. Current Inventory count :" + exInventoryPojo.getQuantity()+" User wants to set quantity as : "+quantity);
         }
         exInventoryPojo.setQuantity(quantity);
     }
 
-
-    public void delete(Integer id) throws ApiException {
-        getCheck(id);
-        inventoryDao.delete(id);
-    }
-
     public List<InventoryPojo> getAll() {
         return inventoryDao.selectAll();
     }
 
-    public InventoryPojo getCheck(Integer productId) throws ApiException {
-        InventoryPojo inventoryPojo = inventoryDao.select(productId);
+    public InventoryPojo getCheckByProductId(Integer productId) throws ApiException {
+        InventoryPojo inventoryPojo = inventoryDao.selectByProductId(productId);
         if (Objects.isNull(inventoryPojo)) {
-            throw new ApiException("No such inventory with given Product Id exists !");
+            throw new ApiException("No such inventory with given product Id exists !");
+        }
+        return inventoryPojo;
+    }
+
+    public InventoryPojo getCheck(Integer inventoryId) throws ApiException {
+        InventoryPojo inventoryPojo = inventoryDao.select(inventoryId);
+        if (Objects.isNull(inventoryPojo)) {
+            throw new ApiException("No such inventory with given inventory Id exists !");
         }
         return inventoryPojo;
     }

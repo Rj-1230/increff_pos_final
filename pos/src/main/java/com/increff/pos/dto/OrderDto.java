@@ -73,7 +73,7 @@ public class OrderDto {
     }
 
     public OrderItemData getOrderItem(Integer id) throws ApiException {
-        return convert(orderApi.getCheckOrderItem(id));
+        return orderFlow.getOrderItem(id);
     }
 
     public void updateOrderItem(Integer id,OrderItemForm f) throws ApiException {

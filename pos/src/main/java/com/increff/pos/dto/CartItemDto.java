@@ -34,17 +34,16 @@ public class CartItemDto {
     }
 
     public CartItemData getCartItem(Integer id) throws ApiException {
-        return convert(cartItemApi.getCheck(id));
+        return cartItemFlow.getCartItem(id);
     }
 
-    public void updateCartItem(@PathVariable Integer id, @RequestBody CartItemForm f) throws ApiException {
+    public void updateCartItem(Integer id,CartItemForm f) throws ApiException {
         checkNullable(f);
         normalize(f);
         cartItemFlow.update(id,convert(f));
     }
     public List<CartItemData> getAll() throws ApiException{
         return cartItemFlow.getAllCartItemsOfCounterId();
-//                getAllCartItems(cartItemApi.getAll(getPrincipal().getId()));
     }
 
     public void flushCartItems()throws ApiException{

@@ -27,10 +27,10 @@ import static com.increff.pos.util.SecurityUtil.getPrincipal;
     @Autowired
     private OrderFlow orderFlow;
     public void pushToNewOrder(CustomerDetailsForm f) throws ApiException {
-<span class="nc" id="L30">        checkNullable(f);</span>
-<span class="nc" id="L31">        normalize(f);</span>
-<span class="nc" id="L32">        orderFlow.addNewOrder(convert(f));</span>
-<span class="nc" id="L33">    }</span>
+<span class="fc" id="L30">        checkNullable(f);</span>
+<span class="fc" id="L31">        normalize(f);</span>
+<span class="fc" id="L32">        orderFlow.addNewOrder(convert(f));</span>
+<span class="fc" id="L33">    }</span>
 
     public OrderData getOrderByOrderCode(String orderCode) throws ApiException {
 <span class="nc" id="L36">        OrderPojo p = orderApi.getCheckOrder(orderCode);</span>
@@ -38,22 +38,22 @@ import static com.increff.pos.util.SecurityUtil.getPrincipal;
     }
 
     public void updateCustomerDetails(@PathVariable Integer id, @RequestBody CustomerDetailsForm f) throws ApiException {
-<span class="nc" id="L41">        checkNullable(f);</span>
-<span class="nc" id="L42">        normalize(f);</span>
-<span class="nc" id="L43">        orderApi.updateCustomerDetails(id,convert(f));</span>
-<span class="nc" id="L44">    }</span>
+<span class="fc" id="L41">        checkNullable(f);</span>
+<span class="fc" id="L42">        normalize(f);</span>
+<span class="fc" id="L43">        orderApi.updateCustomerDetails(id,convert(f));</span>
+<span class="fc" id="L44">    }</span>
 
     public OrderData getOrderById(Integer id) throws ApiException
     {
-<span class="nc" id="L48">        return convert(orderApi.getCheckOrder(id));</span>
+<span class="fc" id="L48">        return convert(orderApi.getCheckOrder(id));</span>
     }
 
     public List&lt;OrderData&gt; getAllOrdersByCounterId(){
-<span class="nc" id="L52">        return getAllOrders(orderApi.getAllOrdersByCounterId(getPrincipal().getId()));</span>
+<span class="fc" id="L52">        return getAllOrders(orderApi.getAllOrdersByCounterId(getPrincipal().getId()));</span>
     }
 
     public List&lt;OrderData&gt; getAll(){
-<span class="nc" id="L56">        return getAllOrders(orderApi.getAll());</span>
+<span class="fc" id="L56">        return getAllOrders(orderApi.getAll());</span>
     }
 
 
@@ -68,7 +68,7 @@ import static com.increff.pos.util.SecurityUtil.getPrincipal;
 <span class="nc" id="L68">        orderFlow.addOrderItem(convert(f),f.getBarcode());</span>
 <span class="nc" id="L69">    }</span>
 
-    public void deleteOrderItem(@PathVariable Integer id) throws ApiException {
+    public void deleteOrderItem(Integer id) throws ApiException {
 <span class="nc" id="L72">        orderFlow.deleteOrderItem(id);</span>
 <span class="nc" id="L73">    }</span>
 
@@ -76,7 +76,7 @@ import static com.increff.pos.util.SecurityUtil.getPrincipal;
 <span class="nc" id="L76">        return convert(orderApi.getCheckOrderItem(id));</span>
     }
 
-    public void updateOrderItem(@PathVariable Integer id, @RequestBody OrderItemForm f) throws ApiException {
+    public void updateOrderItem(Integer id,OrderItemForm f) throws ApiException {
 <span class="nc" id="L80">        checkNullable(f);</span>
 <span class="nc" id="L81">        normalize(f);</span>
 <span class="nc" id="L82">        orderFlow.updateOrderItem(id,convert(f));</span>

@@ -62,15 +62,21 @@ public class OrderFlow {
     @Transactional(rollbackOn = ApiException.class)
     public void deleteOrderItem(Integer id) throws ApiException {
         OrderItemPojo ex = orderApi.getCheckOrderItem(id);
-        InventoryPojo inventoryPojo = inventoryApi.getCheck(ex.getProductId());
+        InventoryPojo inventoryPojo = inventoryApi.getCheckByProductId(ex.getProductId());
         inventoryApi.updateInventory(inventoryPojo,inventoryPojo.getQuantity()+ ex.getQuantity());
         orderApi.deleteOrderItem(id);
     }
 
+    @Transactional(rollbackOn = ApiException.class)
+    public OrderItemData getOrderItem(Integer id) throws ApiException {
+        OrderItemPojo orderItemPojo = orderApi.getCheckOrderItem(id);
+        String productName = productApi.getCheckProduct(orderItemPojo.getProductId()).getName();
+        return convertOrderItemPojoToOrderItemData(orderItemPojo,productName);
+    }
     @Transactional(rollbackOn  = ApiException.class)
     public void updateOrderItem(Integer id, OrderItemPojo orderItemPojo) throws ApiException {
         OrderItemPojo ex = orderApi.getCheckOrderItem(id);
-        InventoryPojo inventoryPojo = inventoryApi.getCheck(ex.getProductId());
+        InventoryPojo inventoryPojo = inventoryApi.getCheckByProductId(ex.getProductId());
         ProductPojo productPojo= productApi.getCheckProduct(ex.getProductId());
         if(orderItemPojo.getSellingPrice()>productPojo.getMrp()){
             throw new ApiException("Item can't be updated to order as selling price must be less than MRP. Product's MRP :"+productPojo.getMrp());
@@ -101,7 +107,7 @@ public class OrderFlow {
 
     private void checkSufficientInventoryToCreateOrder(List<CartItemPojo> cartItemPojoList) throws ApiException {
         for(CartItemPojo cartItemPojo : cartItemPojoList){
-            InventoryPojo inventoryPojo = inventoryApi.getCheck(cartItemPojo.getProductId());
+            InventoryPojo inventoryPojo = inventoryApi.getCheckByProductId(cartItemPojo.getProductId());
             if(cartItemPojo.getQuantity()>inventoryPojo.getQuantity()){
                 throw new ApiException("The item "+productApi.getCheckProduct(cartItemPojo.getProductId())+" can't be added to order because sufficient amount not present in inventory. Inventory count = "+inventoryPojo.getQuantity()+"Cart count ="+cartItemPojo.getQuantity());
             }
@@ -116,7 +122,7 @@ public class OrderFlow {
         Files.write(pdfPath, contents);
     }
     private void checkSufficientInventoryToAddOrderItem(OrderItemPojo orderItemPojo, Double mrp) throws ApiException {
-        InventoryPojo inventoryPojo = inventoryApi.getCheck(orderItemPojo.getProductId());
+        InventoryPojo inventoryPojo = inventoryApi.getCheckByProductId(orderItemPojo.getProductId());
         if(orderItemPojo.getQuantity()>inventoryPojo.getQuantity()){
             throw new ApiException("Item can't be added to order as it exceeds the inventory. Present inventory count : "+inventoryPojo.getQuantity());
         }

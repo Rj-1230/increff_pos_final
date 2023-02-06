@@ -1,4 +1,5 @@
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\controller\OrderController.java
+C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\util\Properties.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\util\NullCheckHelper.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\util\PojoUtil.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\util\ValidationUtil.java
@@ -92,7 +93,6 @@ C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\po
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\model\data\InventoryData.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\api\InvoiceClientApi.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\dao\ProductDao.java
-C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\properties\Properties.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\model\data\ProductRevenueData.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\spring\SchedulerInitializer.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\util\FormUtil.java

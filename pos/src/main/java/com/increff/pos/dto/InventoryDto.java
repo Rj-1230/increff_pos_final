@@ -30,10 +30,6 @@ public class InventoryDto {
         inventoryFlow.update(convert(f),f.getBarcode());
     }
 
-    public void delete(Integer id) throws ApiException {
-        inventoryApi.delete(id);
-    }
-
     public InventoryData get(Integer id) throws ApiException {
         return inventoryFlow.get(id);
     }

@@ -8,7 +8,6 @@ import java.util.List;
 
 @Repository
 public class ProductDao extends AbstractDao{
-    private static String delete_product_pojo_by_id = "delete from ProductPojo p where productId=:id";
     private static String select_product_pojo_by_id = "select p from ProductPojo p where productId=:id";
     private static String select_product_pojo_by_barcode = "select p from ProductPojo p where barcode=:barcode";
     private static String select_all_product_pojo = "select p from ProductPojo p";
@@ -20,11 +19,6 @@ public class ProductDao extends AbstractDao{
         em.persist(p);
         em.flush();
         return p.getProductId();
-    }
-    public Integer delete(Integer id) {
-        Query query = em.createQuery(delete_product_pojo_by_id);
-        query.setParameter("id", id);
-        return query.executeUpdate();
     }
 
     public ProductPojo select(Integer id) {

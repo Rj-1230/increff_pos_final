@@ -28,7 +28,7 @@ public class CartItemFlow {
     public void add(CartItemPojo cartItemPojo, String barcode) throws ApiException {
         ProductPojo productPojo= productApi.getCheckProduct(barcode);
         cartItemPojo.setProductId(productPojo.getProductId());
-        InventoryPojo inventoryPojo = inventoryApi.getCheck(cartItemPojo.getProductId());
+        InventoryPojo inventoryPojo = inventoryApi.getCheckByProductId(cartItemPojo.getProductId());
         Integer inventoryQuantity = checkMrpAndInventoryForCartPojo(cartItemPojo,productPojo,inventoryPojo);
         cartItemApi.add(cartItemPojo,inventoryQuantity);
     }
@@ -38,9 +38,17 @@ public class CartItemFlow {
     public void update(Integer id, CartItemPojo newCartItemPojo) throws ApiException {
         CartItemPojo exCartItemPojo = cartItemApi.getCheck(id);
         ProductPojo productPojo = productApi.getCheckProduct(exCartItemPojo.getProductId());
-        InventoryPojo inventoryPojo = inventoryApi.getCheck(newCartItemPojo.getProductId());
+        InventoryPojo inventoryPojo = inventoryApi.getCheckByProductId(exCartItemPojo.getProductId());
         checkMrpAndInventoryForCartPojo(newCartItemPojo,productPojo,inventoryPojo);
         cartItemApi.update(exCartItemPojo, newCartItemPojo);
+    }
+
+    @Transactional(rollbackOn = ApiException.class)
+    public CartItemData getCartItem(Integer cartItemId) throws ApiException {
+        CartItemPojo cartItemPojo = cartItemApi.getCheck(cartItemId);
+        CartItemData cartItemData = convert(cartItemApi.getCheck(cartItemId));
+        cartItemData.setProductName(productApi.getCheckProduct(cartItemPojo.getProductId()).getName());
+        return cartItemData;
     }
 
     @Transactional(rollbackOn = ApiException.class)

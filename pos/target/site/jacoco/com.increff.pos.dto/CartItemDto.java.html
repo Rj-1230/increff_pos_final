@@ -24,31 +24,30 @@ import static com.increff.pos.util.SecurityUtil.getPrincipal;
     private CartItemFlow cartItemFlow;
 
     public void addCartItem(CartItemForm f) throws ApiException {
-<span class="nc" id="L27">        checkNullable(f);</span>
-<span class="nc" id="L28">        normalize(f);</span>
-<span class="nc" id="L29">        cartItemFlow.add(convert(f),f.getBarcode());</span>
-<span class="nc" id="L30">    }</span>
+<span class="fc" id="L27">        checkNullable(f);</span>
+<span class="fc" id="L28">        normalize(f);</span>
+<span class="fc" id="L29">        cartItemFlow.add(convert(f),f.getBarcode());</span>
+<span class="fc" id="L30">    }</span>
 
     public void deleteCartItem(Integer id) throws ApiException{
-<span class="nc" id="L33">        cartItemApi.delete(id);</span>
-<span class="nc" id="L34">    }</span>
+<span class="fc" id="L33">        cartItemApi.delete(id);</span>
+<span class="fc" id="L34">    }</span>
 
     public CartItemData getCartItem(Integer id) throws ApiException {
-<span class="nc" id="L37">        return convert(cartItemApi.getCheck(id));</span>
+<span class="fc" id="L37">        return cartItemFlow.getCartItem(id);</span>
     }
 
-    public void updateCartItem(@PathVariable Integer id, @RequestBody CartItemForm f) throws ApiException {
-<span class="nc" id="L41">        checkNullable(f);</span>
-<span class="nc" id="L42">        normalize(f);</span>
-<span class="nc" id="L43">        cartItemFlow.update(id,convert(f));</span>
-<span class="nc" id="L44">    }</span>
+    public void updateCartItem(Integer id,CartItemForm f) throws ApiException {
+<span class="fc" id="L41">        checkNullable(f);</span>
+<span class="fc" id="L42">        normalize(f);</span>
+<span class="fc" id="L43">        cartItemFlow.update(id,convert(f));</span>
+<span class="fc" id="L44">    }</span>
     public List&lt;CartItemData&gt; getAll() throws ApiException{
-<span class="nc" id="L46">        return cartItemFlow.getAllCartItemsOfCounterId();</span>
-//                getAllCartItems(cartItemApi.getAll(getPrincipal().getId()));
+<span class="fc" id="L46">        return cartItemFlow.getAllCartItemsOfCounterId();</span>
     }
 
     public void flushCartItems()throws ApiException{
-<span class="nc" id="L51">        cartItemApi.deleteAll(cartItemApi.getAllItemsInCart(getPrincipal().getId()));</span>
-<span class="nc" id="L52">    }</span>
+<span class="fc" id="L50">        cartItemApi.deleteAll(cartItemApi.getAllItemsInCart(getPrincipal().getId()));</span>
+<span class="fc" id="L51">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

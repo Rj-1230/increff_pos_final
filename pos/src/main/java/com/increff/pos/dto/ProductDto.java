@@ -28,10 +28,6 @@ public class ProductDto {
         productFlow.add(convert(f),f.getBrandName(),f.getCategoryName());
     }
 
-    public void deleteProduct(Integer id) throws ApiException {
-        productApi.delete(id);
-    }
-
     public ProductData getProduct(Integer id) throws ApiException {
         return productFlow.get(id);
     }

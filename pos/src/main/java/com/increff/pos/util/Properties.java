@@ -1,4 +1,4 @@
-package com.increff.pos.properties;
+package com.increff.pos.util;
 
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;

@@ -13,39 +13,39 @@ import java.text.NumberFormat;
 <span class="fc" id="L13">    private static final NumberFormat formatter = new DecimalFormat(&quot;#0.00&quot;);</span>
 
     public static void normalize(ProductForm f) {
-<span class="nc" id="L16">        f.setBarcode(f.getBarcode().toLowerCase().trim());</span>
-<span class="nc" id="L17">        f.setMrp(Double.parseDouble(formatter.format(f.getMrp())));</span>
-<span class="nc" id="L18">        f.setName(f.getName().toLowerCase().trim());</span>
+<span class="fc" id="L16">        f.setBarcode(f.getBarcode().toLowerCase().trim());</span>
+<span class="fc" id="L17">        f.setMrp(Double.parseDouble(formatter.format(f.getMrp())));</span>
+<span class="fc" id="L18">        f.setName(f.getName().toLowerCase().trim());</span>
 
-<span class="nc bnc" id="L20" title="All 2 branches missed.">        if(f.getBrandName().length()&gt;15){</span>
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">        if(f.getBrandName().length()&gt;15){</span>
 <span class="nc" id="L21">            f.setBrandName(f.getBrandName().substring(0,15));</span>
         }
-<span class="nc bnc" id="L23" title="All 2 branches missed.">        if(f.getCategoryName().length()&gt;15){</span>
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">        if(f.getCategoryName().length()&gt;15){</span>
 <span class="nc" id="L24">            f.setCategoryName(f.getCategoryName().substring(0,15));</span>
         }
-<span class="nc bnc" id="L26" title="All 2 branches missed.">        if(f.getBarcode().length()&gt;15){</span>
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">        if(f.getBarcode().length()&gt;15){</span>
 <span class="nc" id="L27">            f.setBarcode(f.getBarcode().substring(0,15));</span>
         }
-<span class="nc bnc" id="L29" title="All 2 branches missed.">        if(f.getName().length()&gt;15){</span>
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">        if(f.getName().length()&gt;15){</span>
 <span class="nc" id="L30">            f.setName(f.getName().substring(0,15));</span>
         }
-<span class="nc" id="L32">    }</span>
+<span class="fc" id="L32">    }</span>
 
     public static ProductData convert(ProductPojo p){
-<span class="nc" id="L35">        ProductData d = new ProductData();</span>
-<span class="nc" id="L36">        d.setProductId(p.getProductId());</span>
-<span class="nc" id="L37">        d.setBarcode(p.getBarcode());</span>
-<span class="nc" id="L38">        d.setName(p.getName());</span>
-<span class="nc" id="L39">        d.setMrp(p.getMrp());</span>
-<span class="nc" id="L40">        return d;</span>
+<span class="fc" id="L35">        ProductData d = new ProductData();</span>
+<span class="fc" id="L36">        d.setProductId(p.getProductId());</span>
+<span class="fc" id="L37">        d.setBarcode(p.getBarcode());</span>
+<span class="fc" id="L38">        d.setName(p.getName());</span>
+<span class="fc" id="L39">        d.setMrp(p.getMrp());</span>
+<span class="fc" id="L40">        return d;</span>
     }
 
     public static ProductPojo convert(ProductForm f){
-<span class="nc" id="L44">        ProductPojo p = new ProductPojo();</span>
-<span class="nc" id="L45">        p.setName(f.getName());</span>
-<span class="nc" id="L46">        p.setBarcode(f.getBarcode());</span>
-<span class="nc" id="L47">        p.setMrp(f.getMrp());</span>
-<span class="nc" id="L48">        return p;</span>
+<span class="fc" id="L44">        ProductPojo p = new ProductPojo();</span>
+<span class="fc" id="L45">        p.setName(f.getName());</span>
+<span class="fc" id="L46">        p.setBarcode(f.getBarcode());</span>
+<span class="fc" id="L47">        p.setMrp(f.getMrp());</span>
+<span class="fc" id="L48">        return p;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

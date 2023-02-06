@@ -5,7 +5,7 @@ import com.increff.pos.model.form.LoginForm;
 import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.api.ApiException;
 import com.increff.pos.api.UserApi;
-import com.increff.pos.properties.Properties;
+import com.increff.pos.util.Properties;
 import com.increff.pos.util.SecurityUtil;
 import com.increff.pos.util.UserPrincipal;
 import io.swagger.annotations.ApiOperation;

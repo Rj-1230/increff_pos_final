@@ -24,13 +24,6 @@ public class BrandController {
             brandDto.addBrand(brandForm);
     }
 
-    //    Although delete is disabled from UI, but method made for future use
-    @ApiOperation(value="Deleting a brand")
-    @RequestMapping(path="/api/supervisor/brand/{brandId}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable Integer brandId) throws ApiException {
-        brandDto.deleteBrand(brandId);
-    }
-
     @ApiOperation(value="Getting details of a brand from brandId")
     @RequestMapping(path="/api/brand/{brandId}", method = RequestMethod.GET)
     public BrandData get(@PathVariable Integer brandId) throws ApiException {

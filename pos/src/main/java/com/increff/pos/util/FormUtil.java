@@ -1,11 +1,8 @@
 package com.increff.pos.util;
 
 import com.increff.pos.model.data.OrderData;
-import com.increff.pos.model.form.BrandForm;
-import com.increff.pos.model.form.InventoryForm;
-import com.increff.pos.model.form.InvoiceForm;
+import com.increff.pos.model.form.*;
 import com.increff.pos.model.data.OrderItemData;
-import com.increff.pos.model.form.ProductForm;
 import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.api.ApiException;
 
@@ -36,6 +33,37 @@ public class FormUtil {
         inventoryForm.setQuantity(quantity);
         return inventoryForm;
     }
+
+    public static CartItemForm getCartItemForm(String barcode,Integer quantity,Double sellingPrice){
+        CartItemForm cartItemForm = new CartItemForm();
+        cartItemForm.setBarcode(barcode);
+        cartItemForm.setQuantity(quantity);
+        cartItemForm.setSellingPrice(sellingPrice);
+        return cartItemForm;
+    }
+
+    public static UserForm getUserForm(String email, String password){
+        UserForm userForm = new UserForm();
+        userForm.setEmail(email);
+        userForm.setPassword(password);
+        return  userForm;
+    }
+
+    public static CustomerDetailsForm getCustomerDetailsForm(String customerName, String customerPhone){
+        CustomerDetailsForm customerDetailsForm = new CustomerDetailsForm();
+        customerDetailsForm.setCustomerName(customerName);
+        customerDetailsForm.setCustomerPhone(customerPhone);
+        return customerDetailsForm;
+    }
+
+    public static OrderItemForm getOrderItemForm(String barcode, Integer quantity,Double sellingPrice){
+        OrderItemForm orderItemForm = new OrderItemForm();
+        orderItemForm.setBarcode(barcode);
+        orderItemForm.setQuantity(quantity);
+        orderItemForm.setSellingPrice(sellingPrice);
+        return orderItemForm;
+    }
+
 
 
     public static InvoiceForm convertToInvoiceForm(OrderData orderData, List<OrderItemData> orderItemDataList) throws ApiException

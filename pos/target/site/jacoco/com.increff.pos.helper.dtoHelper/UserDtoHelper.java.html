@@ -9,32 +9,32 @@ import java.util.List;
 
 <span class="nc" id="L10">public class UserDtoHelper {</span>
     public static UserData convert(UserPojo p) {
-<span class="nc" id="L12">        UserData d = new UserData();</span>
-<span class="nc" id="L13">        d.setUserId(p.getUserId());</span>
-<span class="nc" id="L14">        d.setEmail(p.getEmail());</span>
-<span class="nc" id="L15">        d.setPassword(p.getPassword());</span>
+<span class="fc" id="L12">        UserData d = new UserData();</span>
+<span class="fc" id="L13">        d.setUserId(p.getUserId());</span>
+<span class="fc" id="L14">        d.setEmail(p.getEmail());</span>
+<span class="fc" id="L15">        d.setPassword(p.getPassword());</span>
 
-<span class="nc" id="L17">        return d;</span>
+<span class="fc" id="L17">        return d;</span>
     }
 
     public static UserPojo convert(UserForm f) {
-<span class="nc" id="L21">        UserPojo p = new UserPojo();</span>
-<span class="nc" id="L22">        p.setEmail(f.getEmail());</span>
-<span class="nc" id="L23">        p.setPassword(f.getPassword());</span>
-<span class="nc" id="L24">        return p;</span>
+<span class="fc" id="L21">        UserPojo p = new UserPojo();</span>
+<span class="fc" id="L22">        p.setEmail(f.getEmail());</span>
+<span class="fc" id="L23">        p.setPassword(f.getPassword());</span>
+<span class="fc" id="L24">        return p;</span>
     }
 
     public static void normalize(UserForm f) {
-<span class="nc" id="L28">        f.setEmail(f.getEmail().toLowerCase().trim());</span>
-<span class="nc" id="L29">        f.setPassword(f.getPassword().trim());</span>
-<span class="nc" id="L30">    }</span>
+<span class="fc" id="L28">        f.setEmail(f.getEmail().toLowerCase().trim());</span>
+<span class="fc" id="L29">        f.setPassword(f.getPassword().trim());</span>
+<span class="fc" id="L30">    }</span>
 
     public static List&lt;UserData&gt; getAllUserData(List&lt;UserPojo&gt; list){
-<span class="nc" id="L33">        List&lt;UserData&gt; list2 = new ArrayList&lt;UserData&gt;();</span>
-<span class="nc bnc" id="L34" title="All 2 branches missed.">        for (UserPojo p : list) {</span>
-<span class="nc" id="L35">            list2.add(convert(p));</span>
-<span class="nc" id="L36">        }</span>
-<span class="nc" id="L37">        return list2;</span>
+<span class="fc" id="L33">        List&lt;UserData&gt; list2 = new ArrayList&lt;UserData&gt;();</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">        for (UserPojo p : list) {</span>
+<span class="fc" id="L35">            list2.add(convert(p));</span>
+<span class="fc" id="L36">        }</span>
+<span class="fc" id="L37">        return list2;</span>
     }
 
 

@@ -25,21 +25,17 @@ import static com.increff.pos.util.NullCheckHelper.checkNullable;
 
 
     public void updateInventory(InventoryForm f) throws ApiException {
-<span class="nc" id="L28">        checkNullable(f);</span>
-<span class="nc" id="L29">        normalize(f);</span>
-<span class="nc" id="L30">        inventoryFlow.update(convert(f),f.getBarcode());</span>
-<span class="nc" id="L31">    }</span>
-
-    public void delete(@PathVariable Integer id){
-<span class="nc" id="L34">        inventoryApi.delete(id);</span>
-<span class="nc" id="L35">    }</span>
+<span class="fc" id="L28">        checkNullable(f);</span>
+<span class="fc" id="L29">        normalize(f);</span>
+<span class="fc" id="L30">        inventoryFlow.update(convert(f),f.getBarcode());</span>
+<span class="fc" id="L31">    }</span>
 
     public InventoryData get(Integer id) throws ApiException {
-<span class="nc" id="L38">        return inventoryFlow.get(id);</span>
+<span class="fc" id="L34">        return inventoryFlow.get(id);</span>
     }
 
     public List&lt;InventoryData&gt; getAll() throws ApiException{
-<span class="nc" id="L42">        return inventoryFlow.getAll();</span>
+<span class="fc" id="L38">        return inventoryFlow.getAll();</span>
     }
 
 

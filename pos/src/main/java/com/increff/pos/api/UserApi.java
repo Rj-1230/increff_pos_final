@@ -35,12 +35,6 @@ public class UserApi {
         return userDao.selectAll();
     }
 
-
-    public void delete(Integer id) throws ApiException {
-        getCheckUser(id);
-        userDao.delete(id);
-    }
-
     public void update(Integer id, UserPojo userPojo) throws ApiException {
         UserPojo ex = getCheckUser(id);
         ex.setEmail(userPojo.getEmail());

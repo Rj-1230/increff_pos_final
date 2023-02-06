@@ -20,27 +20,27 @@ import static com.increff.pos.helper.dtoHelper.UserDtoHelper.*;
 
     public void addUser(UserForm f) throws ApiException
     {
-<span class="nc" id="L23">        checkNullable(f);</span>
-<span class="nc" id="L24">        normalize(f);</span>
-<span class="nc" id="L25">        userApi.add(convert(f));</span>
-<span class="nc" id="L26">    }</span>
+<span class="fc" id="L23">        checkNullable(f);</span>
+<span class="fc" id="L24">        normalize(f);</span>
+<span class="fc" id="L25">        userApi.add(convert(f));</span>
+<span class="fc" id="L26">    }</span>
 
     public void deleteUser(Integer id) throws ApiException {
 <span class="nc" id="L29">        userApi.delete(id);</span>
 <span class="nc" id="L30">    }</span>
 
     public UserData getUser(Integer id) throws ApiException {
-<span class="nc" id="L33">        return convert(userApi.getCheckUser(id));</span>
+<span class="fc" id="L33">        return convert(userApi.getCheckUser(id));</span>
     }
 
     public void updateUser(@PathVariable Integer id, @RequestBody UserForm f) throws ApiException {
-<span class="nc" id="L37">        checkNullable(f);</span>
-<span class="nc" id="L38">        normalize(f);</span>
-<span class="nc" id="L39">        userApi.update(id,convert(f));</span>
-<span class="nc" id="L40">    }</span>
+<span class="fc" id="L37">        checkNullable(f);</span>
+<span class="fc" id="L38">        normalize(f);</span>
+<span class="fc" id="L39">        userApi.update(id,convert(f));</span>
+<span class="fc" id="L40">    }</span>
 
     public List&lt;UserData&gt; getAllUsers(){
-<span class="nc" id="L43">        return getAllUserData(userApi.getAll());</span>
+<span class="fc" id="L43">        return getAllUserData(userApi.getAll());</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

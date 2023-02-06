@@ -8,11 +8,11 @@ import static com.increff.pos.helper.dtoHelper.InventoryDtoHelper.convert;
 
 <span class="nc" id="L9">public class InventoryFlowHelper {</span>
     public static InventoryData convertInventoryPojoToInventoryData(InventoryPojo inventoryPojo, ProductPojo productPojo){
-<span class="nc" id="L11">        InventoryData inventoryData = convert(inventoryPojo);</span>
-<span class="nc" id="L12">        inventoryData.setProductName(productPojo.getName());</span>
-<span class="nc" id="L13">        inventoryData.setBarcode(productPojo.getBarcode());</span>
-<span class="nc" id="L14">        inventoryData.setProductId(productPojo.getProductId());</span>
-<span class="nc" id="L15">        return inventoryData;</span>
+<span class="fc" id="L11">        InventoryData inventoryData = convert(inventoryPojo);</span>
+<span class="fc" id="L12">        inventoryData.setProductName(productPojo.getName());</span>
+<span class="fc" id="L13">        inventoryData.setBarcode(productPojo.getBarcode());</span>
+<span class="fc" id="L14">        inventoryData.setProductId(productPojo.getProductId());</span>
+<span class="fc" id="L15">        return inventoryData;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

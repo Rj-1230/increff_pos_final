@@ -62,7 +62,7 @@ function placeOrder (orderId) {
     	   getOrderList();
     	   document.getElementById('toast-container').classList.remove('bg-warning','bg-danger','bg-success');
                        document.getElementById('toast-container').classList.add('bg-success');
-                       document.getElementById('my-message').innerHTML="The order was placed successfully";
+                       document.getElementById('my-message').innerHTML="The order was invoiced successfully";
                        $(".toast").toast('show');
     	   },
     	  error: function(response){

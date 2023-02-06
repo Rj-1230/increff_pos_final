@@ -65,4 +65,13 @@ public class PojoUtil {
         orderPojo.setCounterId(counterId);
         return  orderPojo;
     }
+
+    public static OrderItemPojo getOrderItemPojo(Integer orderId,Integer productId,Integer quantity, Double sellingPrice){
+        OrderItemPojo orderItemPojo = new OrderItemPojo();
+        orderItemPojo.setOrderId(orderId);
+        orderItemPojo.setProductId(productId);
+        orderItemPojo.setQuantity(quantity);
+        orderItemPojo.setSellingPrice(sellingPrice);
+        return orderItemPojo;
+    }
 }

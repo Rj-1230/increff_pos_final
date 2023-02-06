@@ -24,16 +24,11 @@ public class InventoryController {
     public void update(@RequestBody InventoryForm inventoryForm) throws ApiException{
         inventoryDto.updateInventory(inventoryForm);
     }
-    @ApiOperation(value="Deleting a product from Inventory")
-    @RequestMapping(path="/api/supervisor/inventory/{productId}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable Integer productId) throws ApiException{
-        inventoryDto.delete(productId);
-    }
 
     @ApiOperation(value="Getting details of a product in the Inventory")
     @RequestMapping(path="/api/inventory/{productId}", method = RequestMethod.GET)
-    public InventoryData get(@PathVariable Integer productId) throws ApiException {
-       return inventoryDto.get(productId);
+    public InventoryData get(@PathVariable Integer inventoryId) throws ApiException {
+       return inventoryDto.get(inventoryId);
     }
 
     @ApiOperation(value="Getting details of all the Inventory items")

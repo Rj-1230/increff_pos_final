@@ -18,40 +18,41 @@ import java.util.Objects;
 
 
     public void add(UserPojo userPojo) throws ApiException {
-<span class="nc" id="L21">        UserPojo existing = getUserPojoByEmail(userPojo.getEmail());</span>
-<span class="nc bnc" id="L22" title="All 2 branches missed.">        if (existing != null) {</span>
-<span class="nc" id="L23">            throw new ApiException(&quot;User with given email already exists&quot;);</span>
+<span class="fc" id="L21">        UserPojo existing = getUserPojoByEmail(userPojo.getEmail());</span>
+<span class="fc bfc" id="L22" title="All 2 branches covered.">        if (existing != null) {</span>
+<span class="fc" id="L23">            throw new ApiException(&quot;User with given email already exists&quot;);</span>
         }
-<span class="nc" id="L25">        userDao.insert(userPojo);</span>
-<span class="nc" id="L26">    }</span>
+<span class="fc" id="L25">        userDao.insert(userPojo);</span>
+<span class="fc" id="L26">    }</span>
 
 
     public UserPojo getUserPojoByEmail(String email) throws ApiException {
-<span class="nc" id="L30">        return userDao.selectUserByEmail(email);</span>
+<span class="fc" id="L30">        return userDao.selectUserByEmail(email);</span>
     }
 
 
     public List&lt;UserPojo&gt; getAll() {
-<span class="nc" id="L35">        return userDao.selectAll();</span>
+<span class="fc" id="L35">        return userDao.selectAll();</span>
     }
 
 
     public void delete(Integer id) throws ApiException {
-<span class="nc" id="L40">        userDao.delete(id);</span>
-<span class="nc" id="L41">    }</span>
+<span class="fc" id="L40">        getCheckUser(id);</span>
+<span class="fc" id="L41">        userDao.delete(id);</span>
+<span class="fc" id="L42">    }</span>
 
     public void update(Integer id, UserPojo userPojo) throws ApiException {
-<span class="nc" id="L44">        UserPojo ex = getCheckUser(id);</span>
-<span class="nc" id="L45">        ex.setEmail(userPojo.getEmail());</span>
-<span class="nc" id="L46">        ex.setPassword(userPojo.getPassword());</span>
-<span class="nc" id="L47">    }</span>
+<span class="fc" id="L45">        UserPojo ex = getCheckUser(id);</span>
+<span class="fc" id="L46">        ex.setEmail(userPojo.getEmail());</span>
+<span class="fc" id="L47">        ex.setPassword(userPojo.getPassword());</span>
+<span class="fc" id="L48">    }</span>
 
     public  UserPojo getCheckUser(Integer id) throws ApiException {
-<span class="nc" id="L50">        UserPojo userPojo = userDao.selectUserById(id);</span>
-<span class="nc bnc" id="L51" title="All 2 branches missed.">        if(Objects.isNull(userPojo)){</span>
-<span class="nc" id="L52">            throw new ApiException(&quot;No such user with given id exists !&quot;);</span>
+<span class="fc" id="L51">        UserPojo userPojo = userDao.selectUserById(id);</span>
+<span class="fc bfc" id="L52" title="All 2 branches covered.">        if(Objects.isNull(userPojo)){</span>
+<span class="fc" id="L53">            throw new ApiException(&quot;No such user with given id exists !&quot;);</span>
         }
-<span class="nc" id="L54">        return userPojo;</span>
+<span class="fc" id="L55">        return userPojo;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -25,10 +25,6 @@ public class UserDto {
         userApi.add(convert(f));
     }
 
-    public void deleteUser(Integer id) throws ApiException {
-        userApi.delete(id);
-    }
-
     public UserData getUser(Integer id) throws ApiException {
         return convert(userApi.getCheckUser(id));
     }

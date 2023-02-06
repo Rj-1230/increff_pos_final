@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class InventoryData {
-    private Integer inventoryId;
     private String productName;
     private String barcode;
     private Integer quantity;

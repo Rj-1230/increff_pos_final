@@ -17,17 +17,17 @@ import java.time.format.DateTimeFormatter;
     }
 
     public static ZonedDateTime getStartOfDay(){
-<span class="nc" id="L20">        LocalDate localDate = LocalDate.now();</span>
+<span class="fc" id="L20">        LocalDate localDate = LocalDate.now();</span>
 //Current zone
-<span class="nc" id="L22">        ZonedDateTime startOfDayInZone = localDate.atStartOfDay(ZoneId.systemDefault());</span>
-<span class="nc" id="L23">        return  startOfDayInZone;</span>
+<span class="fc" id="L22">        ZonedDateTime startOfDayInZone = localDate.atStartOfDay(ZoneId.systemDefault());</span>
+<span class="fc" id="L23">        return  startOfDayInZone;</span>
     }
     public static ZonedDateTime getEndOfDay(){
-<span class="nc" id="L26">        LocalDate localDate = LocalDate.now();</span>
+<span class="fc" id="L26">        LocalDate localDate = LocalDate.now();</span>
 //Current zone
-<span class="nc" id="L28">        ZonedDateTime endOfDayInZone = localDate.atTime(LocalTime.MAX)</span>
-<span class="nc" id="L29">                .atZone(ZoneId.systemDefault());</span>
-<span class="nc" id="L30">        return endOfDayInZone;</span>
+<span class="fc" id="L28">        ZonedDateTime endOfDayInZone = localDate.atTime(LocalTime.MAX)</span>
+<span class="fc" id="L29">                .atZone(ZoneId.systemDefault());</span>
+<span class="fc" id="L30">        return endOfDayInZone;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

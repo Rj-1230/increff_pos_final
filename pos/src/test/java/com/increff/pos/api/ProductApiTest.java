@@ -51,24 +51,6 @@ public class ProductApiTest extends AbstractUnitTest {
         assertEquals(productPojoList.size(),4);
     }
 
-
-    @Test
-    public void testDeleteProduct() throws ApiException {
-        Integer brandId = 1;
-        String barcode = "abc";
-        Double mrp= 12.35;
-        String productName= "prod1";
-        for(int i=0;i<4;i++){
-            ProductPojo productPojo = PojoUtil.getProductPojo(brandId,barcode+i,mrp,productName);
-            productDao.insert(productPojo);
-        }
-        List<ProductPojo> productPojoList =  productApi.getAll();
-        assertEquals(productPojoList.size(),4);
-        productApi.delete(productPojoList.get(0).getProductId());
-        List<ProductPojo> newProductPojoList =  productApi.getAll();
-        assertEquals(newProductPojoList.size(),3);
-    }
-
     @Test
     public void updateProduct() throws ApiException {
         Integer brandId = 1;

@@ -23,9 +23,6 @@ public class BrandDto {
         normalize(brandForm);
         brandApi.addBrand(convert(brandForm));
     }
-    public void deleteBrand(Integer id) throws ApiException {
-        brandApi.deleteBrand(id);
-    }
 
     public BrandData getBrand(Integer id) throws ApiException {
         return convert(brandApi.getCheckBrand(id));

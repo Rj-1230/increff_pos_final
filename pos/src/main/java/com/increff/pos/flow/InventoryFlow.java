@@ -30,9 +30,9 @@ public class InventoryFlow {
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public InventoryData get(Integer id) throws ApiException {
-        InventoryPojo inventoryPojo = inventoryApi.getCheck(id);
-        ProductPojo productPojo = productApi.getCheckProduct(id);
+    public InventoryData get(Integer inventoryId) throws ApiException {
+        InventoryPojo inventoryPojo = inventoryApi.getCheck(inventoryId);
+        ProductPojo productPojo = productApi.getCheckProduct(inventoryPojo.getProductId());
         return convertInventoryPojoToInventoryData(inventoryPojo,productPojo);
     }
 

@@ -24,12 +24,6 @@ public class UserController {
         userDto.addUser(f);
     }
 
-    @ApiOperation(value="Deleting a operator")
-    @RequestMapping(path="/api/supervisor/user/{id}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable Integer id) throws ApiException {
-        userDto.deleteUser(id);
-    }
-
     @ApiOperation(value="Getting details of a operator")
     @RequestMapping(path="/api/supervisor/user/{id}", method = RequestMethod.GET)
     public UserData get(@PathVariable Integer id) throws ApiException {

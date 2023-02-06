@@ -6,27 +6,24 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.servlet.http.HttpSession;
 
-/*
-https://stackoverflow.com/questions/4664893/how-to-manually-set-an-authenticated-user-in-spring-security-springmvc
-*/
-<span class="nc" id="L12">public class SecurityUtil {</span>
+<span class="nc" id="L9">public class SecurityUtil {</span>
 
     public static void createContext(HttpSession session) {
-<span class="nc" id="L15">        SecurityContext securityContext = SecurityContextHolder.getContext();</span>
-<span class="nc" id="L16">        session.setAttribute(&quot;SPRING_SECURITY_CONTEXT&quot;, securityContext);</span>
-<span class="nc" id="L17">    }</span>
+<span class="nc" id="L12">        SecurityContext securityContext = SecurityContextHolder.getContext();</span>
+<span class="nc" id="L13">        session.setAttribute(&quot;SPRING_SECURITY_CONTEXT&quot;, securityContext);</span>
+<span class="nc" id="L14">    }</span>
 
     public static void setAuthentication(Authentication token) {
-<span class="nc" id="L20">        SecurityContextHolder.getContext().setAuthentication(token);</span>
-<span class="nc" id="L21">    }</span>
+<span class="nc" id="L17">        SecurityContextHolder.getContext().setAuthentication(token);</span>
+<span class="nc" id="L18">    }</span>
 
     public static Authentication getAuthentication() {
-<span class="nc" id="L24">        return SecurityContextHolder.getContext().getAuthentication();</span>
+<span class="fc" id="L21">        return SecurityContextHolder.getContext().getAuthentication();</span>
     }
 
     public static UserPrincipal getPrincipal() {
-<span class="nc" id="L28">        Authentication token = getAuthentication();</span>
-<span class="nc bnc" id="L29" title="All 2 branches missed.">        return token == null ? null : (UserPrincipal) getAuthentication().getPrincipal();</span>
+<span class="fc" id="L25">        Authentication token = getAuthentication();</span>
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">        return token == null ? null : (UserPrincipal) getAuthentication().getPrincipal();</span>
     }
 
 }

@@ -16,7 +16,6 @@ public class InventoryDtoHelper {
 
     public static InventoryData convert(InventoryPojo p){
         InventoryData d = new InventoryData();
-        d.setInventoryId(p.getInventoryId());
         d.setQuantity(p.getQuantity());
         return d;
     }

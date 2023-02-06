@@ -26,13 +26,6 @@ public class ProductApi {
 
     }
 
-
-    public void delete(Integer id) throws ApiException {
-        getCheckProduct(id);
-        productDao.delete(id);
-    }
-
-
     public ProductPojo get(Integer id) {
         return productDao.select(id);
     }

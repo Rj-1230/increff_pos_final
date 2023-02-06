@@ -10,6 +10,7 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.client.RestTemplate;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -60,7 +61,6 @@ public class DbConfig {
     @Bean(name = "entityManagerFactory")
     @Autowired
     public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
-        //logger.info("hibernateDialect: " + jdbcDriver + ", hibernateHbm2ddl: " + hibernateHbm2ddl);
         LocalContainerEntityManagerFactoryBean bean = new LocalContainerEntityManagerFactoryBean();
         bean.setDataSource(dataSource);
         bean.setPackagesToScan(PACKAGE_POJO);
@@ -82,6 +82,13 @@ public class DbConfig {
         JpaTransactionManager bean = new JpaTransactionManager();
         bean.setEntityManagerFactory(emf.getObject());
         return bean;
+    }
+
+
+    @Bean(name="restTemplate")
+    public RestTemplate createRestTemplate(){
+        RestTemplate restTemplate = new RestTemplate();
+        return restTemplate;
     }
 }
 

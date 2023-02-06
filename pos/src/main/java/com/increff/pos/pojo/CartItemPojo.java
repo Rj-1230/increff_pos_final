@@ -8,7 +8,6 @@ import javax.persistence.*;
 @Entity
 @Table(name="cart_items", indexes = @Index(name = "multiIndex", columnList = "productId, counterId"),
         uniqueConstraints={@UniqueConstraint(columnNames={"productId","counterId"})})
-
 @Getter
 @Setter
 

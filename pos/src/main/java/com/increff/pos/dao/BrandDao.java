@@ -9,18 +9,9 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class BrandDao extends AbstractDao {
-    private static String delete_brand_pojo_by_id = "delete from BrandPojo p where brandId=:id";
     private static String select_brand_pojo_by_id = "select p from BrandPojo p where brandId=:id";
     private static String select_all_brand_pojo = "select p from BrandPojo p";
     private static String select_brand_pojo_by_brand_name_and_category_name = "select p from BrandPojo p where brand=:brand and category=:category";
-    @PersistenceContext
-    EntityManager em;
-
-    public Integer delete(Integer id) {
-        Query query = em.createQuery(delete_brand_pojo_by_id);
-        query.setParameter("id", id);
-        return query.executeUpdate();
-    }
 
     public BrandPojo select(Integer id) {
         try{

@@ -8,6 +8,7 @@ com\increff\pos\pojo\InventoryPojo.class
 com\increff\pos\dto\InventoryDto.class
 com\increff\pos\model\data\DailyReportData.class
 com\increff\pos\spring\SchedulerConfig.class
+com\increff\pos\util\Properties.class
 com\increff\pos\flow\OrderFlow.class
 com\increff\pos\model\data\ProductData.class
 com\increff\pos\helper\flowHelper\InventoryFlowHelper.class
@@ -80,7 +81,6 @@ com\increff\pos\flow\ProductFlow.class
 com\increff\pos\controller\AbstractUiController.class
 com\increff\pos\model\data\OrderItemData.class
 com\increff\pos\helper\dtoHelper\OrderDtoHelper.class
-com\increff\pos\properties\Properties.class
 com\increff\pos\dto\CartItemDto.class
 com\increff\pos\pojo\BrandPojo.class
 com\increff\pos\dao\OrderDao.class

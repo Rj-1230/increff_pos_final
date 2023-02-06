@@ -23,20 +23,17 @@ import static com.increff.pos.util.NullCheckHelper.*;
 <span class="fc" id="L23">        normalize(brandForm);</span>
 <span class="fc" id="L24">        brandApi.addBrand(convert(brandForm));</span>
 <span class="fc" id="L25">    }</span>
-    public void deleteBrand(Integer id){
-<span class="fc" id="L27">        brandApi.deleteBrand(id);</span>
-<span class="fc" id="L28">    }</span>
 
     public BrandData getBrand(Integer id) throws ApiException {
-<span class="fc" id="L31">        return convert(brandApi.getCheckBrand(id));</span>
+<span class="fc" id="L28">        return convert(brandApi.getCheckBrand(id));</span>
     }
     public void updateBrand(Integer id,BrandForm brandForm) throws ApiException {
-<span class="fc" id="L34">        checkNullable(brandForm);</span>
-<span class="fc" id="L35">        normalize(brandForm);</span>
-<span class="fc" id="L36">        brandApi.updateBrand(id,convert(brandForm));</span>
-<span class="fc" id="L37">    }</span>
+<span class="fc" id="L31">        checkNullable(brandForm);</span>
+<span class="fc" id="L32">        normalize(brandForm);</span>
+<span class="fc" id="L33">        brandApi.updateBrand(id,convert(brandForm));</span>
+<span class="fc" id="L34">    }</span>
     public List&lt;BrandData&gt; getAll(){
-<span class="fc" id="L39">        return getAllBrands(brandApi.getAll());</span>
+<span class="fc" id="L36">        return getAllBrands(brandApi.getAll());</span>
     }
 
 }

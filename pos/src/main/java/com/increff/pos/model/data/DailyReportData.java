@@ -8,7 +8,6 @@ import java.time.ZonedDateTime;
 @Getter
 @Setter
 public class DailyReportData {
-        private Integer dailyReportId;
         private ZonedDateTime invoiceDate;
         private Integer invoicedOrderCount;
         private Integer invoicedItemsCount;

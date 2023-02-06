@@ -65,32 +65,32 @@ public class OrderController {
 
     @ApiOperation(value="Adding a orderItem")
     @RequestMapping(path="/api/orderItem", method = RequestMethod.POST)
-    public void add(@RequestBody OrderItemForm orderItemForm)throws ApiException{
+    public void addOrderItem(@RequestBody OrderItemForm orderItemForm)throws ApiException{
         orderDto.addOrderItem(orderItemForm);
     }
 
 
     @ApiOperation(value="Deleting a orderItem")
     @RequestMapping(path="/api/orderItem/{orderItemId}", method = RequestMethod.DELETE)
-    public void delete(@PathVariable Integer orderItemId) throws ApiException {
+    public void deleteOrderItem(@PathVariable Integer orderItemId) throws ApiException {
         orderDto.deleteOrderItem(orderItemId);
     }
 
     @ApiOperation(value="Getting details of a orderItem from order item ID")
     @RequestMapping(path="/api/orderItem/{orderItemId}", method = RequestMethod.GET)
-    public OrderItemData get(@PathVariable Integer orderItemId) throws ApiException {
+    public OrderItemData getOrderItem(@PathVariable Integer orderItemId) throws ApiException {
         return orderDto.getOrderItem(orderItemId);
     }
 
     @ApiOperation(value="Updating details of a particular OrderItem")
     @RequestMapping(path="/api/orderItem/{orderItemId}", method = RequestMethod.PUT)
-    public void update(@PathVariable Integer orderItemId, @RequestBody OrderItemForm orderItemForm) throws ApiException {
+    public void updateOrderItem(@PathVariable Integer orderItemId, @RequestBody OrderItemForm orderItemForm) throws ApiException {
         orderDto.updateOrderItem(orderItemId,orderItemForm);
     }
 
     @ApiOperation(value="Getting details of all the order with given orderId")
     @RequestMapping(path="/api/orderItems/{orderId}", method = RequestMethod.GET)
-    public List<OrderItemData> getAll(@PathVariable Integer orderId) throws  ApiException{
+    public List<OrderItemData> getAllOrderItems(@PathVariable Integer orderId) throws  ApiException{
         return orderDto.getAllOrderItems(orderId);
     }
 

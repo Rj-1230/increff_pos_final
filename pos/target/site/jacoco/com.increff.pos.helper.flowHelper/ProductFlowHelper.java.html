@@ -11,10 +11,10 @@ import static com.increff.pos.helper.dtoHelper.InventoryDtoHelper.convert;
 
 <span class="nc" id="L12">public class ProductFlowHelper {</span>
     public static ProductData convertProductPojoToProductData(ProductPojo productPojo, BrandPojo brandPojo){
-<span class="nc" id="L14">        ProductData productData = ProductDtoHelper.convert(productPojo);</span>
-<span class="nc" id="L15">        productData.setBrand(brandPojo.getBrand());</span>
-<span class="nc" id="L16">        productData.setCategory(brandPojo.getCategory());</span>
-<span class="nc" id="L17">        return productData;</span>
+<span class="fc" id="L14">        ProductData productData = ProductDtoHelper.convert(productPojo);</span>
+<span class="fc" id="L15">        productData.setBrand(brandPojo.getBrand());</span>
+<span class="fc" id="L16">        productData.setCategory(brandPojo.getCategory());</span>
+<span class="fc" id="L17">        return productData;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
