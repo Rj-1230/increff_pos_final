@@ -136,7 +136,8 @@ function displayOrderItemList(data){
 	var $tbody = $('#orderItem-table').find('tbody');
 	$tbody.empty();
 	var j=1;
-	var total=0;
+	var totalRevenue=0;
+		var totalQuantity=0;
 	for(var i in data){
 		var e = data[i];
 		var buttonHtml='';
@@ -147,14 +148,15 @@ function displayOrderItemList(data){
         else{
 	   		document.getElementById('invoiced-action').innerHTML = 'Total';
 	   		buttonHtml+= (e.quantity*e.sellingPrice).toFixed(2);
-	   		total+=(e.quantity*e.sellingPrice);
+	   		totalQuantity+=e.quantity;
+	   		totalRevenue+=(e.quantity*e.sellingPrice);
         }
 		var row = '<tr>'
 		+ '<td>' + j + '</td>'
-		+ '<td>' + e.orderId + '</td>'
+		+ '<td>' + e.barcode + '</td>'
 		+ '<td>' + e.productName + '</td>'
+        + '<td>' + e.sellingPrice.toFixed(2)+ '</td>'
 		+ '<td>' + e.quantity + '</td>'
-		+ '<td>' + e.sellingPrice.toFixed(2)+ '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
         $tbody.append(row);
@@ -162,8 +164,9 @@ function displayOrderItemList(data){
 	}
 	if(status=='invoiced'){
 	var row = '<tr>'
-    		+ '<td colspan=5>' + '<b>Total</b>'+ '</td>'
-    		+ '<td><b>' + total.toFixed(2) + '</b></td>'
+    		+ '<td colspan=4>' + "<font size='+2'><b>Total</b></font>"+ '</td>'
+            + '<td>'+  "<b><font size='+2'>"+ totalQuantity +  "</b></font>"+'</td>'
+    		+ '<td>'+  "<b><font size='+2'>"+ totalRevenue.toFixed(2) +"</b></font>"+'</td>'
     		+ '</tr>';
   $tbody.append(row);
   }
@@ -175,7 +178,6 @@ function displayEditOrderItem(id){
 	   url: url,
 	   type: 'GET',
 	   success: function(data) {
-	   console.log(data)
 	   		displayOrderItem(data);
 	   },
 	   error: function(response){
@@ -212,7 +214,10 @@ function displayOrderItem(data){
 	$("#orderItem-edit-form input[name=quantity]").val(data.quantity);
 	$("#orderItem-edit-form input[name=orderItemId]").val(data.orderItemId);
 	$("#orderItem-edit-form input[name=orderId]").val(data.orderId);
-		$("#orderItem-edit-form input[name=barcode]").val("abcd");
+	$("#orderItem-edit-form input[name=barcode]").val(data.barcode);
+		console.log(data.productName);
+	$("#orderItem-edit-form input[name=productName]").val(data.productName);
+
 	$('#edit-orderItem-modal').modal('toggle');
 }
 
@@ -239,6 +244,7 @@ function updateOrderItem(event){
 	   },
 	   error: function(response){
                             	   		 handleAjaxError(response);
+                            	   		 	   	$('#edit-orderItem-modal').modal('toggle');
                             	   }
 	});
 
@@ -283,7 +289,7 @@ function init(){
 	$('#update-customer').click(updateCustomer)
     $('#update-order-item').click(updateOrderItem);
 	$('#refresh-data').click(getOrderItemList);
-	$('#place-order').click(placeOrder);
+	$('#invoice-order').click(placeOrder);
 }
 $(document).ready(init);
 $(document).ready(getOrder);

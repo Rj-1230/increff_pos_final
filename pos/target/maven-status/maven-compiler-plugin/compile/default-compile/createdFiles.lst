@@ -8,7 +8,6 @@ com\increff\pos\pojo\InventoryPojo.class
 com\increff\pos\dto\InventoryDto.class
 com\increff\pos\model\data\DailyReportData.class
 com\increff\pos\spring\SchedulerConfig.class
-com\increff\pos\util\Properties.class
 com\increff\pos\flow\OrderFlow.class
 com\increff\pos\model\data\ProductData.class
 com\increff\pos\helper\flowHelper\InventoryFlowHelper.class
@@ -62,10 +61,12 @@ com\increff\pos\helper\dtoHelper\UserDtoHelper.class
 com\increff\pos\scheduler\ReportScheduler.class
 com\increff\pos\api\DailyReportApi.class
 com\increff\pos\api\OrderApi.class
+com\increff\pos\spring\ApplicationProperties.class
 com\increff\pos\util\FormUtil.class
 com\increff\pos\pojo\CartItemPojo.class
 com\increff\pos\helper\dtoHelper\InventoryDtoHelper.class
 com\increff\pos\pojo\ProductPojo.class
+com\increff\pos\util\ValidateFormUtil.class
 com\increff\pos\helper\flowHelper\CartItemFlowHelper.class
 com\increff\pos\spring\SecurityConfig.class
 com\increff\pos\controller\AppUiController.class
@@ -98,10 +99,8 @@ com\increff\pos\dto\ProductDto.class
 com\increff\pos\spring\ControllerConfig.class
 com\increff\pos\dto\UserDto.class
 com\increff\pos\controller\BrandController.class
-com\increff\pos\util\NullCheckHelper.class
 com\increff\pos\model\form\ProductForm.class
 com\increff\pos\api\InventoryApi.class
 com\increff\pos\api\ApiException.class
 com\increff\pos\util\PojoUtil.class
-com\increff\pos\util\ValidationUtil.class
 com\increff\pos\flow\ReportFlow.class

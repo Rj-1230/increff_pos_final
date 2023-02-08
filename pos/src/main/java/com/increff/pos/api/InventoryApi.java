@@ -20,12 +20,13 @@ public class InventoryApi {
         inventoryDao.insert(newInventoryPojo);
 
     }
-    public void updateInventory(InventoryPojo newInventoryPojo, Integer quantity) throws ApiException {
+
+    public void updateInventory(InventoryPojo newInventoryPojo, Integer inventoryQuantity) throws ApiException {
         InventoryPojo exInventoryPojo = getCheckByProductId(newInventoryPojo.getProductId());
-        if (quantity <0) {
-            throw new ApiException("The inventory must be non-negative after update. Current Inventory count :" + exInventoryPojo.getQuantity()+" User wants to set quantity as : "+quantity);
+        if (inventoryQuantity < 0) {
+            throw new ApiException("The inventory must be non-negative after update. Current Inventory count :" + exInventoryPojo.getQuantity() + " User wants to set quantity as : " + inventoryQuantity);
         }
-        exInventoryPojo.setQuantity(quantity);
+        exInventoryPojo.setQuantity(inventoryQuantity);
     }
 
     public List<InventoryPojo> getAll() {

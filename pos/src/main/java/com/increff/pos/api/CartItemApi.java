@@ -17,28 +17,28 @@ public class CartItemApi {
 
     public void add(CartItemPojo cartItemPojo, Integer quantity) throws ApiException {
         CartItemPojo exCartItemPojo = cartItemDao.getCartPojoFromProductIdAndCounterId(cartItemPojo.getProductId(), cartItemPojo.getCounterId());
-        if(Objects.nonNull(exCartItemPojo)){
-            if(exCartItemPojo.getQuantity()+ cartItemPojo.getQuantity()>quantity){
-                throw new ApiException("Item can't be added to cart as it exceeds the inventory. Items already in cart : "+ exCartItemPojo.getQuantity() +" Present inventory count :"+quantity);
+        if (Objects.nonNull(exCartItemPojo)) {
+            if (exCartItemPojo.getQuantity() + cartItemPojo.getQuantity() > quantity) {
+                throw new ApiException("Item can't be added to cart as it exceeds the inventory. Items already in cart : " + exCartItemPojo.getQuantity() + " Present inventory count :" + quantity);
             }
-            exCartItemPojo.setQuantity(exCartItemPojo.getQuantity()+ cartItemPojo.getQuantity());
+            exCartItemPojo.setQuantity(exCartItemPojo.getQuantity() + cartItemPojo.getQuantity());
             exCartItemPojo.setSellingPrice(cartItemPojo.getSellingPrice());
-        }
-        else{
+        } else {
             cartItemDao.insert(cartItemPojo);
         }
     }
-    public void delete(int id) throws ApiException {
-        getCheck(id);
-        cartItemDao.delete(id);
+
+    public void delete(int cartItemId) throws ApiException {
+        getCheck(cartItemId);
+        cartItemDao.delete(cartItemId);
     }
 
-    public List<CartItemPojo> getAllItemsInCart(Integer id) {
-        return cartItemDao.selectAllCartPojoByCounterId(id);
+    public List<CartItemPojo> getAllItemsInCart(Integer cartItemId) {
+        return cartItemDao.selectAllCartPojoByCounterId(cartItemId);
     }
 
-    public void deleteAll(List<CartItemPojo> cartItemPojoList) throws ApiException{
-        for(CartItemPojo cartItemPojo : cartItemPojoList){
+    public void deleteAll(List<CartItemPojo> cartItemPojoList) throws ApiException {
+        for (CartItemPojo cartItemPojo : cartItemPojoList) {
             delete(cartItemPojo.getCartItemId());
         }
     }
@@ -48,12 +48,12 @@ public class CartItemApi {
         exCartItemPojo.setQuantity(newCartItemPojo.getQuantity());
     }
 
-    public CartItemPojo getCheck(Integer id) throws ApiException {
-            CartItemPojo cartItemPojo = cartItemDao.select(id);
-            if(!Objects.nonNull(cartItemPojo)){
-                throw new ApiException("No such item exists in cart with given Id");
-            }
-            return cartItemPojo;
+    public CartItemPojo getCheck(Integer cartItemId) throws ApiException {
+        CartItemPojo cartItemPojo = cartItemDao.select(cartItemId);
+        if (!Objects.nonNull(cartItemPojo)) {
+            throw new ApiException("No such item exists in cart with given Id");
+        }
+        return cartItemPojo;
     }
 
 }

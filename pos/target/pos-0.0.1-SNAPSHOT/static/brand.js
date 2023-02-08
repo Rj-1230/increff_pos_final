@@ -157,6 +157,11 @@ function readFileDataCallback(results){
                     $(".toast").toast('show');
                     return;
 	}
+	var title = Object.keys(fileData[0]);
+    	if(title[0]!='brand' || title[1]!='category' || title.length!=2){
+                incorrectTSV();
+            return;
+    	}
 	var url = getSupervisorBrandUrl();
 	uploadRows(url);
 
@@ -175,6 +180,7 @@ function init(){
     role= $("meta[name=role]").attr("content");
 	$('#add-brand').click(addBrand);
 	$('#update-brand').click(updateBrand);
+    $('#myFile').on('change', renewUpload)
 	$('#refresh-data').click(getBrandList);
 	$('#upload-data').click(uploadData);
     $('#process-data').click(processData);

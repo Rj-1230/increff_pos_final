@@ -6,8 +6,6 @@ package com.increff.pos.spring;
 //
 
 
-
-
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
@@ -24,12 +22,12 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
-        return new Class[] {};
+        return new Class[]{};
     }
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[] { SpringConfig.class };
+        return new Class[]{SpringConfig.class};
     }
 
 //    This basically tells  to Tomcat/Jetty that I will be using SpringConfig class to initiate my spring and load the basic Spring framework.
@@ -37,7 +35,7 @@ public class WebInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected String[] getServletMappings() {
-        return new String[] { "/" };
+        return new String[]{"/"};
     }
 
 }

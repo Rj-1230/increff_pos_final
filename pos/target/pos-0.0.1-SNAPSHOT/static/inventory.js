@@ -143,6 +143,7 @@ function displayEditInventory(id){
 
 function displayInventory(data){
 	$("#inventory-edit-form input[name=barcode]").val(data.barcode);
+		$("#inventory-edit-form input[name=productName]").val(data.productName);
 	$("#inventory-edit-form input[name=quantity]").val(data.quantity);
 	$('#inventory-edit-modal').modal('toggle');
 }
@@ -157,6 +158,11 @@ function readFileDataCallback(results){
                         $(".toast").toast('show');
                         return;
     	}
+    	var title = Object.keys(fileData[0]);
+            	if(title[0]!='barcode' || title[1]!='quantity' || title.length!=2){
+                        incorrectTSV();
+                    return;
+            	}
 	var url = getSupervisorInventoryUrl()+"AddSub";
 	uploadRows(url);
 }
@@ -174,6 +180,7 @@ function init(){
     role= $("meta[name=role]").attr("content");
     	$('#add-inventory').click(addInventory);
 	$('#update-inventory').click(updateInventory);
+    $('#myFile').on('change', renewUpload)
 	$('#refresh-data').click(getInventoryList);
 	$('#upload-data').click(uploadData);
         	$('#process-data').click(processData);

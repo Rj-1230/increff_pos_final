@@ -13,12 +13,12 @@ public class SecurityUtil {
         session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
     }
 
-    public static void setAuthentication(Authentication token) {
-        SecurityContextHolder.getContext().setAuthentication(token);
-    }
-
     public static Authentication getAuthentication() {
         return SecurityContextHolder.getContext().getAuthentication();
+    }
+
+    public static void setAuthentication(Authentication token) {
+        SecurityContextHolder.getContext().setAuthentication(token);
     }
 
     public static UserPrincipal getPrincipal() {

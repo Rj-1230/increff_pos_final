@@ -20,32 +20,33 @@ import java.util.Objects;
 <span class="fc" id="L20">        inventoryDao.insert(newInventoryPojo);</span>
 
 <span class="fc" id="L22">    }</span>
+
     public void updateInventory(InventoryPojo newInventoryPojo, Integer quantity) throws ApiException {
-<span class="fc" id="L24">        InventoryPojo exInventoryPojo = getCheckByProductId(newInventoryPojo.getProductId());</span>
-<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (quantity &lt;0) {</span>
-<span class="fc" id="L26">            throw new ApiException(&quot;The inventory must be non-negative after update. Current Inventory count :&quot; + exInventoryPojo.getQuantity()+&quot; User wants to set quantity as : &quot;+quantity);</span>
+<span class="fc" id="L25">        InventoryPojo exInventoryPojo = getCheckByProductId(newInventoryPojo.getProductId());</span>
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">        if (quantity &lt; 0) {</span>
+<span class="nc" id="L27">            throw new ApiException(&quot;The inventory must be non-negative after update. Current Inventory count :&quot; + exInventoryPojo.getQuantity() + &quot; User wants to set quantity as : &quot; + quantity);</span>
         }
-<span class="fc" id="L28">        exInventoryPojo.setQuantity(quantity);</span>
-<span class="fc" id="L29">    }</span>
+<span class="fc" id="L29">        exInventoryPojo.setQuantity(quantity);</span>
+<span class="fc" id="L30">    }</span>
 
     public List&lt;InventoryPojo&gt; getAll() {
-<span class="fc" id="L32">        return inventoryDao.selectAll();</span>
+<span class="fc" id="L33">        return inventoryDao.selectAll();</span>
     }
 
     public InventoryPojo getCheckByProductId(Integer productId) throws ApiException {
-<span class="fc" id="L36">        InventoryPojo inventoryPojo = inventoryDao.selectByProductId(productId);</span>
-<span class="fc bfc" id="L37" title="All 2 branches covered.">        if (Objects.isNull(inventoryPojo)) {</span>
-<span class="fc" id="L38">            throw new ApiException(&quot;No such inventory with given product Id exists !&quot;);</span>
+<span class="fc" id="L37">        InventoryPojo inventoryPojo = inventoryDao.selectByProductId(productId);</span>
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        if (Objects.isNull(inventoryPojo)) {</span>
+<span class="nc" id="L39">            throw new ApiException(&quot;No such inventory with given product Id exists !&quot;);</span>
         }
-<span class="fc" id="L40">        return inventoryPojo;</span>
+<span class="fc" id="L41">        return inventoryPojo;</span>
     }
 
     public InventoryPojo getCheck(Integer inventoryId) throws ApiException {
-<span class="fc" id="L44">        InventoryPojo inventoryPojo = inventoryDao.select(inventoryId);</span>
-<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (Objects.isNull(inventoryPojo)) {</span>
-<span class="fc" id="L46">            throw new ApiException(&quot;No such inventory with given inventory Id exists !&quot;);</span>
+<span class="fc" id="L45">        InventoryPojo inventoryPojo = inventoryDao.select(inventoryId);</span>
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        if (Objects.isNull(inventoryPojo)) {</span>
+<span class="nc" id="L47">            throw new ApiException(&quot;No such inventory with given inventory Id exists !&quot;);</span>
         }
-<span class="fc" id="L48">        return inventoryPojo;</span>
+<span class="fc" id="L49">        return inventoryPojo;</span>
     }
 
 }

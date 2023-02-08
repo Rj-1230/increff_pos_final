@@ -5,79 +5,82 @@
 <body>
 <nav th:replace="snippets.html :: name_navbar"></nav>
 <div class="container">
-  <div th:replace="snippets.html :: name_toast"></div>
+    <div th:replace="snippets.html :: name_toast"></div>
 
-  <br>
-  <br>
-  <div class="modal" tabindex="-1" role="dialog" id="daily-sales-report-filter-modal">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Filter Daily Sales Report</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <form id="filter-date-form">
-            <div class="form-group">
-              <label for="inputStartDate">Start Date</label>
-              <input type="date" class="form-control" name="start" id="inputStartDate" placeholder="2023/01/01">
+    <br>
+    <br>
+    <div class="modal" id="daily-sales-report-filter-modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Filter Daily Sales Report</h4>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="filter-date-form">
+                        <div class="form-group">
+                            <label for="inputStartDate">Start Date</label>
+                            <input class="form-control" id="inputStartDate" name="start" placeholder="2023/01/01"
+                                   type="date">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEndDate">End Date</label>
+                            <input class="form-control" id="inputEndDate" name="end" placeholder="2023/01/01"
+                                   type="date">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-primary" id="get-dailySales-report" type="button" data-placement="bottom" data-toggle="tooltip" title="Apply brand category filter"><i
+                            class="bi bi-funnel-fill"></i></button>
+                </div>
             </div>
-            <div class="form-group">
-              <label for="inputEndDate">End Date</label>
-              <input type="date" class="form-control" name="end" id="inputEndDate" placeholder="2023/01/01">
+        </div>
+    </div>
+
+    <div class="row card mx-auto" style="width: 40rem;color:white;background-color:#343a40!important;">
+        <div class="space">
+            <!--      Blank row-->
+        </div>
+        <div class="col-12" id="main">
+            <h3 class="alignleft">Daily Sales Report</h3>
+            <div class="alignright">
+                <button class="btn btn-primary" data-target="#daily-sales-report-filter-modal" data-toggle="modal" id="open-brand-report-filter-modal"
+                        type="button"><i class="bi bi-funnel-fill"></i></button>
             </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" id="get-dailySales-report"><i class="bi bi-funnel-fill"></i></button>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <div class="row card mx-auto" style="width: 40rem;color:white;background-color:#343a40!important;">
-    <div class="space">
-      <!--      Blank row-->
+        </div>
+        <div class="space">
+            <!--      Blank row -->
+        </div>
     </div>
-    <div class="col-12" id="main">
-      <h3 class="alignleft">Daily Sales Report</h3>
-      <div class="alignright">
-        <button type="button" class="btn btn-primary" id="open-brand-report-filter-modal" data-toggle="modal" data-target="#daily-sales-report-filter-modal" ><i class="bi bi-funnel-fill"></i></button>
-      </div>
-
+    <div class="half-space">
+        <!--      Blank row-->
     </div>
-    <div class="space">
-      <!--      Blank row -->
+    <div id="product-div">
+        <button class="btn btn-lg btn-success" id="download-report" style="display:none;" type="button" data-placement="bottom" data-toggle="tooltip" title="Download daily sales report"><i
+                class="bi bi-file-arrow-down-fill"></i></button>
+        <div class="half-space">
+            <!--      Blank row-->
+        </div>
+        <div id="dailySales-report-table-container" style="display:none;">
+            <table class="table table-dark table-striped table-hover" id="dailySales-report-table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Invoice Date</th>
+                    <th scope="col">Invoiced Items Count</th>
+                    <th scope="col">Invoiced Orders Count</th>
+                    <th scope="col">Total Revenue</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
-  </div>
-  <div class="space">
-    <!--      Blank row-->
-  </div>
-  <div id="product-div">
-    <div class="space">
-    </div>
-  <button type="button" class="btn btn-success" style="display:none;" id="download-report">Download report</button>
-  <div class="half-space">
-    <!--      Blank row-->
-  </div>
-    <div id="dailySales-report-table-container" style="display:none;">
-    <table class="table table-dark table-striped table-hover" id="dailySales-report-table">
-      <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Invoice Date</th>
-        <th scope="col">Invoiced Items Count </th>
-        <th scope="col">Invoiced Orders Count </th>
-        <th scope="col">Total Revenue </th>
-      </tr>
-      </thead>
-      <tbody>
-      </tbody>
-    </table>
-    </div>
-  </div>
 </div>
 <div class="space"></div>
 <div class="space"></div>

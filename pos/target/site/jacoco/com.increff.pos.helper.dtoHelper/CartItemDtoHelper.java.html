@@ -7,54 +7,40 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import static com.increff.pos.util.SecurityUtil.getPrincipal;
 
 @Service
 
-<span class="fc" id="L17">public class CartItemDtoHelper {</span>
-<span class="fc" id="L18">    private static final NumberFormat formatter = new DecimalFormat(&quot;#0.00&quot;);</span>
+<span class="fc" id="L15">public class CartItemDtoHelper {</span>
+<span class="fc" id="L16">    private static final NumberFormat formatter = new DecimalFormat(&quot;#0.00&quot;);</span>
 
-    public static List&lt;CartItemData&gt; getAllCartItems(List&lt;CartItemPojo&gt; list){
-<span class="nc" id="L21">        List&lt;CartItemData&gt; list2 = new ArrayList&lt;CartItemData&gt;();</span>
-<span class="nc bnc" id="L22" title="All 2 branches missed.">        for(CartItemPojo p: list){</span>
-<span class="nc bnc" id="L23" title="All 2 branches missed.">            if(p.getQuantity()==0){</span>
-<span class="nc" id="L24">                continue;</span>
-            }
-<span class="nc" id="L26">            list2.add(convert(p));</span>
-<span class="nc" id="L27">        }</span>
-<span class="nc" id="L28">        return list2;</span>
+    public static CartItemPojo convert(CartItemForm f) {
+<span class="fc" id="L19">        CartItemPojo c = new CartItemPojo();</span>
+<span class="fc" id="L20">        c.setQuantity(f.getQuantity());</span>
+<span class="fc" id="L21">        c.setSellingPrice(f.getSellingPrice());</span>
+<span class="fc" id="L22">        c.setCounterId(getPrincipal().getId());</span>
+<span class="fc" id="L23">        return c;</span>
     }
 
-
-    public static CartItemPojo convert(CartItemForm f){
-<span class="fc" id="L33">        CartItemPojo c = new CartItemPojo();</span>
-<span class="fc" id="L34">        c.setQuantity(f.getQuantity());</span>
-<span class="fc" id="L35">        c.setSellingPrice(f.getSellingPrice());</span>
-<span class="fc" id="L36">        c.setCounterId(getPrincipal().getId());</span>
-<span class="fc" id="L37">        return c;</span>
-    }
-
-    public static CartItemData convert(CartItemPojo p){
-<span class="fc" id="L41">        CartItemData d = new CartItemData();</span>
-<span class="fc" id="L42">        d.setProductId(p.getProductId());</span>
-<span class="fc" id="L43">        d.setCartItemId(p.getCartItemId());</span>
-<span class="fc" id="L44">        d.setQuantity(p.getQuantity());</span>
-<span class="fc" id="L45">        d.setSellingPrice(p.getSellingPrice());</span>
-<span class="fc" id="L46">        d.setCounterId(p.getCounterId());</span>
-<span class="fc" id="L47">        return d;</span>
+    public static CartItemData convert(CartItemPojo p) {
+<span class="fc" id="L27">        CartItemData d = new CartItemData();</span>
+<span class="fc" id="L28">        d.setProductId(p.getProductId());</span>
+<span class="fc" id="L29">        d.setCartItemId(p.getCartItemId());</span>
+<span class="fc" id="L30">        d.setQuantity(p.getQuantity());</span>
+<span class="fc" id="L31">        d.setSellingPrice(p.getSellingPrice());</span>
+<span class="fc" id="L32">        d.setCounterId(p.getCounterId());</span>
+<span class="fc" id="L33">        return d;</span>
     }
 
 
     public static void normalize(CartItemForm f) {
-<span class="fc" id="L52">        f.setBarcode(f.getBarcode().toLowerCase().trim());</span>
-<span class="fc" id="L53">        f.setSellingPrice(Double.parseDouble(formatter.format(f.getSellingPrice())));</span>
+<span class="fc" id="L38">        f.setBarcode(f.getBarcode().toLowerCase().trim());</span>
+<span class="fc" id="L39">        f.setSellingPrice(Double.parseDouble(formatter.format(f.getSellingPrice())));</span>
 
-<span class="pc bpc" id="L55" title="1 of 2 branches missed.">        if(f.getBarcode().length()&gt;15){</span>
-<span class="nc" id="L56">            f.setBarcode(f.getBarcode().substring(0,15));</span>
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if (f.getBarcode().length() &gt; 20) {</span>
+<span class="nc" id="L42">            f.setBarcode(f.getBarcode().substring(0, 20));</span>
         }
-<span class="fc" id="L58">    }</span>
+<span class="fc" id="L44">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

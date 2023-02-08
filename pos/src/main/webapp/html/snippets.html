@@ -1,135 +1,140 @@
 <head th:fragment="name_head">
 
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="baseUrl" th:attr="content=${baseUrl}">
-  <meta name="orderId" th:attr="content=${orderId}">
-  <meta name="role" th:attr="content=${role}">
-  <meta name="message" th:attr="content=${message}">
-  <meta name="counterId" th:attr="content=${counterId}">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
-  <link rel="stylesheet" th:href="@{/static/style.css}">
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+    <meta name="baseUrl" th:attr="content=${baseUrl}">
+    <meta name="orderId" th:attr="content=${orderId}">
+    <meta name="role" th:attr="content=${role}">
+    <meta name="message" th:attr="content=${message}">
+    <meta name="counterId" th:attr="content=${counterId}">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/static/style.css}">
 
 </head>
 
 
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" th:fragment="name_navbar">
-  <a class="navbar-brand" th:href="@{/ui/home}">
-    <img th:src="@{/static/images/logoo.jpg}" class="d-inline-block align-top" alt="" style="width:50px; height 50px;">
-  </a>
-
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/ui/brands}">Brands</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/ui/products}">Products</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/ui/inventory}">Inventory</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/ui/orders}">Orders</a>
-      </li>
-      <li class="dropdown show nav-item" style="background-color: #343a40!important; vertical-align: middle;">
-        <a class="nav-link btn dropdown-toggle" style="color: rgba(255,255,255,.5);" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Reports
-        </a>
-
-        <div class="dropdown-menu" id="dropMenu" aria-labelledby="dropdownMenuLink" style="background-color: #343a40!important">
-          <a class="dropdown-item" th:href="@{/ui/daily_sales}">Day-to-Day Sales Report</a>
-          <a class="dropdown-item" th:href="@{/ui/revenue}">Revenue Report</a>
-          <a class="dropdown-item" th:href="@{/ui/inventoryReport}">Inventory Report</a>
-          <a class="dropdown-item" th:href="@{/ui/brandReport}">Brand Report</a>
-        </div>
-      </li>
-<!--      <li class="nav-item">-->
-<!--        <a class="nav-link" th:href="@{/ui/orderItems}">Order Items</a>-->
-<!--      </li>-->
-    </ul>
-  </div>
-
-  <div class="dropdown show nav-item" style="background-color: #343a40!important; vertical-align: middle;">
-    <a class="nav-link btn dropdown-toggle" style="color: rgba(255,255,255,.5);" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      [[${info.getEmail()}]]
+    <a class="navbar-brand" th:href="@{/ui/home}">
+        <img alt="" class="d-inline-block align-top" style="width:50px; height 50px;"
+             src="https://cdn.skillenza.com/files/45aa07e5-5b0b-4fee-9cea-2009d437cea4/increff_logo.png">
     </a>
 
-    <div class="dropdown-menu" id="dropUserMenu" aria-labelledby="dropdownMenuLink" style="background-color: #343a40!important">
-      <a class="dropdown-item nav-link" id="nav-supervisor" style="display:none;" th:href="@{/ui/supervisor/user}">Manage Users</a>
-      <a class="dropdown-item nav-link" th:href="@{/session/logout}">Logout</a>
+    <button aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler"
+            data-target="#navbarNav" data-toggle="collapse" type="button">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/ui/brands}">Brands</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/ui/products}">Products</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/ui/inventory}">Inventory</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/ui/orders}">Orders</a>
+            </li>
+            <li class="dropdown show nav-item" style="background-color: #343a40!important; vertical-align: middle;">
+                <a aria-expanded="false" aria-haspopup="true" class="nav-link btn dropdown-toggle" data-toggle="dropdown"
+                   href="#" id="dropdownMenuLink" role="button" style="color: rgba(255,255,255,.5);">
+                    Reports
+                </a>
+
+                <div aria-labelledby="dropdownMenuLink" class="dropdown-menu" id="dropMenu"
+                     style="background-color: #343a40!important">
+                    <a class="dropdown-item" th:href="@{/ui/daily_sales}">Daily Sales Report</a>
+                    <a class="dropdown-item" th:href="@{/ui/revenue}">Revenue Report</a>
+                    <a class="dropdown-item" th:href="@{/ui/inventoryReport}">Inventory Report</a>
+                    <a class="dropdown-item" th:href="@{/ui/brandReport}">Brand Report</a>
+                </div>
+            </li>
+        </ul>
     </div>
-  </div>
+
+    <div class="dropdown show nav-item" style="background-color: #343a40!important; vertical-align: middle;">
+        <a aria-expanded="false" aria-haspopup="true" class="nav-link btn dropdown-toggle" data-toggle="dropdown"
+           href="#" role="button" style="color: rgba(255,255,255,.5);">
+            [[${info.getEmail()}]]
+        </a>
+
+        <div aria-labelledby="dropdownMenuLink" class="dropdown-menu" id="dropUserMenu"
+             style="background-color: #343a40!important">
+            <a class="dropdown-item nav-link" id="nav-supervisor" style="display:none;"
+               th:href="@{/ui/supervisor/user}">Manage users</a>
+            <a class="dropdown-item nav-link" id="nav-supervisors" style="display:none;"
+               th:href="@{/ui/supervisor/allOrders}">Show all orders</a>
+            <a class="dropdown-item nav-link" th:href="@{/session/logout}">Logout</a>
+        </div>
+    </div>
 </nav>
 
 
+<div class="modal" id="upload-file-modal" role="dialog" tabindex="-1" th:fragment="name_upload_modal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
 
-<div class="modal" tabindex="-1" role="dialog" id="upload-file-modal" th:fragment="name_upload_modal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Upload Your File</h5>
+                <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
 
-      <div class="modal-header">
-        <h5 class="modal-title">Upload Your File</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
+            <div class="modal-body">
+                <div class="my-file">
+                    <input class="custom-file-input" id="myFile" type="file">
+                    <label class="custom-file-label" for="myFile" id="myFileName">Choose file</label>
+                </div>
+                <div id="sample-file">
+                    <!--          <a th:href="@{/sample/brand.tsv}" target="_blank">Download Sample</a>-->
+                </div>
+                <br>
+                <div id="uploadDetails" style="display:none;">
+                    Rows: <span id="rowCount">0</span>,
+                    Success: <span id="successCount">0</span>,
+                    Errors: <span id="errorCount">0</span>
+                </div>
+            </div>
 
-      <div class="modal-body">
-        <div class="my-file">
-          <input type="file" class="custom-file-input" id="myFile">
-          <label class="custom-file-label" for="myFile" id="myFileName">Choose file</label>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancel</button>
+                <button class="btn btn-primary" disabled id="process-data" type="button">Upload</button>
+                <button class="btn btn-warning" disabled id="download-errors" type="button">Download Errors</button>
+            </div>
         </div>
-        <div id="sample-file">
-          <!--          <a th:href="@{/sample/brand.tsv}" target="_blank">Download Sample</a>-->
-        </div>
-        <br>
-        <div id="uploadDetails" style="display:none;">
-        Rows: <span id="rowCount">0</span>,
-        Success: <span id="successCount">0</span>,
-        Errors: <span id="errorCount">0</span>
-        </div>
-      </div>
-
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="process-data">Upload</button>
-        <button type="button" class="btn btn-warning" id="download-errors">Download Errors</button>
-      </div>
     </div>
-  </div>
 </div>
-
 
 
 <!--Toast -->
-<div id="toast-container" data-animation="true" data-delay="5000" class="toast align-items-center text-white border-0" role="alert" aria-live="assertive" aria-atomic="true"  th:fragment="name_toast">
-  <div class="d-flex">
-    <div class="toast-body">
-      <div id="my-message"></div>
+<div aria-atomic="true" aria-live="assertive" class="toast align-items-center text-white border-0" data-animation="true"
+     data-delay="5000" id="toast-container" role="alert" th:fragment="name_toast">
+    <div class="d-flex">
+        <div class="toast-body">
+            <div id="my-message"></div>
+        </div>
+        <button aria-label="Close" class="close" data-bs-dismiss="toast" style="color:white" type="button">
+            <span aria-hidden="true">&times;&nbsp;</span>
+        </button>
     </div>
-    <button type="button" style="color:white" class="close" data-bs-dismiss="toast" aria-label="Close">
-      <span aria-hidden="true">&times;&nbsp;</span>
-    </button>
-  </div>
 </div>
 
 
-
 <footer class="footer" th:fragment="name_footer">
-  Copyright Increff POS 2023
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <script th:src="@{/static/app.js}"/></script>
-  <script th:src="@{/static/papaparse.min.js}"/></script>
-<!--  <script th:src="@{/static/app.js}"></script>-->
+    Copyright Increff POS 2023
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script th:src="@{/static/app.js}"/>
+    </script>
+    <script th:src="@{/static/papaparse.min.js}"/>
+    </script>
+    <!--  <script th:src="@{/static/app.js}"></script>-->
 
 </footer>
 

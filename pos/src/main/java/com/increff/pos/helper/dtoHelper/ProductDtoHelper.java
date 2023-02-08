@@ -17,21 +17,21 @@ public class ProductDtoHelper {
         f.setMrp(Double.parseDouble(formatter.format(f.getMrp())));
         f.setName(f.getName().toLowerCase().trim());
 
-        if(f.getBrandName().length()>15){
-            f.setBrandName(f.getBrandName().substring(0,15));
+        if (f.getBrandName().length() > 20) {
+            f.setBrandName(f.getBrandName().substring(0, 20));
         }
-        if(f.getCategoryName().length()>15){
-            f.setCategoryName(f.getCategoryName().substring(0,15));
+        if (f.getCategoryName().length() > 20) {
+            f.setCategoryName(f.getCategoryName().substring(0, 20));
         }
-        if(f.getBarcode().length()>15){
-            f.setBarcode(f.getBarcode().substring(0,15));
+        if (f.getBarcode().length() > 20) {
+            f.setBarcode(f.getBarcode().substring(0, 20));
         }
-        if(f.getName().length()>15){
-            f.setName(f.getName().substring(0,15));
+        if (f.getName().length() > 20) {
+            f.setName(f.getName().substring(0, 20));
         }
     }
 
-    public static ProductData convert(ProductPojo p){
+    public static ProductData convert(ProductPojo p) {
         ProductData d = new ProductData();
         d.setProductId(p.getProductId());
         d.setBarcode(p.getBarcode());
@@ -40,7 +40,7 @@ public class ProductDtoHelper {
         return d;
     }
 
-    public static ProductPojo convert(ProductForm f){
+    public static ProductPojo convert(ProductForm f) {
         ProductPojo p = new ProductPojo();
         p.setName(f.getName());
         p.setBarcode(f.getBarcode());

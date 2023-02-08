@@ -7,14 +7,12 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class OrderItemDtoHelper {
     private static final NumberFormat formatter = new DecimalFormat("#0.00");
 
-    public static OrderItemPojo convert(OrderItemForm f){
+    public static OrderItemPojo convert(OrderItemForm f) {
         OrderItemPojo o = new OrderItemPojo();
         o.setOrderId(f.getOrderId());
         o.setQuantity(f.getQuantity());
@@ -26,12 +24,12 @@ public class OrderItemDtoHelper {
         f.setBarcode(f.getBarcode().toLowerCase().trim());
         f.setSellingPrice(Double.parseDouble(formatter.format(f.getSellingPrice())));
 
-        if(f.getBarcode().length()>15){
-            f.setBarcode(f.getBarcode().substring(0,15));
+        if (f.getBarcode().length() > 20) {
+            f.setBarcode(f.getBarcode().substring(0, 20));
         }
     }
 
-    public static OrderItemData convert(OrderItemPojo p){
+    public static OrderItemData convert(OrderItemPojo p) {
         OrderItemData d = new OrderItemData();
         d.setOrderItemId(p.getOrderItemId());
         d.setOrderId(p.getOrderId());
@@ -39,16 +37,5 @@ public class OrderItemDtoHelper {
         d.setQuantity(p.getQuantity());
         d.setSellingPrice(p.getSellingPrice());
         return d;
-    }
-
-
-    public static List<OrderItemData> getAllOrderItemsOfAgivenOrder(List<OrderItemPojo> list) {
-        List<OrderItemData> list2 = new ArrayList<OrderItemData>();
-        for (OrderItemPojo p : list) {
-            if(p.getQuantity()==0)
-                continue;
-            list2.add(convert(p));
-        }
-        return list2;
     }
 }

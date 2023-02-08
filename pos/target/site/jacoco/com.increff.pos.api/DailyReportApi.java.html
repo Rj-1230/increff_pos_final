@@ -16,34 +16,34 @@ import java.util.Objects;
     @Autowired
     private DailyReportDao dao;
 
-    public void addReport(DailyReportPojo pojo){
-<span class="fc" id="L20">            dao.insert(pojo);</span>
+    public void addReport(DailyReportPojo pojo) {
+<span class="fc" id="L20">        dao.insert(pojo);</span>
 <span class="fc" id="L21">    }</span>
 
-    public DailyReportPojo getReportByDate(ZonedDateTime date){
+    public DailyReportPojo getReportByDate(ZonedDateTime date) {
 <span class="fc" id="L24">        return dao.select(date);</span>
     }
 
 
     public DailyReportPojo getCheckReportByDate(ZonedDateTime invoiceDate) throws ApiException {
-<span class="fc" id="L29">        DailyReportPojo dailyReportPojo = dao.select(invoiceDate);</span>
-<span class="fc bfc" id="L30" title="All 2 branches covered.">        if(Objects.isNull(dailyReportPojo)){</span>
-<span class="fc" id="L31">            throw new ApiException(&quot;No such daily report for given date exists !&quot;);</span>
+<span class="nc" id="L29">        DailyReportPojo dailyReportPojo = dao.select(invoiceDate);</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">        if (Objects.isNull(dailyReportPojo)) {</span>
+<span class="nc" id="L31">            throw new ApiException(&quot;No such daily report for given date exists !&quot;);</span>
         }
-<span class="fc" id="L33">        return dailyReportPojo;</span>
+<span class="nc" id="L33">        return dailyReportPojo;</span>
     }
 
 
-    public List&lt;DailyReportPojo&gt; selectReportByDateFilter(ZonedDateTime start, ZonedDateTime end){
-<span class="fc" id="L38">    return dao.getReportBetweenDateRange(start, end);</span>
+    public List&lt;DailyReportPojo&gt; selectReportByDateFilter(ZonedDateTime start, ZonedDateTime end) {
+<span class="fc" id="L38">        return dao.getReportBetweenDateRange(start, end);</span>
     }
 
 
     public void update(ZonedDateTime date, DailyReportPojo newPojo) throws ApiException {
-<span class="fc" id="L43">        DailyReportPojo pojo = getCheckReportByDate(date);</span>
-<span class="fc" id="L44">        pojo.setInvoicedOrderCount(newPojo.getInvoicedOrderCount());</span>
-<span class="fc" id="L45">        pojo.setTotalRevenue(newPojo.getTotalRevenue());</span>
-<span class="fc" id="L46">        pojo.setInvoicedItemsCount(newPojo.getInvoicedItemsCount());</span>
-<span class="fc" id="L47">    }</span>
+<span class="nc" id="L43">        DailyReportPojo pojo = getCheckReportByDate(date);</span>
+<span class="nc" id="L44">        pojo.setInvoicedOrderCount(newPojo.getInvoicedOrderCount());</span>
+<span class="nc" id="L45">        pojo.setTotalRevenue(newPojo.getTotalRevenue());</span>
+<span class="nc" id="L46">        pojo.setInvoicedItemsCount(newPojo.getInvoicedItemsCount());</span>
+<span class="nc" id="L47">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

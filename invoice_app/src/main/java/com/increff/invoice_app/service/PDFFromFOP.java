@@ -43,7 +43,7 @@ public class PDFFromFOP {
             } finally {
                 out.close();
             }
-        }catch(Exception exp){
+        } catch (Exception exp) {
             exp.printStackTrace();
         }
     }

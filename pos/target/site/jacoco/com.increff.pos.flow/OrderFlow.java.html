@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>OrderFlow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.flow</a> &gt; <span class="el_source">OrderFlow.java</span></div><h1>OrderFlow.java</h1><pre class="source lang-java linenums">package com.increff.pos.flow;
 
+import com.increff.pos.api.*;
 import com.increff.pos.model.data.OrderData;
 import com.increff.pos.model.data.OrderItemData;
 import com.increff.pos.pojo.*;
-import com.increff.pos.api.*;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,13 +15,15 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.increff.pos.helper.dtoHelper.OrderDtoHelper.convert;
 import static com.increff.pos.helper.flowHelper.CartItemFlowHelper.convertCartPojoToOrderItemPojo;
 import static com.increff.pos.helper.flowHelper.OrderFlowHelper.convertOrderItemPojoToOrderItemData;
 import static com.increff.pos.util.SecurityUtil.getPrincipal;
-import static com.increff.pos.helper.dtoHelper.OrderDtoHelper.convert;
 
 @Service
-<span class="fc" id="L23">public class OrderFlow {</span>
+<span class="pc" id="L24">@Setter</span>
+<span class="fc" id="L25">public class OrderFlow {</span>
+<span class="fc" id="L26">    private static String PDF_PATH = &quot;./src/main/resources/com/increff/pos/pdf/&quot;;</span>
     @Autowired
     private OrderApi orderApi;
     @Autowired
@@ -32,99 +35,109 @@ import static com.increff.pos.helper.dtoHelper.OrderDtoHelper.convert;
     @Autowired
     private CartItemApi cartItemApi;
 
-    @Transactional(rollbackOn  = ApiException.class)
+    @Transactional(rollbackOn = ApiException.class)
     public void addNewOrder(OrderPojo orderPojo) throws ApiException {
-<span class="fc" id="L37">        List&lt;CartItemPojo&gt; cartItemPojoList = cartItemApi.getAllItemsInCart(getPrincipal().getId());</span>
-<span class="pc bpc" id="L38" title="1 of 2 branches missed.">        if(cartItemPojoList.size()==0){</span>
-<span class="nc" id="L39">            throw new ApiException(&quot;The order can't be created as the cart is empty&quot;);</span>
+<span class="fc" id="L40">        List&lt;CartItemPojo&gt; cartItemPojoList = cartItemApi.getAllItemsInCart(getPrincipal().getId());</span>
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">        if (cartItemPojoList.size() == 0) {</span>
+<span class="nc" id="L42">            throw new ApiException(&quot;The order can't be created as the cart is empty&quot;);</span>
         }
-<span class="fc" id="L41">        checkSufficientInventoryToCreateOrder(cartItemPojoList);</span>
-<span class="fc" id="L42">        Integer orderId = orderApi.addOrder(orderPojo, cartItemPojoList);</span>
-<span class="fc" id="L43">        createNewOrderByAddingItemsToTheOrder(orderId,cartItemPojoList);</span>
-<span class="fc" id="L44">        cartItemApi.deleteAll(cartItemPojoList);</span>
-<span class="fc" id="L45">    }</span>
+<span class="fc" id="L44">        checkSufficientInventoryToCreateOrder(cartItemPojoList);</span>
+<span class="fc" id="L45">        Integer orderId = orderApi.addOrder(orderPojo, cartItemPojoList);</span>
+<span class="fc" id="L46">        createNewOrderByAddingItemsToTheOrder(orderId, cartItemPojoList);</span>
+<span class="fc" id="L47">        cartItemApi.deleteAll(cartItemPojoList);</span>
+<span class="fc" id="L48">    }</span>
 
     @Transactional(rollbackOn = Exception.class)
     public void invoiceOrder(Integer orderId) throws Exception {
-<span class="nc" id="L49">        orderApi.invoiceOrder(orderId);</span>
-<span class="nc" id="L50">        createInvoiceForOrder(orderId);</span>
-<span class="nc" id="L51">    }</span>
+<span class="fc" id="L52">        orderApi.invoiceOrder(orderId);</span>
+<span class="fc" id="L53">        createInvoiceForOrder(orderId);</span>
+<span class="fc" id="L54">    }</span>
 
 
     @Transactional(rollbackOn = ApiException.class)
-    public void addOrderItem(OrderItemPojo orderItemPojo,String barcode) throws ApiException {
-<span class="nc" id="L56">        ProductPojo productPojo= productApi.getCheckProduct(barcode);</span>
-<span class="nc" id="L57">        orderItemPojo.setProductId(productPojo.getProductId());</span>
-<span class="nc" id="L58">        checkSufficientInventoryToAddOrderItem(orderItemPojo,productPojo.getMrp());</span>
-<span class="nc" id="L59">        orderApi.addOrderItem(orderItemPojo);</span>
-<span class="nc" id="L60">    }</span>
+    public void addOrderItem(OrderItemPojo orderItemPojo, String barcode) throws ApiException {
+<span class="fc" id="L59">        ProductPojo productPojo = productApi.getCheckProduct(barcode);</span>
+<span class="fc" id="L60">        orderItemPojo.setProductId(productPojo.getProductId());</span>
+<span class="fc" id="L61">        checkSufficientInventoryToAddOrderItem(orderItemPojo, productPojo.getMrp());</span>
+<span class="fc" id="L62">        orderApi.addOrderItem(orderItemPojo);</span>
+<span class="fc" id="L63">    }</span>
 
     @Transactional(rollbackOn = ApiException.class)
     public void deleteOrderItem(Integer id) throws ApiException {
-<span class="nc" id="L64">        OrderItemPojo ex = orderApi.getCheckOrderItem(id);</span>
-<span class="nc" id="L65">        InventoryPojo inventoryPojo = inventoryApi.getCheckByProductId(ex.getProductId());</span>
-<span class="nc" id="L66">        inventoryApi.updateInventory(inventoryPojo,inventoryPojo.getQuantity()+ ex.getQuantity());</span>
-<span class="nc" id="L67">        orderApi.deleteOrderItem(id);</span>
-<span class="nc" id="L68">    }</span>
+<span class="fc" id="L67">        OrderItemPojo ex = orderApi.getCheckOrderItem(id);</span>
+<span class="fc" id="L68">        InventoryPojo inventoryPojo = inventoryApi.getCheckByProductId(ex.getProductId());</span>
+<span class="fc" id="L69">        inventoryApi.updateInventory(inventoryPojo, inventoryPojo.getQuantity() + ex.getQuantity());</span>
+<span class="fc" id="L70">        orderApi.deleteOrderItem(id);</span>
+<span class="fc" id="L71">    }</span>
 
-    @Transactional(rollbackOn  = ApiException.class)
+    @Transactional(rollbackOn = ApiException.class)
+    public OrderItemData getOrderItem(Integer id) throws ApiException {
+<span class="fc" id="L75">        OrderItemPojo orderItemPojo = orderApi.getCheckOrderItem(id);</span>
+<span class="fc" id="L76">        String productName = productApi.getCheckProduct(orderItemPojo.getProductId()).getName();</span>
+<span class="fc" id="L77">        String barcode = productApi.getCheckProduct(orderItemPojo.getProductId()).getBarcode();</span>
+<span class="fc" id="L78">        return convertOrderItemPojoToOrderItemData(orderItemPojo, productName, barcode);</span>
+    }
+
+    @Transactional(rollbackOn = ApiException.class)
     public void updateOrderItem(Integer id, OrderItemPojo orderItemPojo) throws ApiException {
-<span class="nc" id="L72">        OrderItemPojo ex = orderApi.getCheckOrderItem(id);</span>
-<span class="nc" id="L73">        InventoryPojo inventoryPojo = inventoryApi.getCheckByProductId(ex.getProductId());</span>
-<span class="nc" id="L74">        ProductPojo productPojo= productApi.getCheckProduct(ex.getProductId());</span>
-<span class="nc bnc" id="L75" title="All 2 branches missed.">        if(orderItemPojo.getSellingPrice()&gt;productPojo.getMrp()){</span>
-<span class="nc" id="L76">            throw new ApiException(&quot;Item can't be updated to order as selling price must be less than MRP. Product's MRP :&quot;+productPojo.getMrp());</span>
+<span class="fc" id="L83">        OrderItemPojo ex = orderApi.getCheckOrderItem(id);</span>
+<span class="fc" id="L84">        InventoryPojo inventoryPojo = inventoryApi.getCheckByProductId(ex.getProductId());</span>
+<span class="fc" id="L85">        ProductPojo productPojo = productApi.getCheckProduct(ex.getProductId());</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">        if (orderItemPojo.getSellingPrice() &gt; productPojo.getMrp()) {</span>
+<span class="nc" id="L87">            throw new ApiException(&quot;Item can't be updated to order as selling price must be less than MRP. Product's MRP :&quot; + productPojo.getMrp());</span>
         }
-<span class="nc" id="L78">        inventoryApi.updateInventory(inventoryPojo,inventoryPojo.getQuantity()-orderItemPojo.getQuantity()+ex.getQuantity());</span>
-<span class="nc" id="L79">        orderApi.updateOrderItem(ex,orderItemPojo);</span>
-<span class="nc" id="L80">    }</span>
+<span class="fc" id="L89">        inventoryApi.updateInventory(inventoryPojo, inventoryPojo.getQuantity() - orderItemPojo.getQuantity() + ex.getQuantity());</span>
+<span class="fc" id="L90">        orderApi.updateOrderItem(ex, orderItemPojo);</span>
+<span class="fc" id="L91">    }</span>
 
 
     @Transactional(rollbackOn = ApiException.class)
     public List&lt;OrderItemData&gt; getAllOrderItemsOfAnOrder(Integer orderId) throws ApiException {
-<span class="nc" id="L85">        List&lt;OrderItemPojo&gt; orderItemPojoList = orderApi.getAllOrderItems(orderId);</span>
-<span class="nc" id="L86">        List&lt;OrderItemData&gt; list2 = new ArrayList&lt;OrderItemData&gt;();</span>
-<span class="nc bnc" id="L87" title="All 2 branches missed.">        for(OrderItemPojo orderItemPojo: orderItemPojoList){</span>
-<span class="nc" id="L88">            String productName = productApi.getCheckProduct(orderItemPojo.getProductId()).getName();</span>
-<span class="nc" id="L89">            list2.add(convertOrderItemPojoToOrderItemData(orderItemPojo,productName));</span>
-<span class="nc" id="L90">        }</span>
-<span class="nc" id="L91">        return list2;</span>
+<span class="fc" id="L96">        List&lt;OrderItemPojo&gt; orderItemPojoList = orderApi.getAllOrderItems(orderId);</span>
+<span class="fc" id="L97">        List&lt;OrderItemData&gt; list2 = new ArrayList&lt;OrderItemData&gt;();</span>
+<span class="fc bfc" id="L98" title="All 2 branches covered.">        for (OrderItemPojo orderItemPojo : orderItemPojoList) {</span>
+<span class="fc" id="L99">            String productName = productApi.getCheckProduct(orderItemPojo.getProductId()).getName();</span>
+<span class="fc" id="L100">            String barcode = productApi.getCheckProduct(orderItemPojo.getProductId()).getBarcode();</span>
+<span class="fc" id="L101">            list2.add(convertOrderItemPojoToOrderItemData(orderItemPojo, productName, barcode));</span>
+<span class="fc" id="L102">        }</span>
+<span class="fc" id="L103">        return list2;</span>
     }
 
-    private void createNewOrderByAddingItemsToTheOrder(Integer orderId,List&lt;CartItemPojo&gt; cartItemPojoList) throws ApiException {
-<span class="fc bfc" id="L95" title="All 2 branches covered.">        for(CartItemPojo cartItemPojo : cartItemPojoList){</span>
-<span class="fc" id="L96">            OrderItemPojo orderItemPojo = convertCartPojoToOrderItemPojo(cartItemPojo,orderId);</span>
-<span class="fc" id="L97">            checkSufficientInventoryToAddOrderItem(orderItemPojo,orderItemPojo.getSellingPrice());</span>
-<span class="fc" id="L98">            orderApi.addOrderItem(orderItemPojo);</span>
-<span class="fc" id="L99">        }</span>
-<span class="fc" id="L100">    }</span>
+    private void createNewOrderByAddingItemsToTheOrder(Integer orderId, List&lt;CartItemPojo&gt; cartItemPojoList) throws ApiException {
+<span class="fc bfc" id="L107" title="All 2 branches covered.">        for (CartItemPojo cartItemPojo : cartItemPojoList) {</span>
+<span class="fc" id="L108">            OrderItemPojo orderItemPojo = convertCartPojoToOrderItemPojo(cartItemPojo, orderId);</span>
+<span class="fc" id="L109">            checkSufficientInventoryToAddOrderItem(orderItemPojo, orderItemPojo.getSellingPrice());</span>
+<span class="fc" id="L110">            orderApi.addOrderItem(orderItemPojo);</span>
+<span class="fc" id="L111">        }</span>
+<span class="fc" id="L112">    }</span>
 
     private void checkSufficientInventoryToCreateOrder(List&lt;CartItemPojo&gt; cartItemPojoList) throws ApiException {
-<span class="fc bfc" id="L103" title="All 2 branches covered.">        for(CartItemPojo cartItemPojo : cartItemPojoList){</span>
-<span class="fc" id="L104">            InventoryPojo inventoryPojo = inventoryApi.getCheckByProductId(cartItemPojo.getProductId());</span>
-<span class="pc bpc" id="L105" title="1 of 2 branches missed.">            if(cartItemPojo.getQuantity()&gt;inventoryPojo.getQuantity()){</span>
-<span class="nc" id="L106">                throw new ApiException(&quot;The item &quot;+productApi.getCheckProduct(cartItemPojo.getProductId())+&quot; can't be added to order because sufficient amount not present in inventory. Inventory count = &quot;+inventoryPojo.getQuantity()+&quot;Cart count =&quot;+cartItemPojo.getQuantity());</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">        for (CartItemPojo cartItemPojo : cartItemPojoList) {</span>
+<span class="fc" id="L116">            InventoryPojo inventoryPojo = inventoryApi.getCheckByProductId(cartItemPojo.getProductId());</span>
+<span class="pc bpc" id="L117" title="1 of 2 branches missed.">            if (cartItemPojo.getQuantity() &gt; inventoryPojo.getQuantity()) {</span>
+<span class="nc" id="L118">                throw new ApiException(&quot;The item &quot; + productApi.getCheckProduct(cartItemPojo.getProductId()).getName() + &quot; can't be added to order because sufficient amount not present in inventory. Inventory count = &quot; + inventoryPojo.getQuantity() + &quot;Cart count =&quot; + cartItemPojo.getQuantity());</span>
             }
-<span class="fc" id="L108">        }</span>
-<span class="fc" id="L109">    }</span>
+<span class="fc" id="L120">        }</span>
+<span class="fc" id="L121">    }</span>
 
-    private void  createInvoiceForOrder(Integer orderId) throws Exception {
-<span class="nc" id="L112">        OrderData orderData = convert(orderApi.getCheckOrder(orderId));</span>
-<span class="nc" id="L113">        List&lt;OrderItemData&gt;orderItemsList = getAllOrderItemsOfAnOrder(orderId);</span>
-<span class="nc" id="L114">        byte[] contents = invoiceClientApi.invoiceOrder(orderData,orderItemsList);</span>
-<span class="nc" id="L115">        Path pdfPath = Paths.get(&quot;./src/main/resources/pdf/&quot; + orderData.getOrderId() + &quot;_invoice.pdf&quot;);</span>
-<span class="nc" id="L116">        Files.write(pdfPath, contents);</span>
-<span class="nc" id="L117">    }</span>
+    private void createInvoiceForOrder(Integer orderId) throws Exception {
+<span class="fc" id="L124">        OrderData orderData = convert(orderApi.getCheckOrder(orderId));</span>
+<span class="fc" id="L125">        List&lt;OrderItemData&gt; orderItemsList = getAllOrderItemsOfAnOrder(orderId);</span>
+<span class="fc" id="L126">        byte[] contents = invoiceClientApi.invoiceOrder(orderData, orderItemsList);</span>
+<span class="fc" id="L127">        Path pdfPath = Paths.get(PDF_PATH + orderId + &quot;_invoice.pdf&quot;);</span>
+<span class="fc" id="L128">        Files.write(pdfPath, contents);</span>
+<span class="fc" id="L129">    }</span>
+
     private void checkSufficientInventoryToAddOrderItem(OrderItemPojo orderItemPojo, Double mrp) throws ApiException {
-<span class="fc" id="L119">        InventoryPojo inventoryPojo = inventoryApi.getCheckByProductId(orderItemPojo.getProductId());</span>
-<span class="pc bpc" id="L120" title="1 of 2 branches missed.">        if(orderItemPojo.getQuantity()&gt;inventoryPojo.getQuantity()){</span>
-<span class="nc" id="L121">            throw new ApiException(&quot;Item can't be added to order as it exceeds the inventory. Present inventory count : &quot;+inventoryPojo.getQuantity());</span>
+<span class="fc" id="L132">        InventoryPojo inventoryPojo = inventoryApi.getCheckByProductId(orderItemPojo.getProductId());</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">        if (orderItemPojo.getQuantity() &gt; inventoryPojo.getQuantity()) {</span>
+<span class="nc" id="L134">            throw new ApiException(&quot;Item can't be added to order as it exceeds the inventory. Present inventory count : &quot; + inventoryPojo.getQuantity());</span>
         }
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">        if(orderItemPojo.getSellingPrice()&gt;mrp){</span>
-<span class="nc" id="L124">            throw new ApiException(&quot;Item can't be added to order as selling price must be less than MRP. Product's MRP :&quot;+mrp);</span>
+<span class="pc bpc" id="L136" title="1 of 2 branches missed.">        if (orderItemPojo.getSellingPrice() &gt; mrp) {</span>
+<span class="nc" id="L137">            throw new ApiException(&quot;Item can't be added to order as selling price must be less than MRP. Product's MRP :&quot; + mrp);</span>
         }
-<span class="fc" id="L126">        inventoryApi.updateInventory(inventoryPojo,inventoryPojo.getQuantity()-orderItemPojo.getQuantity());</span>
-<span class="fc" id="L127">    }</span>
+<span class="fc" id="L139">        inventoryApi.updateInventory(inventoryPojo, inventoryPojo.getQuantity() - orderItemPojo.getQuantity());</span>
+<span class="fc" id="L140">    }</span>
 
 
 }

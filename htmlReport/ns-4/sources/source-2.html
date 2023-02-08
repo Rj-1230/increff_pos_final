@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+    <title>Coverage Report > InventoryFlow</title>
+    <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+
+    </style>
+    <script src="../../js/highlight.min.js" type="text/javascript"></script>
+    <script src="../../js/highlightjs-line-numbers.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+<div class="content">
+    <div class="breadCrumbs">
+        Current scope: <a href="../../index.html">all classes</a>
+        <span class="separator">|</span>
+        <a href="../index.html">com.increff.pos.flow</a>
+    </div>
+
+    <h1>Coverage Summary for Class: InventoryFlow (com.increff.pos.flow)</h1>
+
+    <table class="coverageStats">
+
+        <tr>
+            <th class="name">Class</th>
+            <th class="coverageStat
+">
+                Method, %
+            </th>
+            <th class="coverageStat
+">
+                Line, %
+            </th>
+        </tr>
+        <tr>
+            <td class="name">InventoryFlow</td>
+            <td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+                <span class="absValue">
+    (4/4)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+                <span class="absValue">
+    (14/14)
+  </span>
+            </td>
+        </tr>
+        <tr>
+            <td class="name">InventoryFlow$$EnhancerBySpringCGLIB$$37907dee</td>
+        </tr>
+        <tr>
+            <td class="name">InventoryFlow$$EnhancerBySpringCGLIB$$37907dee$$FastClassBySpringCGLIB$$95bfea33</td>
+        </tr>
+        <tr>
+            <td class="name">InventoryFlow$$FastClassBySpringCGLIB$$6e80972e</td>
+        </tr>
+        <tr>
+            <td class="name"><strong>Total</strong></td>
+            <td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+                <span class="absValue">
+    (4/4)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+                <span class="absValue">
+    (14/14)
+  </span>
+            </td>
+        </tr>
+    </table>
+
+    <br/>
+    <br/>
+
+
+    <pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.increff.pos.flow;
+&nbsp;
+&nbsp;import com.increff.pos.model.data.InventoryData;
+&nbsp;import com.increff.pos.pojo.InventoryPojo;
+&nbsp;import com.increff.pos.pojo.ProductPojo;
+&nbsp;import com.increff.pos.api.ApiException;
+&nbsp;import com.increff.pos.api.InventoryApi;
+&nbsp;import com.increff.pos.api.ProductApi;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import javax.transaction.Transactional;
+&nbsp;import java.util.ArrayList;
+&nbsp;import java.util.List;
+&nbsp;
+&nbsp;import static com.increff.pos.helper.flowHelper.InventoryFlowHelper.*;
+&nbsp;
+&nbsp;@Service
+<b class="fc">&nbsp;public class InventoryFlow {</b>
+&nbsp;    @Autowired
+&nbsp;    private InventoryApi inventoryApi;
+&nbsp;    @Autowired
+&nbsp;    private ProductApi productApi;
+&nbsp;
+&nbsp;    @Transactional(rollbackOn = ApiException.class)
+&nbsp;    public void update(InventoryPojo newInventoryPojo,String barcode) throws ApiException {
+<b class="fc">&nbsp;        ProductPojo productPojo = productApi.getCheckProduct(barcode);</b>
+<b class="fc">&nbsp;        newInventoryPojo.setProductId(productPojo.getProductId());</b>
+<b class="fc">&nbsp;        inventoryApi.updateInventory(newInventoryPojo, newInventoryPojo.getQuantity());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional(rollbackOn = ApiException.class)
+&nbsp;    public InventoryData get(Integer inventoryId) throws ApiException {
+<b class="fc">&nbsp;        InventoryPojo inventoryPojo = inventoryApi.getCheck(inventoryId);</b>
+<b class="fc">&nbsp;        ProductPojo productPojo = productApi.getCheckProduct(inventoryPojo.getProductId());</b>
+<b class="fc">&nbsp;        return convertInventoryPojoToInventoryData(inventoryPojo,productPojo);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    @Transactional(rollbackOn = ApiException.class)
+&nbsp;    public List&lt;InventoryData&gt; getAll() throws ApiException {
+<b class="fc">&nbsp;        List&lt;InventoryPojo&gt; inventoryPojoList = inventoryApi.getAll();</b>
+<b class="fc">&nbsp;        List&lt;InventoryData&gt; list2 = new ArrayList&lt;InventoryData&gt;();</b>
+<b class="fc">&nbsp;        for(InventoryPojo inventoryPojo: inventoryPojoList){</b>
+<b class="fc">&nbsp;            ProductPojo productPojo = productApi.getCheckProduct(inventoryPojo.getProductId());</b>
+<b class="fc">&nbsp;            list2.add(convertInventoryPojoToInventoryData(inventoryPojo,productPojo));</b>
+<b class="fc">&nbsp;        }</b>
+<b class="fc">&nbsp;        return list2;</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+
+</script>
+
+<div class="footer">
+
+    <div style="float:right;">generated on 2023-02-07 21:05</div>
+</div>
+</body>
+</html>

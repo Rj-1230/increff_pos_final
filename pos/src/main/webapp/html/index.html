@@ -3,15 +3,15 @@
 <head>
     <!-- basic -->
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <!-- mobile metas -->
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <meta content="initial-scale=1, maximum-scale=1" name="viewport">
     <!-- site metas -->
     <title>Increff POS</title>
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+    <meta content="" name="author">
     <!-- bootstrap css -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <!-- style css -->
@@ -19,12 +19,13 @@
     <!-- Responsive-->
     <link rel="stylesheet" th:href="@{/css/responsive.css}">
     <!-- fevicon -->
-    <link rel="icon" th:href="@{/images/fevicon.png}" type="image/gif" />
+    <link rel="icon" th:href="@{/images/fevicon.png}" type="image/gif"/>
     <!-- Scrollbar Custom CSS -->
     <link rel="stylesheet" th:href="@{/css/jquery.mCustomScrollbar.min.css}">
     <!-- Tweaks for older IEs-->
     <link rel="stylesheet" th:href="@{/https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css}">
-    <link rel="stylesheet" th:href="@{/https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css}" media="screen">
+    <link media="screen" rel="stylesheet"
+          th:href="@{/https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css}">
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
     <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script><![endif]-->
@@ -33,7 +34,7 @@
 <body class="main-layout">
 <!-- loader  -->
 <div class="loader_bg">
-    <div class="loader"><img th:src="@{/images/loadingg.gif}" alt="#" /></div>
+    <div class="loader"><img alt="#" th:src="@{/images/loadingg.gif}"/></div>
 </div>
 <!-- end loader -->
 <div class="wrapper">
@@ -49,7 +50,7 @@
                             <div class="full">
                                 <div class="center-desk">
                                     <div class="logo">
-                                       <img th:src="@{/images/logoo.jpg}"  style="height:60px;width:60px;" alt="#" />
+                                        <img alt="#" style="height:60px;width:60px;" src="https://cdn.skillenza.com/files/45aa07e5-5b0b-4fee-9cea-2009d437cea4/increff_logo.png"/>
                                     </div>
                                 </div>
                             </div>
@@ -61,7 +62,7 @@
         <!-- end header inner -->
         <!-- end header -->
         <!-- banner -->
-        <div id="myCarousel" class="carousel slide banner_main" data-ride="carousel">
+        <div class="carousel slide banner_main" data-ride="carousel" id="myCarousel">
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <div class="container-fluid">
@@ -72,7 +73,7 @@
                                     <div class="text-bg">
                                         <h1>Increff<br>POS</h1>
                                         <div class="space"></div>
-                                        <a class="read_more" th:href="@{/site/login}" role="button">Let's Go !</a>
+                                        <a class="read_more" role="button" th:href="@{/site/login}">Let's Go !</a>
                                     </div>
                                 </div>
                                 <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12">
@@ -88,18 +89,20 @@
         </div>
         <!-- end banner -->
         <!-- about -->
-        <div id="about"  class="about">
+        <div class="about" id="about">
             <div class="container-fluid">
                 <div class="row d_flex">
                     <div class="col-md-5">
                         <div class="about_img">
-                            <figure><img th:src="@{/images/about_img.jpg}" alt="#"/></figure>
+                            <figure><img alt="#" th:src="@{/images/about_img.jpg}"/></figure>
                         </div>
                     </div>
                     <div class="col-md-7">
                         <div class="titlepage">
                             <h2>About <span class="blu">Us</span></h2>
-                            <p>This application is similar to what we see in supermarkets or departmental stores, where the orders can be placed by the store employees after scanning the barcode against the products and customers are given a proper receipt of their order</p>
+                            <p>This application is similar to what we see in supermarkets or departmental stores, where
+                                the orders can be placed by the store employees after scanning the barcode against the
+                                products and customers are given a proper receipt of their order</p>
 
                         </div>
                     </div>
@@ -108,23 +111,23 @@
         </div>
         <!-- end about -->
         <!-- choose  section -->
-            <div class="choose_bg">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="titlepage">
-                                        <h2 style="color:white;">Why Choose Us</h2>
-                                    </div>
+        <div class="choose_bg">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="titlepage">
+                                    <h2 style="color:white;">Why Choose Us</h2>
                                 </div>
+                            </div>
                             <div class="row">
                                 <div class="col" id="whyChooseUs">
                                     <ul class="easy">
                                         <li>Easy to customize</li>
                                         <li>More flexible</li>
                                         <li>Interactive GUI</li>
-                                        <li>Role based Controls </li>
+                                        <li>Role based Controls</li>
                                         <li>Secure</li>
                                     </ul>
                                 </div>
@@ -136,20 +139,22 @@
         </div>
         <!-- end choose  section -->
         <!-- work -->
-        <div id="work"  class="work">
+        <div class="work" id="work">
             <div class="container-fluid">
                 <div class="row d_flex">
                     <div class="col-md-7">
                         <div class="titlepage">
                             <h2>How It <span class="blu">Works</span></h2>
-                            <p>The creation of brand-category of products, their names and inventory access is given only to
-                            the supervisor. Other users are operators who can create orders and view brands, products, inventory and create
-                            different types of reports.</p>
+                            <p>The creation of brand-category of products, their names and inventory access is given
+                                only to
+                                the supervisor. Other users are operators who can create orders and view brands,
+                                products, inventory and create
+                                different types of reports.</p>
                         </div>
                     </div>
                     <div class="col-md-5">
                         <div class="work_img">
-                            <figure><img th:src="@{/images/work_img.jpg}" alt="#"/></figure>
+                            <figure><img alt="#" th:src="@{/images/work_img.jpg}"/></figure>
                         </div>
                     </div>
                 </div>

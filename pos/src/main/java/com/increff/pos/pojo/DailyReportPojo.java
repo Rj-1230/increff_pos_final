@@ -9,10 +9,10 @@ import java.time.ZonedDateTime;
 @Entity
 @Getter
 @Setter
-@Table(name="daily_sales" , indexes = @Index(name = "multiIndex1", columnList = "invoiceDate"),
-        uniqueConstraints={@UniqueConstraint(columnNames={"invoiceDate"})})
+@Table(name = "daily_sales", indexes = @Index(name = "multiIndex1", columnList = "invoiceDate"),
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"invoiceDate"})})
 
-public class DailyReportPojo extends AbstractPojo{
+public class DailyReportPojo extends AbstractPojo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer dailyReportId;

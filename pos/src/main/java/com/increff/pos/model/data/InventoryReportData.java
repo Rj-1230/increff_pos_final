@@ -12,5 +12,4 @@ public class InventoryReportData {
     private String productName;
 
 
-
 }

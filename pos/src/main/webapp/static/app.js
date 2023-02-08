@@ -12,6 +12,9 @@ function toJson($form){
     return json;
 }
 
+function validateForm($form){
+    return $form[0].reportValidity();
+}
 
 function handleAjaxError(response){
     document.getElementById('toast-container').classList.remove('bg-warning','bg-danger','bg-success');
@@ -35,7 +38,6 @@ function readFileData(file, callback){
 
 
 function writeFileData(arr){
-console.log(arr);
 	var config = {
 		quoteChar: '',
 		escapeChar: '',
@@ -79,6 +81,9 @@ function uploadRows(url){
 //	console.log(fileData.length)
 	if(processCount==fileData.length){
 		return;
+	}
+	if(errorData.length>0){
+	        document.getElementById("download-errors").disabled = false;
 	}
 
 	//Process next row
@@ -141,14 +146,36 @@ function updateUploadDialog(){
 function updateFileName(){
 	var $file = $('#myFile');
 	var fileName = $file.val();
+	var ok = String(fileName).split(/(\\|\/)/g).pop();
+        if(ok.split('.')[1]!="tsv"){
+            document.getElementById('toast-container').classList.remove('bg-warning','bg-danger','bg-success');
+                document.getElementById('toast-container').classList.add('bg-danger');
+            	document.getElementById('my-message').innerHTML="Please select a tsv file";
+                $(".toast").toast('show');
+            return;
+        }
+      document.getElementById("process-data").disabled = false;
 	$('#myFileName').html(fileName);
+
+
 }
+
+function incorrectTSV(){
+    		document.getElementById('toast-container').classList.remove('bg-warning','bg-danger','bg-success');
+                                    document.getElementById('toast-container').classList.add('bg-danger');
+                        	   		document.getElementById('my-message').innerHTML="The TSV file is incorrect. Please download sample file for reference";
+                                    $(".toast").toast('show');}
 
 function displayUploadData(){
  	resetUploadDialog();
 	$('#upload-file-modal').modal('toggle');
 }
 
+function renewUpload(){
+errorData = [];
+processCount = 0;
+ fileData = [];
+}
 
 
 
@@ -156,6 +183,7 @@ function init(){
     role= $("meta[name=role]").attr("content");
 	if(role=='supervisor'){
 	document.getElementById("nav-supervisor").style.display = "block";
+		document.getElementById("nav-supervisors").style.display = "block";
 	document.getElementById("actions-supervisor").style.display = "block";
 	}
     	if(role=='operator'){

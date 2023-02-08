@@ -1,21 +1,23 @@
 package com.increff.pos.util;
+
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 
 public class GetCurrentDateTime {
-    public static ZonedDateTime convertStringToZonedDateTime(String dateTime){
-        DateTimeFormatter formatter  = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    public static ZonedDateTime convertStringToZonedDateTime(String dateTime) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         ZoneId timeZone = ZoneId.systemDefault();
         ZonedDateTime zonedDateTime = LocalDateTime.parse(dateTime, formatter).atZone(timeZone);
         return zonedDateTime;
     }
 
-    public static ZonedDateTime getStartOfDay(){
+    public static ZonedDateTime getStartOfDay() {
         LocalDate localDate = LocalDate.now();
         ZonedDateTime startOfDayInZone = localDate.atStartOfDay(ZoneId.systemDefault());
-        return  startOfDayInZone;
+        return startOfDayInZone;
     }
-    public static ZonedDateTime getEndOfDay(){
+
+    public static ZonedDateTime getEndOfDay() {
         LocalDate localDate = LocalDate.now();
         ZonedDateTime endOfDayInZone = localDate.atTime(LocalTime.MAX)
                 .atZone(ZoneId.systemDefault());

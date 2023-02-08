@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 @ComponentScan("com.increff.invoice_app")
 @PropertySources({
-        @PropertySource(value="file:./invoice_app.properties", ignoreResourceNotFound = true )
+        @PropertySource(value = "file:./invoice_app.properties", ignoreResourceNotFound = true)
 })
 //This will enable my Controller and Rest controller annotated classes
 

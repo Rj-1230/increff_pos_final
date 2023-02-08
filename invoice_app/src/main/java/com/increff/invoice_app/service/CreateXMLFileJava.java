@@ -1,7 +1,10 @@
 package com.increff.invoice_app.service;
-import java.io.File;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
+
+import com.increff.invoice_app.model.InvoiceForm;
+import com.increff.invoice_app.model.OrderItemData;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -10,11 +13,9 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-
-import com.increff.invoice_app.model.InvoiceForm;
-import com.increff.invoice_app.model.OrderItemData;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
+import java.io.File;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class CreateXMLFileJava {
 
@@ -37,7 +38,7 @@ public class CreateXMLFileJava {
 
             String s1 = invoiceForm.getCustomerName().substring(0, 1).toUpperCase();  // first letter = J
             String s2 = invoiceForm.getCustomerName().substring(1);     // after 1st letter = avatpoint
-            String res = s1+s2; // J + avatpoint
+            String res = s1 + s2; // J + avatpoint
 
             Element customerName = document.createElement("customerName");
             customerName.appendChild(document.createTextNode(res));
@@ -75,13 +76,13 @@ public class CreateXMLFileJava {
             state.appendChild(document.createTextNode("Karanataka"));
             root.appendChild(state);
 
-            String formattedInvoiceDate  = invoiceForm.getInvoiceTime().substring(0,10);
+            String formattedInvoiceDate = invoiceForm.getInvoiceTime().substring(0, 10);
             Element invoiceDate = document.createElement("invoiceDate");
             invoiceDate.appendChild(document.createTextNode(formattedInvoiceDate));
             root.appendChild(invoiceDate);
 
             Element invoiceTime = document.createElement("invoiceTime");
-            invoiceTime.appendChild(document.createTextNode(invoiceForm.getInvoiceTime().substring(11,19)));
+            invoiceTime.appendChild(document.createTextNode(invoiceForm.getInvoiceTime().substring(11, 19)));
             root.appendChild(invoiceTime);
 
             Element orderItems = document.createElement("orderItems");
@@ -89,7 +90,7 @@ public class CreateXMLFileJava {
             Double amount = 0.0;
             int index = 1;
             // order item element
-            for (OrderItemData o : invoiceForm.getOrderItemList()){
+            for (OrderItemData o : invoiceForm.getOrderItemList()) {
                 Element orderItem = document.createElement("orderItem");
 
                 orderItems.appendChild(orderItem);
@@ -115,11 +116,11 @@ public class CreateXMLFileJava {
                 orderItem.appendChild(quantity);
 
                 Element sellingPrice = document.createElement("sellingPrice");
-                sellingPrice.appendChild(document.createTextNode(String.format("%.2f",new BigDecimal(o.getSellingPrice()).setScale(2, RoundingMode.HALF_UP).doubleValue())));
+                sellingPrice.appendChild(document.createTextNode(String.format("%.2f", new BigDecimal(o.getSellingPrice()).setScale(2, RoundingMode.HALF_UP).doubleValue())));
                 orderItem.appendChild(sellingPrice);
 
                 Element total = document.createElement("total");
-                total.appendChild(document.createTextNode(String.format("%.2f",new BigDecimal(o.getSellingPrice()*o.getQuantity()).setScale(2, RoundingMode.HALF_UP).doubleValue())));
+                total.appendChild(document.createTextNode(String.format("%.2f", new BigDecimal(o.getSellingPrice() * o.getQuantity()).setScale(2, RoundingMode.HALF_UP).doubleValue())));
                 orderItem.appendChild(total);
 
                 amount += o.getSellingPrice() * o.getQuantity();
@@ -127,7 +128,7 @@ public class CreateXMLFileJava {
             }
 
             Element totalAmount = document.createElement("totalAmount");
-            totalAmount.appendChild(document.createTextNode(String.format("%.2f",new BigDecimal(amount).setScale(2, RoundingMode.HALF_UP).doubleValue())));
+            totalAmount.appendChild(document.createTextNode(String.format("%.2f", new BigDecimal(amount).setScale(2, RoundingMode.HALF_UP).doubleValue())));
             root.appendChild(totalAmount);
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();

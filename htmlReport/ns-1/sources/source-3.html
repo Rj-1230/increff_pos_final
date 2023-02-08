@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+    <title>Coverage Report > CartItemApi</title>
+    <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+
+    </style>
+    <script src="../../js/highlight.min.js" type="text/javascript"></script>
+    <script src="../../js/highlightjs-line-numbers.min.js" type="text/javascript"></script>
+</head>
+
+<body>
+<div class="content">
+    <div class="breadCrumbs">
+        Current scope: <a href="../../index.html">all classes</a>
+        <span class="separator">|</span>
+        <a href="../index.html">com.increff.pos.api</a>
+    </div>
+
+    <h1>Coverage Summary for Class: CartItemApi (com.increff.pos.api)</h1>
+
+    <table class="coverageStats">
+
+        <tr>
+            <th class="name">Class</th>
+            <th class="coverageStat
+">
+                Method, %
+            </th>
+            <th class="coverageStat
+">
+                Line, %
+            </th>
+        </tr>
+        <tr>
+            <td class="name">CartItemApi</td>
+            <td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+                <span class="absValue">
+    (7/7)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+                <span class="absValue">
+    (20/20)
+  </span>
+            </td>
+        </tr>
+        <tr>
+            <td class="name">CartItemApi$$EnhancerBySpringCGLIB$$3068bcd1</td>
+        </tr>
+        <tr>
+            <td class="name">CartItemApi$$EnhancerBySpringCGLIB$$3068bcd1$$FastClassBySpringCGLIB$$dca6ccd7</td>
+        </tr>
+        <tr>
+            <td class="name">CartItemApi$$FastClassBySpringCGLIB$$f4092bef</td>
+        </tr>
+        <tr>
+            <td class="name"><strong>Total</strong></td>
+            <td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+                <span class="absValue">
+    (7/7)
+  </span>
+            </td>
+            <td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+                <span class="absValue">
+    (20/20)
+  </span>
+            </td>
+        </tr>
+    </table>
+
+    <br/>
+    <br/>
+
+
+    <pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package com.increff.pos.api;
+&nbsp;
+&nbsp;import com.increff.pos.dao.CartItemDao;
+&nbsp;import com.increff.pos.pojo.CartItemPojo;
+&nbsp;import org.springframework.beans.factory.annotation.Autowired;
+&nbsp;import org.springframework.stereotype.Service;
+&nbsp;
+&nbsp;import javax.transaction.Transactional;
+&nbsp;import java.util.List;
+&nbsp;import java.util.Objects;
+&nbsp;
+&nbsp;@Service
+&nbsp;@Transactional(rollbackOn = ApiException.class)
+<b class="fc">&nbsp;public class CartItemApi {</b>
+&nbsp;    @Autowired
+&nbsp;    private CartItemDao cartItemDao;
+&nbsp;
+&nbsp;    public void add(CartItemPojo cartItemPojo, Integer quantity) throws ApiException {
+<b class="fc">&nbsp;        CartItemPojo exCartItemPojo = cartItemDao.getCartPojoFromProductIdAndCounterId(cartItemPojo.getProductId(), cartItemPojo.getCounterId());</b>
+<b class="fc">&nbsp;        if(Objects.nonNull(exCartItemPojo)){</b>
+<b class="fc">&nbsp;            if(exCartItemPojo.getQuantity()+ cartItemPojo.getQuantity()&gt;quantity){</b>
+<b class="fc">&nbsp;                throw new ApiException(&quot;Item can&#39;t be added to cart as it exceeds the inventory. Items already in cart : &quot;+ exCartItemPojo.getQuantity() +&quot; Present inventory count :&quot;+quantity);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            exCartItemPojo.setQuantity(exCartItemPojo.getQuantity()+ cartItemPojo.getQuantity());</b>
+<b class="fc">&nbsp;            exCartItemPojo.setSellingPrice(cartItemPojo.getSellingPrice());</b>
+&nbsp;        }
+&nbsp;        else{
+<b class="fc">&nbsp;            cartItemDao.insert(cartItemPojo);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;    public void delete(int id) throws ApiException {
+<b class="fc">&nbsp;        getCheck(id);</b>
+<b class="fc">&nbsp;        cartItemDao.delete(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public List&lt;CartItemPojo&gt; getAllItemsInCart(Integer id) {
+<b class="fc">&nbsp;        return cartItemDao.selectAllCartPojoByCounterId(id);</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void deleteAll(List&lt;CartItemPojo&gt; cartItemPojoList) throws ApiException{
+<b class="fc">&nbsp;        for(CartItemPojo cartItemPojo : cartItemPojoList){</b>
+<b class="fc">&nbsp;            delete(cartItemPojo.getCartItemId());</b>
+<b class="fc">&nbsp;        }</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void update(CartItemPojo exCartItemPojo, CartItemPojo newCartItemPojo) throws ApiException {
+<b class="fc">&nbsp;        exCartItemPojo.setSellingPrice(newCartItemPojo.getSellingPrice());</b>
+<b class="fc">&nbsp;        exCartItemPojo.setQuantity(newCartItemPojo.getQuantity());</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public CartItemPojo getCheck(Integer id) throws ApiException {
+<b class="fc">&nbsp;            CartItemPojo cartItemPojo = cartItemDao.select(id);</b>
+<b class="fc">&nbsp;            if(!Objects.nonNull(cartItemPojo)){</b>
+<b class="fc">&nbsp;                throw new ApiException(&quot;No such item exists in cart with given Id&quot;);</b>
+&nbsp;            }
+<b class="fc">&nbsp;            return cartItemPojo;</b>
+&nbsp;    }
+&nbsp;
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+
+</script>
+
+<div class="footer">
+
+    <div style="float:right;">generated on 2023-02-07 21:05</div>
+</div>
+</body>
+</html>

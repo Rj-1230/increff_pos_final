@@ -145,17 +145,16 @@ function getCartItemList(){
 }
 
 function displayCartItemList(data){
-
 	if(data.length>0){
 	    document.getElementById("create-new-order").style.display = "block";
 	    document.getElementById("empty-cart").style.display = "block";
-	    document.getElementById("cartItem-table").style.display = "block";
+	    document.getElementById("cartItem-table").removeAttribute("hidden");
 	}
 	else{
 //	Ye else part isliye taki jb koi manually sare dleete kre ya empty cart kre
 		    document.getElementById("create-new-order").style.display = "none";
     	    document.getElementById("empty-cart").style.display = "none";
-    	    document.getElementById("cartItem-table").style.display = "none";
+
 	}
 	var $tbody = $('#cartItem-table').find('tbody');
 	$tbody.empty();
@@ -166,14 +165,14 @@ function displayCartItemList(data){
 		continue;
 		}
 		var buttonHtml='';
-		buttonHtml +='<button class="btn btn-warning" onclick="displayEditCartItem(' + e.cartItemId + ')" >Edit </button>'
-		buttonHtml += '&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-danger" onclick="deleteCartItem(' + e.cartItemId + ')">Delete</button>'
+		buttonHtml +='<button class="btn btn-dark" style="border:1px solid white;" onclick="displayEditCartItem(' + e.cartItemId + ')" > <i class="bi bi-pen"></i></button>'
+		buttonHtml += '&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-danger" onclick="deleteCartItem(' + e.cartItemId + ')"><i class="bi bi-trash"></i></button>'
 		var row = '<tr>'
 		+ '<td>' +j + '</td>'
+        + '<td>' + e.barcode + '</td>'
 		+ '<td>' + e.productName + '</td>'
 		+ '<td>' + e.quantity + '</td>'
 		+ '<td>' + e.sellingPrice.toFixed(2)+ '</td>'
-		+ '<td>' + e.counterId + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
         $tbody.append(row);
@@ -306,7 +305,9 @@ function displayCartItem(data){
 	$("#cart-edit-form input[name=sellingPrice]").val(data.sellingPrice);
 	$("#cart-edit-form input[name=quantity]").val(data.quantity);
 	$("#cart-edit-form input[name=cartItemId]").val(data.cartItemId);
-	$("#cart-edit-form input[name=barcode]").val("abcd");
+	$("#cart-edit-form input[name=barcode]").val(data.barcode);
+		$("#cart-edit-form input[name=productName]").val(data.productName);
+
 	document.getElementById("edit-cart-modal").style.zIndex = "9999";
 	document.getElementById("edit-cart-modal").style.backgroundColor = "rgba(0, 0, 0, 0.4)";
 	$('#edit-cart-modal').modal('toggle');

@@ -1,13 +1,14 @@
 package com.increff.pos.controller;
 
-import com.increff.pos.dto.OrderDto;
 import com.increff.pos.api.ApiException;
+import com.increff.pos.dto.OrderDto;
 import com.increff.pos.model.data.OrderData;
 import com.increff.pos.model.data.OrderItemData;
 import com.increff.pos.model.form.CustomerDetailsForm;
 import com.increff.pos.model.form.OrderItemForm;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -23,9 +24,10 @@ import java.util.List;
 
 @RestController
 @Api
-
+@Setter
 public class OrderController {
 
+    private static String PDF_PATH = "./src/main/resources/com/increff/pos/pdf/";
     @Autowired
     private OrderDto orderDto;
 
@@ -40,6 +42,7 @@ public class OrderController {
     public OrderData getOrder(@PathVariable Integer orderId) throws ApiException {
         return orderDto.getOrderById(orderId);
     }
+
     @ApiOperation(value = "Updating details of a particular Order")
     @RequestMapping(path = "/api/order/{orderId}", method = RequestMethod.PUT)
     public void updateCustomerDetails(@PathVariable Integer orderId, @RequestBody CustomerDetailsForm customerDetailsForm) throws ApiException {
@@ -51,6 +54,7 @@ public class OrderController {
     public List<OrderData> getAllOrdersByCounterId() {
         return orderDto.getAllOrdersByCounterId();
     }
+
     @ApiOperation(value = "Getting details of all the orders")
     @RequestMapping(path = "/api/supervisor/order", method = RequestMethod.GET)
     public List<OrderData> getAllOrders() {
@@ -63,34 +67,34 @@ public class OrderController {
         orderDto.invoiceOrder(orderId);
     }
 
-    @ApiOperation(value="Adding a orderItem")
-    @RequestMapping(path="/api/orderItem", method = RequestMethod.POST)
-    public void addOrderItem(@RequestBody OrderItemForm orderItemForm)throws ApiException{
+    @ApiOperation(value = "Adding a orderItem")
+    @RequestMapping(path = "/api/orderItem", method = RequestMethod.POST)
+    public void addOrderItem(@RequestBody OrderItemForm orderItemForm) throws ApiException {
         orderDto.addOrderItem(orderItemForm);
     }
 
 
-    @ApiOperation(value="Deleting a orderItem")
-    @RequestMapping(path="/api/orderItem/{orderItemId}", method = RequestMethod.DELETE)
+    @ApiOperation(value = "Deleting a orderItem")
+    @RequestMapping(path = "/api/orderItem/{orderItemId}", method = RequestMethod.DELETE)
     public void deleteOrderItem(@PathVariable Integer orderItemId) throws ApiException {
         orderDto.deleteOrderItem(orderItemId);
     }
 
-    @ApiOperation(value="Getting details of a orderItem from order item ID")
-    @RequestMapping(path="/api/orderItem/{orderItemId}", method = RequestMethod.GET)
+    @ApiOperation(value = "Getting details of a orderItem from order item ID")
+    @RequestMapping(path = "/api/orderItem/{orderItemId}", method = RequestMethod.GET)
     public OrderItemData getOrderItem(@PathVariable Integer orderItemId) throws ApiException {
         return orderDto.getOrderItem(orderItemId);
     }
 
-    @ApiOperation(value="Updating details of a particular OrderItem")
-    @RequestMapping(path="/api/orderItem/{orderItemId}", method = RequestMethod.PUT)
+    @ApiOperation(value = "Updating details of a particular OrderItem")
+    @RequestMapping(path = "/api/orderItem/{orderItemId}", method = RequestMethod.PUT)
     public void updateOrderItem(@PathVariable Integer orderItemId, @RequestBody OrderItemForm orderItemForm) throws ApiException {
-        orderDto.updateOrderItem(orderItemId,orderItemForm);
+        orderDto.updateOrderItem(orderItemId, orderItemForm);
     }
 
-    @ApiOperation(value="Getting details of all the order with given orderId")
-    @RequestMapping(path="/api/orderItems/{orderId}", method = RequestMethod.GET)
-    public List<OrderItemData> getAllOrderItems(@PathVariable Integer orderId) throws  ApiException{
+    @ApiOperation(value = "Getting details of all the order with given orderId")
+    @RequestMapping(path = "/api/orderItems/{orderId}", method = RequestMethod.GET)
+    public List<OrderItemData> getAllOrderItems(@PathVariable Integer orderId) throws ApiException {
         return orderDto.getAllOrderItems(orderId);
     }
 
@@ -102,12 +106,12 @@ public class OrderController {
         return getInvoicePDF(orderData);
     }
 
-    private ResponseEntity<byte[]> getInvoicePDF(OrderData orderData) throws IOException {
-        Path pdfPath = Paths.get("./src/main/resources/pdf/" + orderData.getOrderId() + "_invoice.pdf");
+    private ResponseEntity<byte[]> getInvoicePDF(OrderData   orderData) throws IOException {
+        Path pdfPath = Paths.get(PDF_PATH + orderData.getOrderId() + "_invoice.pdf");
         byte[] contents = Files.readAllBytes(pdfPath);
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_PDF);
-        String filename = orderData.getOrderId()+"_"+orderData.getCustomerName() + ".pdf";
+        String filename = orderData.getOrderId() + "_" + orderData.getCustomerName() + ".pdf";
         headers.setContentDispositionFormData(filename, filename);
         headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
         ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);

@@ -13,12 +13,10 @@ public class ReportScheduler {
 
     @Async
     @Scheduled(cron = "${cron.expression}")
-    public void createDailyReport()
-    {
+    public void createDailyReport() {
         try {
             reportDto.createDailyReport();
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             return;
         }
     }

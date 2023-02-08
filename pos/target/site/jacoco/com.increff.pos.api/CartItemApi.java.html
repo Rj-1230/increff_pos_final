@@ -17,17 +17,17 @@ import java.util.Objects;
 
     public void add(CartItemPojo cartItemPojo, Integer quantity) throws ApiException {
 <span class="fc" id="L19">        CartItemPojo exCartItemPojo = cartItemDao.getCartPojoFromProductIdAndCounterId(cartItemPojo.getProductId(), cartItemPojo.getCounterId());</span>
-<span class="fc bfc" id="L20" title="All 2 branches covered.">        if(Objects.nonNull(exCartItemPojo)){</span>
-<span class="fc bfc" id="L21" title="All 2 branches covered.">            if(exCartItemPojo.getQuantity()+ cartItemPojo.getQuantity()&gt;quantity){</span>
-<span class="fc" id="L22">                throw new ApiException(&quot;Item can't be added to cart as it exceeds the inventory. Items already in cart : &quot;+ exCartItemPojo.getQuantity() +&quot; Present inventory count :&quot;+quantity);</span>
+<span class="fc bfc" id="L20" title="All 2 branches covered.">        if (Objects.nonNull(exCartItemPojo)) {</span>
+<span class="fc bfc" id="L21" title="All 2 branches covered.">            if (exCartItemPojo.getQuantity() + cartItemPojo.getQuantity() &gt; quantity) {</span>
+<span class="fc" id="L22">                throw new ApiException(&quot;Item can't be added to cart as it exceeds the inventory. Items already in cart : &quot; + exCartItemPojo.getQuantity() + &quot; Present inventory count :&quot; + quantity);</span>
             }
-<span class="fc" id="L24">            exCartItemPojo.setQuantity(exCartItemPojo.getQuantity()+ cartItemPojo.getQuantity());</span>
+<span class="fc" id="L24">            exCartItemPojo.setQuantity(exCartItemPojo.getQuantity() + cartItemPojo.getQuantity());</span>
 <span class="fc" id="L25">            exCartItemPojo.setSellingPrice(cartItemPojo.getSellingPrice());</span>
+        } else {
+<span class="fc" id="L27">            cartItemDao.insert(cartItemPojo);</span>
         }
-        else{
-<span class="fc" id="L28">            cartItemDao.insert(cartItemPojo);</span>
-        }
-<span class="fc" id="L30">    }</span>
+<span class="fc" id="L29">    }</span>
+
     public void delete(int id) throws ApiException {
 <span class="fc" id="L32">        getCheck(id);</span>
 <span class="fc" id="L33">        cartItemDao.delete(id);</span>
@@ -37,8 +37,8 @@ import java.util.Objects;
 <span class="fc" id="L37">        return cartItemDao.selectAllCartPojoByCounterId(id);</span>
     }
 
-    public void deleteAll(List&lt;CartItemPojo&gt; cartItemPojoList) throws ApiException{
-<span class="fc bfc" id="L41" title="All 2 branches covered.">        for(CartItemPojo cartItemPojo : cartItemPojoList){</span>
+    public void deleteAll(List&lt;CartItemPojo&gt; cartItemPojoList) throws ApiException {
+<span class="fc bfc" id="L41" title="All 2 branches covered.">        for (CartItemPojo cartItemPojo : cartItemPojoList) {</span>
 <span class="fc" id="L42">            delete(cartItemPojo.getCartItemId());</span>
 <span class="fc" id="L43">        }</span>
 <span class="fc" id="L44">    }</span>
@@ -49,11 +49,11 @@ import java.util.Objects;
 <span class="fc" id="L49">    }</span>
 
     public CartItemPojo getCheck(Integer id) throws ApiException {
-<span class="fc" id="L52">            CartItemPojo cartItemPojo = cartItemDao.select(id);</span>
-<span class="fc bfc" id="L53" title="All 2 branches covered.">            if(!Objects.nonNull(cartItemPojo)){</span>
-<span class="fc" id="L54">                throw new ApiException(&quot;No such item exists in cart with given Id&quot;);</span>
-            }
-<span class="fc" id="L56">            return cartItemPojo;</span>
+<span class="fc" id="L52">        CartItemPojo cartItemPojo = cartItemDao.select(id);</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        if (!Objects.nonNull(cartItemPojo)) {</span>
+<span class="fc" id="L54">            throw new ApiException(&quot;No such item exists in cart with given Id&quot;);</span>
+        }
+<span class="fc" id="L56">        return cartItemPojo;</span>
     }
 
 }

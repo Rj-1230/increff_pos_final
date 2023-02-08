@@ -9,7 +9,7 @@ import javax.validation.constraints.*;
 @Setter
 public class CartItemForm {
     @NotBlank
-    @Size(min=1, max=20)
+    @Size(min = 1, max = 20)
     private String barcode;
     @NotNull
     @Positive

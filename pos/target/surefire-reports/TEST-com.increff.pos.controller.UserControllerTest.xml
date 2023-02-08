@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="4" failures="0" name="com.increff.pos.controller.UserControllerTest" time="0.02" errors="0" skipped="0">
+<testsuite tests="10" failures="0" name="com.increff.pos.controller.UserControllerTest" time="0.04" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_351\jre\bin"/>
@@ -66,8 +66,14 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="com.increff.pos.controller.UserControllerTest" name="testAddUser" time="0.005"/>
-  <testcase classname="com.increff.pos.controller.UserControllerTest" name="testUpdateUser" time="0.006"/>
-  <testcase classname="com.increff.pos.controller.UserControllerTest" name="testSizeOfUserList" time="0.006"/>
+  <testcase classname="com.increff.pos.controller.UserControllerTest" name="testAddUser" time="0.012"/>
+  <testcase classname="com.increff.pos.controller.UserControllerTest" name="testUpdateUser" time="0.005"/>
+  <testcase classname="com.increff.pos.controller.UserControllerTest" name="testPasswordMaxSize" time="0.003"/>
+  <testcase classname="com.increff.pos.controller.UserControllerTest" name="testSizeOfUserList" time="0.004"/>
+  <testcase classname="com.increff.pos.controller.UserControllerTest" name="testPasswordMinSize" time="0.003"/>
   <testcase classname="com.increff.pos.controller.UserControllerTest" name="testGetUser" time="0.003"/>
+  <testcase classname="com.increff.pos.controller.UserControllerTest" name="testPasswordNonNullable" time="0.003"/>
+  <testcase classname="com.increff.pos.controller.UserControllerTest" name="testEmailNonNullable" time="0.003"/>
+  <testcase classname="com.increff.pos.controller.UserControllerTest" name="testPasswordNonEmpty" time="0.002"/>
+  <testcase classname="com.increff.pos.controller.UserControllerTest" name="testEmailNonEmpty" time="0.002"/>
 </testsuite>

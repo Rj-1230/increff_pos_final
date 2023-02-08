@@ -7,49 +7,36 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
-<span class="fc" id="L14">public class OrderItemDtoHelper {</span>
-<span class="fc" id="L15">    private static final NumberFormat formatter = new DecimalFormat(&quot;#0.00&quot;);</span>
+<span class="fc" id="L12">public class OrderItemDtoHelper {</span>
+<span class="fc" id="L13">    private static final NumberFormat formatter = new DecimalFormat(&quot;#0.00&quot;);</span>
 
-    public static OrderItemPojo convert(OrderItemForm f){
-<span class="nc" id="L18">        OrderItemPojo o = new OrderItemPojo();</span>
-<span class="nc" id="L19">        o.setOrderId(f.getOrderId());</span>
-<span class="nc" id="L20">        o.setQuantity(f.getQuantity());</span>
-<span class="nc" id="L21">        o.setSellingPrice(f.getSellingPrice());</span>
-<span class="nc" id="L22">        return o;</span>
+    public static OrderItemPojo convert(OrderItemForm f) {
+<span class="fc" id="L16">        OrderItemPojo o = new OrderItemPojo();</span>
+<span class="fc" id="L17">        o.setOrderId(f.getOrderId());</span>
+<span class="fc" id="L18">        o.setQuantity(f.getQuantity());</span>
+<span class="fc" id="L19">        o.setSellingPrice(f.getSellingPrice());</span>
+<span class="fc" id="L20">        return o;</span>
     }
 
     public static void normalize(OrderItemForm f) {
-<span class="nc" id="L26">        f.setBarcode(f.getBarcode().toLowerCase().trim());</span>
-<span class="nc" id="L27">        f.setSellingPrice(Double.parseDouble(formatter.format(f.getSellingPrice())));</span>
+<span class="fc" id="L24">        f.setBarcode(f.getBarcode().toLowerCase().trim());</span>
+<span class="fc" id="L25">        f.setSellingPrice(Double.parseDouble(formatter.format(f.getSellingPrice())));</span>
 
-<span class="nc bnc" id="L29" title="All 2 branches missed.">        if(f.getBarcode().length()&gt;15){</span>
-<span class="nc" id="L30">            f.setBarcode(f.getBarcode().substring(0,15));</span>
+<span class="pc bpc" id="L27" title="1 of 2 branches missed.">        if (f.getBarcode().length() &gt; 20) {</span>
+<span class="nc" id="L28">            f.setBarcode(f.getBarcode().substring(0, 20));</span>
         }
-<span class="nc" id="L32">    }</span>
+<span class="fc" id="L30">    }</span>
 
-    public static OrderItemData convert(OrderItemPojo p){
-<span class="nc" id="L35">        OrderItemData d = new OrderItemData();</span>
-<span class="nc" id="L36">        d.setOrderItemId(p.getOrderItemId());</span>
-<span class="nc" id="L37">        d.setOrderId(p.getOrderId());</span>
-<span class="nc" id="L38">        d.setProductId(p.getProductId());</span>
-<span class="nc" id="L39">        d.setQuantity(p.getQuantity());</span>
-<span class="nc" id="L40">        d.setSellingPrice(p.getSellingPrice());</span>
-<span class="nc" id="L41">        return d;</span>
-    }
-
-
-    public static List&lt;OrderItemData&gt; getAllOrderItemsOfAgivenOrder(List&lt;OrderItemPojo&gt; list) {
-<span class="nc" id="L46">        List&lt;OrderItemData&gt; list2 = new ArrayList&lt;OrderItemData&gt;();</span>
-<span class="nc bnc" id="L47" title="All 2 branches missed.">        for (OrderItemPojo p : list) {</span>
-<span class="nc bnc" id="L48" title="All 2 branches missed.">            if(p.getQuantity()==0)</span>
-<span class="nc" id="L49">                continue;</span>
-<span class="nc" id="L50">            list2.add(convert(p));</span>
-<span class="nc" id="L51">        }</span>
-<span class="nc" id="L52">        return list2;</span>
+    public static OrderItemData convert(OrderItemPojo p) {
+<span class="fc" id="L33">        OrderItemData d = new OrderItemData();</span>
+<span class="fc" id="L34">        d.setOrderItemId(p.getOrderItemId());</span>
+<span class="fc" id="L35">        d.setOrderId(p.getOrderId());</span>
+<span class="fc" id="L36">        d.setProductId(p.getProductId());</span>
+<span class="fc" id="L37">        d.setQuantity(p.getQuantity());</span>
+<span class="fc" id="L38">        d.setSellingPrice(p.getSellingPrice());</span>
+<span class="fc" id="L39">        return d;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

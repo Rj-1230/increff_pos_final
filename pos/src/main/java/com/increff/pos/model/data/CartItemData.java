@@ -12,5 +12,6 @@ public class CartItemData {
     private Double sellingPrice;
     private Integer counterId;
     private Integer quantity;
+    private String barcode;
 
 }

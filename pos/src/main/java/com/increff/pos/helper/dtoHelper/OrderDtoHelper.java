@@ -15,7 +15,7 @@ import static com.increff.pos.util.SecurityUtil.getPrincipal;
 @Service
 public class OrderDtoHelper {
 
-    public static OrderPojo convert(CustomerDetailsForm f){
+    public static OrderPojo convert(CustomerDetailsForm f) {
         OrderPojo p = new OrderPojo();
         p.setCustomerPhone(f.getCustomerPhone());
         p.setCustomerName(f.getCustomerName());
@@ -26,7 +26,7 @@ public class OrderDtoHelper {
         return p;
     }
 
-    public static OrderData convert(OrderPojo p){
+    public static OrderData convert(OrderPojo p) {
         OrderData d = new OrderData();
         d.setOrderId(p.getOrderId());
         d.setStatus(p.getStatus());
@@ -41,17 +41,17 @@ public class OrderDtoHelper {
 
     public static void normalize(CustomerDetailsForm f) {
         f.setCustomerName(f.getCustomerName().toLowerCase().trim());
-        if(f.getCustomerName().length()>15){
-            f.setCustomerName(f.getCustomerName().substring(0,15));
+        if (f.getCustomerName().length() > 20) {
+            f.setCustomerName(f.getCustomerName().substring(0, 20));
         }
-        if(f.getCustomerPhone().length()>10){
-            f.setCustomerPhone(f.getCustomerPhone().substring(0,10));
+        if (f.getCustomerPhone().length() > 10) {
+            f.setCustomerPhone(f.getCustomerPhone().substring(0, 10));
         }
     }
 
-    public static List<OrderData> getAllOrders(List<OrderPojo> list){
+    public static List<OrderData> getAllOrders(List<OrderPojo> list) {
         List<OrderData> list2 = new ArrayList<OrderData>();
-        for(OrderPojo p: list){
+        for (OrderPojo p : list) {
             list2.add(convert(p));
         }
         return list2;

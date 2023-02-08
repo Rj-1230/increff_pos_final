@@ -19,10 +19,10 @@ public class ProductApi {
 
     public Integer add(ProductPojo p) throws ApiException {
         ProductPojo a = productDao.getProductPojoFromBarcode(p.getBarcode());
-        if(Objects.nonNull(a)){
+        if (Objects.nonNull(a)) {
             throw new ApiException("The product with given barcode already exists");
         }
-       return productDao.insert(p);
+        return productDao.insert(p);
 
     }
 
@@ -41,9 +41,9 @@ public class ProductApi {
         ex.setMrp(p.getMrp());
     }
 
-    public  ProductPojo getCheckProduct(Integer id) throws ApiException {
+    public ProductPojo getCheckProduct(Integer id) throws ApiException {
         ProductPojo a = productDao.select(id);
-        if(Objects.isNull(a)){
+        if (Objects.isNull(a)) {
             throw new ApiException("No such product with given id exists !");
         }
         return a;
@@ -51,7 +51,7 @@ public class ProductApi {
 
     public ProductPojo getCheckProduct(String barcode) throws ApiException {
         ProductPojo a = productDao.getProductPojoFromBarcode(barcode);
-        if(Objects.isNull(a)){
+        if (Objects.isNull(a)) {
             throw new ApiException("The product with given barcode doesn't exists");
         }
         return a;

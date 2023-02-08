@@ -7,7 +7,7 @@ import com.increff.pos.pojo.ProductPojo;
 import static com.increff.pos.helper.dtoHelper.InventoryDtoHelper.convert;
 
 public class InventoryFlowHelper {
-    public static InventoryData convertInventoryPojoToInventoryData(InventoryPojo inventoryPojo, ProductPojo productPojo){
+    public static InventoryData convertInventoryPojoToInventoryData(InventoryPojo inventoryPojo, ProductPojo productPojo) {
         InventoryData inventoryData = convert(inventoryPojo);
         inventoryData.setProductName(productPojo.getName());
         inventoryData.setBarcode(productPojo.getBarcode());

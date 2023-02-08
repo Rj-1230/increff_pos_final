@@ -1,12 +1,14 @@
 package com.increff.pos.flow;
 
-import com.increff.pos.model.data.*;
+import com.increff.pos.api.*;
+import com.increff.pos.model.data.BrandData;
+import com.increff.pos.model.data.DailyReportData;
+import com.increff.pos.model.data.InventoryReportData;
+import com.increff.pos.model.data.ProductRevenueData;
 import com.increff.pos.model.form.BrandForm;
 import com.increff.pos.model.form.DateBrandCategoryFilterForm;
 import com.increff.pos.model.form.DateFilterForm;
 import com.increff.pos.pojo.*;
-import com.increff.pos.api.*;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +19,8 @@ import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static com.increff.pos.helper.flowHelper.ReportFlowHelper.*;
+import static com.increff.pos.helper.flowHelper.ReportFlowHelper.convert;
+import static com.increff.pos.helper.flowHelper.ReportFlowHelper.filterByBrandCategory;
 import static com.increff.pos.util.GetCurrentDateTime.*;
 
 @Service
@@ -35,7 +38,7 @@ public class ReportFlow {
     InventoryApi inventoryApi;
 
     @Transactional(rollbackOn = ApiException.class)
-    public List<ProductRevenueData> getRevenueBrandCategoryWise(DateBrandCategoryFilterForm form) throws ApiException {
+    public List<ProductRevenueData> getRevenueReport(DateBrandCategoryFilterForm form) throws ApiException {
         HashMap<Integer, ProductRevenueData> finalProductRevenueDataMap = new HashMap<>();
         List<OrderPojo> orderPojoList = getOrderListInDateRange(form);
         getProductRevenueDataForEveryOrderInDateRange(finalProductRevenueDataMap, orderPojoList);
@@ -43,7 +46,7 @@ public class ReportFlow {
     }
 
     @Transactional(rollbackOn = ApiException.class)
-    public List<InventoryReportData> getInventoryBrandCategoryWise(BrandForm form) throws ApiException {
+    public List<InventoryReportData> getInventoryReport(BrandForm form) throws ApiException {
         HashMap<Integer, InventoryReportData> inventoryReportDataMap = new HashMap<>();
         List<InventoryPojo> inventoryPojoList = inventoryApi.getAll();
         getInventoryReportDataMap(inventoryReportDataMap, inventoryPojoList);
@@ -71,11 +74,7 @@ public class ReportFlow {
     @Transactional(rollbackOn = ApiException.class)
     public void createDailyReport() throws ApiException {
         List<OrderPojo> orderPojoList = getInvoicedOrdersInDateRange();
-        Integer totalItems = 0;
-        Double totalRevenue = 0.0;
-        Integer totalOrders = orderPojoList.size();
-        updateTotalCountAndRevenue(orderPojoList, totalItems, totalRevenue);
-        DailyReportPojo reportPojo = convertToReportPojo(totalItems, totalRevenue, totalOrders);
+        DailyReportPojo reportPojo = updateTotalCountAndRevenue(orderPojoList);
         updateDailyReportPojo(reportPojo);
     }
 
@@ -84,11 +83,13 @@ public class ReportFlow {
         if (existingPojo == null) {
             dailyReportApi.addReport(reportPojo);
         } else {
-            dailyReportApi.update(getStartOfDay(), reportPojo);
+            dailyReportApi.updateDailyReport(getStartOfDay(), reportPojo);
         }
     }
 
-    private void updateTotalCountAndRevenue(List<OrderPojo> orderPojoList, Integer totalItems, Double totalRevenue) {
+    private DailyReportPojo updateTotalCountAndRevenue(List<OrderPojo> orderPojoList) {
+        Integer totalItems = 0;
+        Double totalRevenue = 0.0;
         for (OrderPojo orderPojo : orderPojoList) {
             List<OrderItemPojo> orderItemPojoList = orderApi.getAllOrderItems(orderPojo.getOrderId());
             for (OrderItemPojo i : orderItemPojoList) {
@@ -96,16 +97,17 @@ public class ReportFlow {
                 totalRevenue += i.getQuantity() * i.getSellingPrice();
             }
         }
+        totalRevenue = Double.parseDouble(formatter.format(totalRevenue));
+        return convertToDailyReportPojo(totalRevenue, totalItems, orderPojoList.size(), getStartOfDay());
     }
 
-    private DailyReportPojo convertToReportPojo(Integer totalItems, Double totalRevenue, Integer totalOrders) {
-        DailyReportPojo reportPojo = new DailyReportPojo();
-        totalRevenue = Double.parseDouble(formatter.format(totalRevenue));
-        reportPojo.setInvoiceDate(getStartOfDay());
-        reportPojo.setTotalRevenue(totalRevenue);
-        reportPojo.setInvoicedItemsCount(totalItems);
-        reportPojo.setInvoicedOrderCount(totalOrders);
-        return reportPojo;
+    private DailyReportPojo convertToDailyReportPojo(Double totalRevenue, Integer totalItems, Integer totalOrders, ZonedDateTime invoiceDate) {
+        DailyReportPojo dailyReportPojo = new DailyReportPojo();
+        dailyReportPojo.setTotalRevenue(totalRevenue);
+        dailyReportPojo.setInvoicedItemsCount(totalItems);
+        dailyReportPojo.setInvoicedOrderCount(totalOrders);
+        dailyReportPojo.setInvoiceDate(invoiceDate);
+        return dailyReportPojo;
     }
 
     private List<OrderPojo> getInvoicedOrdersInDateRange() {
@@ -146,8 +148,6 @@ public class ReportFlow {
         List<ProductRevenueData> list1 = new ArrayList<>();
         for (Map.Entry<Integer, ProductRevenueData> e : finalProductRevenueDataMap.entrySet()) {
             e.getValue().setTotal(Double.parseDouble(formatter.format(e.getValue().getTotal())));
-            if (e.getValue().getQuantity() == 0)
-                continue;
             if (filterByBrandCategory(e.getValue().getBrand(), e.getValue().getCategory(), form.getBrand(), form.getCategory())) {
                 list1.add(e.getValue());
             }

@@ -1,7 +1,8 @@
 package com.increff.pos.dto;
 
+import com.increff.pos.api.ApiException;
+import com.increff.pos.api.DailyReportApi;
 import com.increff.pos.flow.ReportFlow;
-import com.increff.pos.api.*;
 import com.increff.pos.model.data.BrandData;
 import com.increff.pos.model.data.DailyReportData;
 import com.increff.pos.model.data.InventoryReportData;
@@ -12,12 +13,12 @@ import com.increff.pos.model.form.DateFilterForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
 
 import static com.increff.pos.helper.dtoHelper.BrandDtoHelper.normalize;
-import static com.increff.pos.util.NullCheckHelper.checkDate;
 import static com.increff.pos.helper.dtoHelper.ReportDtoHelper.normalize;
-import static com.increff.pos.util.NullCheckHelper.checkNullable;
+import static com.increff.pos.util.ValidateFormUtil.checkDate;
+import static com.increff.pos.util.ValidateFormUtil.validateForm;
 
 @Service
 public class ReportDto {
@@ -28,30 +29,29 @@ public class ReportDto {
     DailyReportApi dailyReportApi;
 
 
-    public List<ProductRevenueData> getRevenueBrandCategoryWise(DateBrandCategoryFilterForm form) throws ApiException {
-        checkNullable(form);
-        checkDate(form.getStart(),form.getEnd());
+    public List<ProductRevenueData> getRevenueReport(DateBrandCategoryFilterForm form) throws ApiException {
+        validateForm(form);
+        checkDate(form.getStart(), form.getEnd());
         normalize(form);
-        return reportFlow.getRevenueBrandCategoryWise(form);
+        return reportFlow.getRevenueReport(form);
     }
 
-    public List<InventoryReportData> getInventoryBrandCategoryWise(BrandForm form) throws ApiException {
-        checkNullable(form);
+    public List<InventoryReportData> getInventoryReport(BrandForm form) throws ApiException {
+        validateForm(form);
         normalize(form);
-        return reportFlow.getInventoryBrandCategoryWise(form);
+        return reportFlow.getInventoryReport(form);
     }
 
     public List<BrandData> getBrandReport(BrandForm form) throws ApiException {
-        checkNullable(form);
+        validateForm(form);
         normalize(form);
-       return reportFlow.getBrandReport(form);
+        return reportFlow.getBrandReport(form);
     }
 
-    public List<DailyReportData> getDailySalesFilteredReport(DateFilterForm form) throws ApiException
-    {
-        checkNullable(form);
-        checkDate(form.getStart(),form.getEnd());
-       return reportFlow.getDailySalesFilteredReport(form);
+    public List<DailyReportData> getDailySalesFilteredReport(DateFilterForm form) throws ApiException {
+        validateForm(form);
+        checkDate(form.getStart(), form.getEnd());
+        return reportFlow.getDailySalesFilteredReport(form);
     }
 
     public void createDailyReport() throws ApiException {

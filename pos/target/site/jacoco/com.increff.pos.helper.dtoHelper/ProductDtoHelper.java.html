@@ -17,21 +17,21 @@ import java.text.NumberFormat;
 <span class="fc" id="L17">        f.setMrp(Double.parseDouble(formatter.format(f.getMrp())));</span>
 <span class="fc" id="L18">        f.setName(f.getName().toLowerCase().trim());</span>
 
-<span class="pc bpc" id="L20" title="1 of 2 branches missed.">        if(f.getBrandName().length()&gt;15){</span>
-<span class="nc" id="L21">            f.setBrandName(f.getBrandName().substring(0,15));</span>
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">        if (f.getBrandName().length() &gt; 20) {</span>
+<span class="nc" id="L21">            f.setBrandName(f.getBrandName().substring(0, 20));</span>
         }
-<span class="pc bpc" id="L23" title="1 of 2 branches missed.">        if(f.getCategoryName().length()&gt;15){</span>
-<span class="nc" id="L24">            f.setCategoryName(f.getCategoryName().substring(0,15));</span>
+<span class="pc bpc" id="L23" title="1 of 2 branches missed.">        if (f.getCategoryName().length() &gt; 20) {</span>
+<span class="nc" id="L24">            f.setCategoryName(f.getCategoryName().substring(0, 20));</span>
         }
-<span class="pc bpc" id="L26" title="1 of 2 branches missed.">        if(f.getBarcode().length()&gt;15){</span>
-<span class="nc" id="L27">            f.setBarcode(f.getBarcode().substring(0,15));</span>
+<span class="pc bpc" id="L26" title="1 of 2 branches missed.">        if (f.getBarcode().length() &gt; 20) {</span>
+<span class="nc" id="L27">            f.setBarcode(f.getBarcode().substring(0, 20));</span>
         }
-<span class="pc bpc" id="L29" title="1 of 2 branches missed.">        if(f.getName().length()&gt;15){</span>
-<span class="nc" id="L30">            f.setName(f.getName().substring(0,15));</span>
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">        if (f.getName().length() &gt; 20) {</span>
+<span class="nc" id="L30">            f.setName(f.getName().substring(0, 20));</span>
         }
 <span class="fc" id="L32">    }</span>
 
-    public static ProductData convert(ProductPojo p){
+    public static ProductData convert(ProductPojo p) {
 <span class="fc" id="L35">        ProductData d = new ProductData();</span>
 <span class="fc" id="L36">        d.setProductId(p.getProductId());</span>
 <span class="fc" id="L37">        d.setBarcode(p.getBarcode());</span>
@@ -40,7 +40,7 @@ import java.text.NumberFormat;
 <span class="fc" id="L40">        return d;</span>
     }
 
-    public static ProductPojo convert(ProductForm f){
+    public static ProductPojo convert(ProductForm f) {
 <span class="fc" id="L44">        ProductPojo p = new ProductPojo();</span>
 <span class="fc" id="L45">        p.setName(f.getName());</span>
 <span class="fc" id="L46">        p.setBarcode(f.getBarcode());</span>

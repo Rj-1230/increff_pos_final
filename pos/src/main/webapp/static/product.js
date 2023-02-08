@@ -32,6 +32,9 @@ function getSupervisorProductUrl(){
 function addProduct(event){
    var b = getCategoryOption();
 	var $form = $("#product-form");
+	if (!validateForm($form[0])){
+	return ;
+	}
 	var json = toJson($form);
 	var url = getSupervisorProductUrl();
 	$.ajax({
@@ -214,9 +217,9 @@ function displayEditProduct(id){
 function displayProduct(data){
 	$("#product-edit-form input[name=barcode]").val(data.barcode);
 	$("#product-edit-form input[name=name]").val(data.name);
-//	$("#product-edit-form input[name=brandName]").val(data.brandName);
+	$("#product-edit-form input[name=brand]").val(data.brand);
 		$("#product-edit-form input[name=mrp]").val(data.mrp);
-//			$("#product-edit-form input[name=categoryName]").val(data.categoryName);
+			$("#product-edit-form input[name=category]").val(data.category);
 	$("#product-edit-form input[name=productId]").val(data.productId);
 	$('#edit-product-modal').modal('toggle');
 }
@@ -231,6 +234,11 @@ function readFileDataCallback(results){
                         $(".toast").toast('show');
                         return;
     	}
+    	var title = Object.keys(fileData[0]);
+            	if(title[0]!='barcode' || title[1]!='brandName' || title[2]!='categoryName' || title[3]!='mrp' || title[4]!='name' || title.length!=5){
+                        incorrectTSV();
+                    return;
+            	}
 	var url = getSupervisorProductUrl();
 	uploadRows(url);
 }
@@ -254,6 +262,8 @@ function init(){
     $('#process-data').click(processData);
     $('#download-errors').click(downloadErrors);
     $('#myFile').on('change', updateFileName)
+        $('#myFile').on('change', renewUpload)
+
     role= $("meta[name=role]").attr("content");
 
 }

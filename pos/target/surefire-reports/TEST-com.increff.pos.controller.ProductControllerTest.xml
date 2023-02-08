@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="4" failures="0" name="com.increff.pos.controller.ProductControllerTest" time="0.037" errors="0" skipped="0">
+<testsuite tests="13" failures="0" name="com.increff.pos.controller.ProductControllerTest" time="0.065" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk1.8.0_351\jre\bin"/>
@@ -66,8 +66,17 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="com.increff.pos.controller.ProductControllerTest" name="testSizeOfProductList" time="0.012"/>
+  <testcase classname="com.increff.pos.controller.ProductControllerTest" name="testProductNameNonNullable" time="0.002"/>
+  <testcase classname="com.increff.pos.controller.ProductControllerTest" name="testBrandCategoryNonNullable" time="0.002"/>
+  <testcase classname="com.increff.pos.controller.ProductControllerTest" name="testMrpRange" time="0.002"/>
+  <testcase classname="com.increff.pos.controller.ProductControllerTest" name="testSizeOfProductList" time="0.014"/>
+  <testcase classname="com.increff.pos.controller.ProductControllerTest" name="testBrandCategoryExistenceFromBrandCategoryName" time="0.004"/>
+  <testcase classname="com.increff.pos.controller.ProductControllerTest" name="testBarcodeNonEmpty" time="0.003"/>
   <testcase classname="com.increff.pos.controller.ProductControllerTest" name="testGetProduct" time="0.008"/>
-  <testcase classname="com.increff.pos.controller.ProductControllerTest" name="testUpdateProduct" time="0.009"/>
-  <testcase classname="com.increff.pos.controller.ProductControllerTest" name="testAddProduct" time="0.008"/>
+  <testcase classname="com.increff.pos.controller.ProductControllerTest" name="testUpdateProduct" time="0.012"/>
+  <testcase classname="com.increff.pos.controller.ProductControllerTest" name="testMrpPositive" time="0.003"/>
+  <testcase classname="com.increff.pos.controller.ProductControllerTest" name="testAddProduct" time="0.007"/>
+  <testcase classname="com.increff.pos.controller.ProductControllerTest" name="testMRPNonNullable" time="0.003"/>
+  <testcase classname="com.increff.pos.controller.ProductControllerTest" name="testProductNameNonEmpty" time="0.002"/>
+  <testcase classname="com.increff.pos.controller.ProductControllerTest" name="testBarcodeNonNullable" time="0.003"/>
 </testsuite>

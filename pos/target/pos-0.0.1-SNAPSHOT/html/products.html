@@ -13,12 +13,12 @@
 
     <div th:replace="snippets.html :: name_toast"></div>
 
-    <div class="modal" tabindex="-1" role="dialog" id="create-product-modal">
+    <div class="modal" id="create-product-modal" role="dialog" tabindex="-1">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Add Product </h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -26,8 +26,8 @@
                     <form id="product-form">
                         <div class="form-group">
                             <label for="inputBarcode">Barcode</label>
-                            <input type="text" maxlength="15" class="form-control" name="barcode" id="inputBarcode"
-                                   placeholder="Enter barcode of product">
+                            <input class="form-control" id="inputBarcode" maxlength="15" name="barcode" placeholder="Enter barcode of product"
+                                   required type="text">
 
                         </div>
                         <div class="form-group">
@@ -44,13 +44,12 @@
                         </div>
                         <div class="form-group">
                             <label for="inputProduct">Product Name </label>
-                            <input type="text" maxlength="15" class="form-control" name="name" id="inputProduct"
-                                   placeholder="Enter product name">
+                            <input class="form-control" id="inputProduct" maxlength="15" name="name" placeholder="Enter product name"
+                                   required type="text">
                         </div>
                         <div class="form-group">
                             <label for="inputMrp">MRP</label>
-                            <input type="number" min="0" max="99999" step="0.01" class="form-control" name="mrp" id="inputMrp"
-                                   placeholder="Enter product's MRP">
+                            <input class="form-control" id="inputMrp" name="mrp" placeholder="Enter product's MRP" required type="number">
                         </div>
                         <div class="half-space">
                             <!--      Blank row -->
@@ -59,8 +58,8 @@
                 </div>
                 <div class="modal-footer">
 
-                    <button type="button" class="btn btn-primary" id="add-product" style="margin-left:20px"
-                            data-dismiss="modal"><i class="bi bi-plus"></i></button>
+                    <button class="btn btn-primary" data-dismiss="modal" id="add-product" style="margin-left:20px"
+                            type="button" data-placement="bottom" data-toggle="tooltip" title="Add product"><i class="bi bi-plus"></i></button>
                     &nbsp;&nbsp;&nbsp;&nbsp;
                 </div>
             </div>
@@ -77,11 +76,10 @@
         <div class="col-12" id="main">
             <h3 class="alignleft">Products </h3>
             <div class="alignright">
-                <button type="button" class="btn btn-primary supervisor" id="open-product-modal" data-toggle="modal"
-                        data-target="#create-product-modal"><i class="bi bi-file-earmark-plus"></i></button>
-                <button type="button" class="btn btn-success" id="refresh-data"><i class="bi bi-arrow-clockwise"></i>
-                </button>
-                <button type="button" class="btn btn-warning supervisor" id="upload-data"><i class="bi bi-cloud-arrow-up"></i>
+                <button class="btn btn-primary supervisor" data-target="#create-product-modal" data-toggle="modal" id="open-product-modal"
+                        type="button"><i class="bi bi-file-earmark-plus"></i></button>
+                <button class="btn btn-warning supervisor" id="upload-data" type="button" data-placement="bottom" data-toggle="tooltip" title="Upload product"><i
+                        class="bi bi-cloud-arrow-up"></i>
                 </button>
             </div>
 
@@ -112,7 +110,7 @@
                     <th scope="col">Category</th>
                     <th scope="col">Product Name</th>
                     <th scope="col">MRP</th>
-                    <th scope="col" id="actions-supervisor" style="display:none">Actions</th>
+                    <th id="actions-supervisor" scope="col" style="display:none">Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -139,45 +137,59 @@
     </div>
 
     <!-- Employee Edit Modal -->
-    <div class="modal" tabindex="-1" role="dialog" id="edit-product-modal">
+    <div class="modal" id="edit-product-modal" role="dialog" tabindex="-1">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Edit Product or its category </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form id="product-edit-form">
                         <div class="form-group">
-                            <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
+                            <label class="col-sm-2 col-form-label" for="inputBarcode">Barcode</label>
                             <div class="col-sm-10">
-                                <input type="text" maxlength="15" class="form-control" name="barcode"
-                                       placeholder="Enter barcode of product" readonly>
+                                <input class="form-control" maxlength="15" name="barcode" placeholder="Enter barcode of product"
+                                       readonly type="text">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputProduct" class="col-sm-2 col-form-label">Product</label>
+                            <label class="col-sm-2 col-form-label" for="inputBrand">Brand</label>
                             <div class="col-sm-10">
-                                <input type="text" maxlength="15" class="form-control" name="name" placeholder="Enter product name">
+                                <input class="form-control" maxlength="20" name="brand" readonly type="text">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputMrp" class="col-sm-2 col-form-label">MRP</label>
+                            <label class="col-sm-2 col-form-label" for="inputCategory">Category</label>
                             <div class="col-sm-10">
-                                <input type="number" min="0" max="99999" step="0.01" class="form-control" name="mrp">
+                                <input class="form-control" maxlength="20" name="category" readonly
+                                       type="text">
                             </div>
                         </div>
-                        <input type="hidden" name="productId">
-                        <input type="hidden" name="brandName">
-                        <input type="hidden" name="categoryName">
+                        <div class="form-group">
+                            <label class="col-form-label" for="inputProduct">Product Name</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" maxlength="15" name="name" placeholder="Enter product name"
+                                       type="text">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 col-form-label" for="inputMrp">MRP</label>
+                            <div class="col-sm-10">
+                                <input class="form-control" name="mrp" type="number">
+                            </div>
+                        </div>
+                        <input name="productId" type="hidden">
+                        <input name="brandName" type="hidden">
+                        <input name="categoryName" type="hidden">
 
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="update-product">Update</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" id="update-product" type="button">Update</button>
+                    <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancel</button>
                 </div>
             </div>
         </div>

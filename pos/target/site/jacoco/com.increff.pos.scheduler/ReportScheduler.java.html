@@ -13,14 +13,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 
     @Async
     @Scheduled(cron = &quot;${cron.expression}&quot;)
-    public void createDailyReport()
-    {
+    public void createDailyReport() {
         try {
-<span class="nc" id="L19">            reportDto.createDailyReport();</span>
-        }
-<span class="nc" id="L21">        catch(Exception e) {</span>
-<span class="nc" id="L22">            return;</span>
-<span class="nc" id="L23">        }</span>
-<span class="nc" id="L24">    }</span>
+<span class="nc" id="L18">            reportDto.createDailyReport();</span>
+<span class="nc" id="L19">        } catch (Exception e) {</span>
+<span class="nc" id="L20">            return;</span>
+<span class="nc" id="L21">        }</span>
+<span class="nc" id="L22">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

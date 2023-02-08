@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CartItemFlow.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">pos</a> &gt; <a href="index.source.html" class="el_package">com.increff.pos.flow</a> &gt; <span class="el_source">CartItemFlow.java</span></div><h1>CartItemFlow.java</h1><pre class="source lang-java linenums">package com.increff.pos.flow;
 
+import com.increff.pos.api.ApiException;
+import com.increff.pos.api.CartItemApi;
+import com.increff.pos.api.InventoryApi;
+import com.increff.pos.api.ProductApi;
 import com.increff.pos.model.data.CartItemData;
-import com.increff.pos.pojo.*;
-import com.increff.pos.api.*;
+import com.increff.pos.pojo.CartItemPojo;
+import com.increff.pos.pojo.InventoryPojo;
+import com.increff.pos.pojo.ProductPojo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,13 +15,13 @@ import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.increff.pos.helper.flowHelper.CartItemFlowHelper.checkMrpAndInventoryForCartPojo;
 import static com.increff.pos.helper.dtoHelper.CartItemDtoHelper.convert;
+import static com.increff.pos.helper.flowHelper.CartItemFlowHelper.checkMrpAndInventoryForCartPojo;
 import static com.increff.pos.helper.flowHelper.CartItemFlowHelper.convertCartPojoToCartData;
 import static com.increff.pos.util.SecurityUtil.getPrincipal;
 
 @Service
-<span class="fc" id="L19">public class CartItemFlow {</span>
+<span class="fc" id="L24">public class CartItemFlow {</span>
     @Autowired
     private InventoryApi inventoryApi;
     @Autowired
@@ -26,40 +31,44 @@ import static com.increff.pos.util.SecurityUtil.getPrincipal;
 
     @Transactional(rollbackOn = ApiException.class)
     public void add(CartItemPojo cartItemPojo, String barcode) throws ApiException {
-<span class="fc" id="L29">        ProductPojo productPojo= productApi.getCheckProduct(barcode);</span>
-<span class="fc" id="L30">        cartItemPojo.setProductId(productPojo.getProductId());</span>
-<span class="fc" id="L31">        InventoryPojo inventoryPojo = inventoryApi.getCheckByProductId(cartItemPojo.getProductId());</span>
-<span class="fc" id="L32">        Integer inventoryQuantity = checkMrpAndInventoryForCartPojo(cartItemPojo,productPojo,inventoryPojo);</span>
-<span class="fc" id="L33">        cartItemApi.add(cartItemPojo,inventoryQuantity);</span>
-<span class="fc" id="L34">    }</span>
+<span class="fc" id="L34">        ProductPojo productPojo = productApi.getCheckProduct(barcode);</span>
+<span class="fc" id="L35">        cartItemPojo.setProductId(productPojo.getProductId());</span>
+<span class="fc" id="L36">        InventoryPojo inventoryPojo = inventoryApi.getCheckByProductId(cartItemPojo.getProductId());</span>
+<span class="fc" id="L37">        Integer inventoryQuantity = checkMrpAndInventoryForCartPojo(cartItemPojo, productPojo, inventoryPojo);</span>
+<span class="fc" id="L38">        cartItemApi.add(cartItemPojo, inventoryQuantity);</span>
+<span class="fc" id="L39">    }</span>
 
 
-    @Transactional(rollbackOn  = ApiException.class)
+    @Transactional(rollbackOn = ApiException.class)
     public void update(Integer id, CartItemPojo newCartItemPojo) throws ApiException {
-<span class="fc" id="L39">        CartItemPojo exCartItemPojo = cartItemApi.getCheck(id);</span>
-<span class="fc" id="L40">        ProductPojo productPojo = productApi.getCheckProduct(exCartItemPojo.getProductId());</span>
-<span class="fc" id="L41">        InventoryPojo inventoryPojo = inventoryApi.getCheckByProductId(exCartItemPojo.getProductId());</span>
-<span class="fc" id="L42">        checkMrpAndInventoryForCartPojo(newCartItemPojo,productPojo,inventoryPojo);</span>
-<span class="fc" id="L43">        cartItemApi.update(exCartItemPojo, newCartItemPojo);</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L44">        CartItemPojo exCartItemPojo = cartItemApi.getCheck(id);</span>
+<span class="fc" id="L45">        ProductPojo productPojo = productApi.getCheckProduct(exCartItemPojo.getProductId());</span>
+<span class="fc" id="L46">        InventoryPojo inventoryPojo = inventoryApi.getCheckByProductId(exCartItemPojo.getProductId());</span>
+<span class="fc" id="L47">        checkMrpAndInventoryForCartPojo(newCartItemPojo, productPojo, inventoryPojo);</span>
+<span class="fc" id="L48">        cartItemApi.update(exCartItemPojo, newCartItemPojo);</span>
+<span class="fc" id="L49">    }</span>
 
     @Transactional(rollbackOn = ApiException.class)
     public CartItemData getCartItem(Integer cartItemId) throws ApiException {
-<span class="fc" id="L48">        CartItemPojo cartItemPojo = cartItemApi.getCheck(cartItemId);</span>
-<span class="fc" id="L49">        CartItemData cartItemData = convert(cartItemApi.getCheck(cartItemId));</span>
-<span class="fc" id="L50">        cartItemData.setProductName(productApi.getCheckProduct(cartItemPojo.getProductId()).getName());</span>
-<span class="fc" id="L51">        return cartItemData;</span>
+<span class="fc" id="L53">        CartItemPojo cartItemPojo = cartItemApi.getCheck(cartItemId);</span>
+<span class="fc" id="L54">        CartItemData cartItemData = convert(cartItemApi.getCheck(cartItemId));</span>
+<span class="fc" id="L55">        cartItemData.setBarcode(productApi.getCheckProduct(cartItemPojo.getProductId()).getBarcode());</span>
+<span class="fc" id="L56">        cartItemData.setProductName(productApi.getCheckProduct(cartItemPojo.getProductId()).getName());</span>
+<span class="fc" id="L57">        return cartItemData;</span>
     }
 
     @Transactional(rollbackOn = ApiException.class)
     public List&lt;CartItemData&gt; getAllCartItemsOfCounterId() throws ApiException {
-<span class="fc" id="L56">        List&lt;CartItemPojo&gt; cartItemPojoList = cartItemApi.getAllItemsInCart(getPrincipal().getId());</span>
-<span class="fc" id="L57">        List&lt;CartItemData&gt; list2 = new ArrayList&lt;CartItemData&gt;();</span>
-<span class="fc bfc" id="L58" title="All 2 branches covered.">        for(CartItemPojo cartItemPojo: cartItemPojoList){</span>
-<span class="fc" id="L59">            String productName = productApi.getCheckProduct(cartItemPojo.getProductId()).getName();</span>
-<span class="fc" id="L60">            list2.add(convertCartPojoToCartData(cartItemPojo,productName));</span>
-<span class="fc" id="L61">        }</span>
-<span class="fc" id="L62">        return list2;</span>
+<span class="fc" id="L62">        List&lt;CartItemPojo&gt; cartItemPojoList = cartItemApi.getAllItemsInCart(getPrincipal().getId());</span>
+<span class="fc" id="L63">        List&lt;CartItemData&gt; list2 = new ArrayList&lt;CartItemData&gt;();</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">        for (CartItemPojo cartItemPojo : cartItemPojoList) {</span>
+<span class="pc bpc" id="L65" title="1 of 2 branches missed.">            if (cartItemPojo.getQuantity() == 0)</span>
+<span class="nc" id="L66">                continue;</span>
+<span class="fc" id="L67">            String productName = productApi.getCheckProduct(cartItemPojo.getProductId()).getName();</span>
+<span class="fc" id="L68">            String barcode = productApi.getCheckProduct(cartItemPojo.getProductId()).getBarcode();</span>
+<span class="fc" id="L69">            list2.add(convertCartPojoToCartData(cartItemPojo, productName, barcode));</span>
+<span class="fc" id="L70">        }</span>
+<span class="fc" id="L71">        return list2;</span>
     }
 
 }

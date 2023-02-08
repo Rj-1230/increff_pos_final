@@ -6,73 +6,36 @@ import java.time.ZonedDateTime;
 
 <span class="nc" id="L7">public class PojoUtil {</span>
 
-    public static BrandPojo getBrandPojo(String brand, String category){
+    public static BrandPojo getBrandPojo(String brand, String category) {
 <span class="fc" id="L10">        BrandPojo brandPojo = new BrandPojo();</span>
 <span class="fc" id="L11">        brandPojo.setBrand(brand);</span>
 <span class="fc" id="L12">        brandPojo.setCategory(category);</span>
 <span class="fc" id="L13">        return brandPojo;</span>
     }
 
-    public static ProductPojo getProductPojo(Integer brandId, String barcode,Double mrp, String productName){
+    public static ProductPojo getProductPojo(Integer brandId, String barcode, Double mrp, String productName) {
 <span class="fc" id="L17">        ProductPojo productPojo = new ProductPojo();</span>
 <span class="fc" id="L18">        productPojo.setBrandId(brandId);</span>
 <span class="fc" id="L19">        productPojo.setBarcode(barcode);</span>
 <span class="fc" id="L20">        productPojo.setMrp(mrp);</span>
 <span class="fc" id="L21">        productPojo.setName(productName);</span>
-<span class="fc" id="L22">        return  productPojo;</span>
+<span class="fc" id="L22">        return productPojo;</span>
     }
 
-    public static InventoryPojo getInventoryPojo(Integer productId, Integer quantity){
+    public static InventoryPojo getInventoryPojo(Integer productId, Integer quantity) {
 <span class="fc" id="L26">        InventoryPojo inventoryPojo = new InventoryPojo();</span>
 <span class="fc" id="L27">        inventoryPojo.setProductId(productId);</span>
 <span class="fc" id="L28">        inventoryPojo.setQuantity(quantity);</span>
-<span class="fc" id="L29">        return  inventoryPojo;</span>
-    }
-    public static CartItemPojo getCartPojo(Integer productId, Integer counterId, Double sellingPrice, Integer quantity){
-<span class="fc" id="L32">        CartItemPojo cartItemPojo = new CartItemPojo();</span>
-<span class="fc" id="L33">        cartItemPojo.setProductId(productId);</span>
-<span class="fc" id="L34">        cartItemPojo.setCounterId(counterId);</span>
-<span class="fc" id="L35">        cartItemPojo.setSellingPrice(sellingPrice);</span>
-<span class="fc" id="L36">        cartItemPojo.setQuantity(quantity);</span>
-<span class="fc" id="L37">        return cartItemPojo;</span>
+<span class="fc" id="L29">        return inventoryPojo;</span>
     }
 
-    public static UserPojo getUserPojo(String email, String password){
-<span class="fc" id="L41">        UserPojo userPojo = new UserPojo();</span>
-<span class="fc" id="L42">        userPojo.setEmail(email);</span>
-<span class="fc" id="L43">        userPojo.setPassword(password);</span>
-<span class="fc" id="L44">        return userPojo;</span>
-    }
-
-    public static DailyReportPojo getDailyReportPojo(ZonedDateTime date, Integer invoicedOrderCount, Integer invoicedItemsCount, Double totalRevenue){
-<span class="fc" id="L48">        DailyReportPojo dailyReportPojo = new DailyReportPojo();</span>
-<span class="fc" id="L49">        dailyReportPojo.setInvoiceDate(date);</span>
-<span class="fc" id="L50">        dailyReportPojo.setInvoicedOrderCount(invoicedOrderCount);</span>
-<span class="fc" id="L51">        dailyReportPojo.setInvoicedItemsCount(invoicedItemsCount);</span>
-<span class="fc" id="L52">        dailyReportPojo.setTotalRevenue(totalRevenue);</span>
-<span class="fc" id="L53">        return  dailyReportPojo;</span>
-    }
-
-
-    public static OrderPojo getOrderPojo(String customerName, String customerPhone, ZonedDateTime orderCreateTime, ZonedDateTime orderInvoiceTime,
-                                         String status,Integer counterId){
-<span class="fc" id="L59">        OrderPojo orderPojo = new OrderPojo();</span>
-<span class="fc" id="L60">        orderPojo.setCustomerName(customerName);</span>
-<span class="fc" id="L61">        orderPojo.setCustomerPhone(customerPhone);</span>
-<span class="fc" id="L62">        orderPojo.setOrderCreateTime(orderCreateTime);</span>
-<span class="fc" id="L63">        orderPojo.setOrderInvoiceTime(orderInvoiceTime);</span>
-<span class="fc" id="L64">        orderPojo.setStatus(status);</span>
-<span class="fc" id="L65">        orderPojo.setCounterId(counterId);</span>
-<span class="fc" id="L66">        return  orderPojo;</span>
-    }
-
-    public static OrderItemPojo getOrderItemPojo(Integer orderId,Integer productId,Integer quantity, Double sellingPrice){
-<span class="fc" id="L70">        OrderItemPojo orderItemPojo = new OrderItemPojo();</span>
-<span class="fc" id="L71">        orderItemPojo.setOrderId(orderId);</span>
-<span class="fc" id="L72">        orderItemPojo.setProductId(productId);</span>
-<span class="fc" id="L73">        orderItemPojo.setQuantity(quantity);</span>
-<span class="fc" id="L74">        orderItemPojo.setSellingPrice(sellingPrice);</span>
-<span class="fc" id="L75">        return orderItemPojo;</span>
+    public static CartItemPojo getCartPojo(Integer productId, Integer counterId, Double sellingPrice, Integer quantity) {
+<span class="fc" id="L33">        CartItemPojo cartItemPojo = new CartItemPojo();</span>
+<span class="fc" id="L34">        cartItemPojo.setProductId(productId);</span>
+<span class="fc" id="L35">        cartItemPojo.setCounterId(counterId);</span>
+<span class="fc" id="L36">        cartItemPojo.setSellingPrice(sellingPrice);</span>
+<span class="fc" id="L37">        cartItemPojo.setQuantity(quantity);</span>
+<span class="fc" id="L38">        return cartItemPojo;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

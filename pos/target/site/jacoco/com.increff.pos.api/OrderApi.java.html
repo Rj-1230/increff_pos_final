@@ -24,7 +24,7 @@ import static com.increff.pos.util.generateRandomString.createRandomOrderCode;
     @Autowired
     private OrderItemDao orderItemDao;
 
-    public int addOrder(OrderPojo orderPojo,List&lt;CartItemPojo&gt; cartItemPojoList) throws ApiException {
+    public int addOrder(OrderPojo orderPojo, List&lt;CartItemPojo&gt; cartItemPojoList) throws ApiException {
 <span class="fc" id="L28">        orderPojo.setOrderCode(createRandomOrderCode());</span>
 <span class="fc" id="L29">        return orderDao.insertOrder(orderPojo);</span>
 
@@ -39,9 +39,9 @@ import static com.increff.pos.util.generateRandomString.createRandomOrderCode;
     }
 
     public void updateCustomerDetails(Integer id, OrderPojo orderPojo) throws ApiException {
-<span class="fc" id="L42">        String status =getCheckOrder(id).getStatus();</span>
-<span class="fc bfc" id="L43" title="All 2 branches covered.">        if(Objects.equals(status,&quot;invoiced&quot;)){</span>
-<span class="fc" id="L44">            throw new ApiException(&quot;Invoiced order can't be edited&quot;);</span>
+<span class="fc" id="L42">        String status = getCheckOrder(id).getStatus();</span>
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">        if (Objects.equals(status, &quot;invoiced&quot;)) {</span>
+<span class="nc" id="L44">            throw new ApiException(&quot;Invoiced order can't be edited&quot;);</span>
         }
 <span class="fc" id="L46">        OrderPojo ex = getCheckOrder(id);</span>
 <span class="fc" id="L47">        ex.setCustomerPhone(orderPojo.getCustomerPhone());</span>
@@ -49,9 +49,9 @@ import static com.increff.pos.util.generateRandomString.createRandomOrderCode;
 <span class="fc" id="L49">    }</span>
 
     public void invoiceOrder(Integer id) throws ApiException {
-<span class="fc" id="L52">        String status =getCheckOrder(id).getStatus();</span>
-<span class="fc bfc" id="L53" title="All 2 branches covered.">        if(Objects.equals(status,&quot;invoiced&quot;)){</span>
-<span class="fc" id="L54">            throw new ApiException(&quot;Order is already invoiced&quot;);</span>
+<span class="fc" id="L52">        String status = getCheckOrder(id).getStatus();</span>
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        if (Objects.equals(status, &quot;invoiced&quot;)) {</span>
+<span class="nc" id="L54">            throw new ApiException(&quot;Order is already invoiced&quot;);</span>
         }
 <span class="fc" id="L56">        OrderPojo ex = getCheckOrder(id);</span>
 <span class="fc" id="L57">        ex.setStatus(&quot;invoiced&quot;);</span>
@@ -60,43 +60,43 @@ import static com.increff.pos.util.generateRandomString.createRandomOrderCode;
 
     public OrderPojo getCheckOrder(Integer orderId) throws ApiException {
 <span class="fc" id="L62">        OrderPojo orderPojo = orderDao.selectOrder(orderId);</span>
-<span class="fc bfc" id="L63" title="All 2 branches covered.">          if(Objects.isNull(orderPojo)){</span>
-<span class="fc" id="L64">              throw new ApiException(&quot;No order with given Order Id exists&quot;);</span>
-          }
-<span class="fc" id="L66">          return orderPojo;</span>
-    }
-    public OrderPojo getCheckOrder(String orderCode) throws ApiException {
-<span class="fc" id="L69">        OrderPojo orderPojo = orderDao.selectOrderByOrderCode(orderCode);</span>
-<span class="fc bfc" id="L70" title="All 2 branches covered.">        if(Objects.isNull(orderPojo)){</span>
-<span class="fc" id="L71">            throw new ApiException(&quot;No order with given Order code exists&quot;);</span>
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">        if (Objects.isNull(orderPojo)) {</span>
+<span class="nc" id="L64">            throw new ApiException(&quot;No order with given Order Id exists&quot;);</span>
         }
-<span class="fc" id="L73">        return orderPojo;</span>
+<span class="fc" id="L66">        return orderPojo;</span>
     }
 
-    public List&lt;OrderPojo&gt; selectOrderByDateFilter(ZonedDateTime start, ZonedDateTime end){
-<span class="fc" id="L77">        return orderDao.selectOrderBetweenDateRange(start, end);</span>
+    public OrderPojo getCheckOrder(String orderCode) throws ApiException {
+<span class="nc" id="L70">        OrderPojo orderPojo = orderDao.selectOrderByOrderCode(orderCode);</span>
+<span class="nc bnc" id="L71" title="All 2 branches missed.">        if (Objects.isNull(orderPojo)) {</span>
+<span class="nc" id="L72">            throw new ApiException(&quot;No order with given Order code exists&quot;);</span>
+        }
+<span class="nc" id="L74">        return orderPojo;</span>
+    }
+
+    public List&lt;OrderPojo&gt; selectOrderByDateFilter(ZonedDateTime start, ZonedDateTime end) {
+<span class="fc" id="L78">        return orderDao.selectOrderBetweenDateRange(start, end);</span>
     }
 
 
     public void addOrderItem(OrderItemPojo orderItemPojo) throws ApiException {
-<span class="fc" id="L82">        String status =getCheckOrder(orderItemPojo.getOrderId()).getStatus();</span>
-<span class="pc bpc" id="L83" title="1 of 2 branches missed.">        if(Objects.equals(status,&quot;invoiced&quot;)){</span>
-<span class="nc" id="L84">            throw new ApiException(&quot;Invoiced order can't be edited&quot;);</span>
+<span class="fc" id="L83">        String status = getCheckOrder(orderItemPojo.getOrderId()).getStatus();</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">        if (Objects.equals(status, &quot;invoiced&quot;)) {</span>
+<span class="nc" id="L85">            throw new ApiException(&quot;Invoiced order can't be edited&quot;);</span>
         }
-<span class="fc" id="L86">        OrderItemPojo b = orderItemDao.getOrderItemPojoByProductIdAndOrderId(orderItemPojo.getProductId(),orderItemPojo.getOrderId());</span>
-<span class="pc bpc" id="L87" title="1 of 2 branches missed.">        if(Objects.nonNull(b)){</span>
-<span class="nc" id="L88">            b.setQuantity(b.getQuantity()+orderItemPojo.getQuantity());</span>
-<span class="nc" id="L89">            b.setSellingPrice(orderItemPojo.getSellingPrice());</span>
-        }
-        else{
+<span class="fc" id="L87">        OrderItemPojo b = orderItemDao.getOrderItemPojoByProductIdAndOrderId(orderItemPojo.getProductId(), orderItemPojo.getOrderId());</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        if (Objects.nonNull(b)) {</span>
+<span class="fc" id="L89">            b.setQuantity(b.getQuantity() + orderItemPojo.getQuantity());</span>
+<span class="fc" id="L90">            b.setSellingPrice(orderItemPojo.getSellingPrice());</span>
+        } else {
 <span class="fc" id="L92">            orderItemDao.insert(orderItemPojo);</span>
         }
 <span class="fc" id="L94">    }</span>
 
     public void deleteOrderItem(Integer id) throws ApiException {
 <span class="fc" id="L97">        getCheckOrderItem(id);</span>
-<span class="fc" id="L98">        String status =getCheckOrder(getCheckOrderItem(id).getOrderId()).getStatus();</span>
-<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if(Objects.equals(status,&quot;invoiced&quot;)){</span>
+<span class="fc" id="L98">        String status = getCheckOrder(getCheckOrderItem(id).getOrderId()).getStatus();</span>
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">        if (Objects.equals(status, &quot;invoiced&quot;)) {</span>
 <span class="nc" id="L100">            throw new ApiException(&quot;Invoiced order can't be deleted&quot;);</span>
         }
 <span class="fc" id="L102">        orderItemDao.deleteOrderItem(id);</span>
@@ -108,22 +108,21 @@ import static com.increff.pos.util.generateRandomString.createRandomOrderCode;
     }
 
 
-
     public void updateOrderItem(OrderItemPojo ex, OrderItemPojo orderItemPojo) throws ApiException {
-<span class="fc" id="L113">        String status =getCheckOrder(ex.getOrderId()).getStatus();</span>
-<span class="pc bpc" id="L114" title="1 of 2 branches missed.">        if(Objects.equals(status,&quot;invoiced&quot;)){</span>
-<span class="nc" id="L115">            throw new ApiException(&quot;Invoiced order can't be edited&quot;);</span>
+<span class="fc" id="L112">        String status = getCheckOrder(ex.getOrderId()).getStatus();</span>
+<span class="pc bpc" id="L113" title="1 of 2 branches missed.">        if (Objects.equals(status, &quot;invoiced&quot;)) {</span>
+<span class="nc" id="L114">            throw new ApiException(&quot;Invoiced order can't be edited&quot;);</span>
         }
-<span class="fc" id="L117">        ex.setQuantity(orderItemPojo.getQuantity());</span>
-<span class="fc" id="L118">        ex.setSellingPrice(orderItemPojo.getSellingPrice());</span>
-<span class="fc" id="L119">    }</span>
+<span class="fc" id="L116">        ex.setQuantity(orderItemPojo.getQuantity());</span>
+<span class="fc" id="L117">        ex.setSellingPrice(orderItemPojo.getSellingPrice());</span>
+<span class="fc" id="L118">    }</span>
 
     public OrderItemPojo getCheckOrderItem(Integer id) throws ApiException {
-<span class="fc" id="L122">        OrderItemPojo orderItemPojo = orderItemDao.selectOrderItem(id);</span>
-<span class="pc bpc" id="L123" title="1 of 2 branches missed.">        if(Objects.isNull(orderItemPojo)){</span>
-<span class="nc" id="L124">            throw new ApiException(&quot;Order item with given order Item Id doesn't exist&quot;);</span>
+<span class="fc" id="L121">        OrderItemPojo orderItemPojo = orderItemDao.selectOrderItem(id);</span>
+<span class="pc bpc" id="L122" title="1 of 2 branches missed.">        if (Objects.isNull(orderItemPojo)) {</span>
+<span class="nc" id="L123">            throw new ApiException(&quot;Order item with given order Item Id doesn't exist&quot;);</span>
         }
-<span class="fc" id="L126">        return orderItemPojo;</span>
+<span class="fc" id="L125">        return orderItemPojo;</span>
     }
 
 

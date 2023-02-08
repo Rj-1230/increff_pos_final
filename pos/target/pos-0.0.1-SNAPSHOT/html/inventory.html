@@ -12,34 +12,37 @@
 
     <div th:replace="snippets.html :: name_toast"></div>
 
-    <div class="modal" tabindex="-1" role="dialog" id="inventory-create-modal">
+    <div class="modal" id="inventory-create-modal" role="dialog" tabindex="-1">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Add items to inventory </h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
 
-                <form id="inventory-form">
-                <div class="form-group">
-                    <label for="inputBarcode">Barcode</label>
-                    <input type="text" class="form-control" name="barcode" id="inputBarcode" placeholder="Enter barcode">
-                </div>
-                <div class="form-group">
-                    <label for="inputQuantity">Quantity</label>
-                    <input type="number" min="0" onkeypress="return event.charCode >= 48 && event.charCode <= 57" class="form-control" name="quantity" id="inputQuantity" placeholder="Enter product's quantity">
-                </div>
-                <div class="half-space">
-                    <!--      Blank row -->
-                </div>
-                </form>
+                    <form id="inventory-form">
+                        <div class="form-group">
+                            <label for="inputBarcode">Barcode</label>
+                            <input class="form-control" id="inputBarcode" name="barcode" placeholder="Enter barcode"
+                                   type="text">
+                        </div>
+                        <div class="form-group">
+                            <label for="inputQuantity">Quantity</label>
+                            <input class="form-control" id="inputQuantity"
+                                   min="0" name="quantity"
+                                   onkeypress="return event.charCode >= 48 && event.charCode <= 57" placeholder="Enter product's quantity" type="number">
+                        </div>
+                        <div class="half-space">
+                            <!--      Blank row -->
+                        </div>
+                    </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="add-inventory" style="margin-left:20px" data-dismiss="modal"><i class="bi bi-plus"></i></button>
-                    <!--          <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="bi bi-x-circle"></i></button>-->
+                    <button class="btn btn-primary" data-dismiss="modal" id="add-inventory" style="margin-left:20px"
+                            type="button" data-placement="bottom" data-toggle="tooltip" title="Add inventory"><i class="bi bi-plus"></i></button>
 
                 </div>
             </div>
@@ -56,9 +59,10 @@
         <div class="col-12" id="main">
             <h3 class="alignleft">Inventory </h3>
             <div class="alignright">
-                <button type="button" class="btn btn-primary supervisor" id="open-inventory-modal" data-toggle="modal" data-target="#inventory-create-modal" ><i class="bi bi-file-earmark-plus"></i></button>
-                <button type="button" class="btn btn-success" id="refresh-data" ><i class="bi bi-arrow-clockwise"></i></button>
-                <button type="button" class="btn btn-warning supervisor" id="upload-data" ><i class="bi bi-cloud-arrow-up"></i></button>
+                <button class="btn btn-primary supervisor" data-target="#inventory-create-modal" data-toggle="modal" id="open-inventory-modal"
+                        type="button"><i class="bi bi-file-earmark-plus"></i></button>
+                <button class="btn btn-warning supervisor" id="upload-data" type="button" data-placement="bottom" data-toggle="tooltip" title="Upload Inventory"><i
+                        class="bi bi-cloud-arrow-up"></i></button>
             </div>
 
         </div>
@@ -79,7 +83,7 @@
                     <th scope="col">Barcode</th>
                     <th scope="col">Product Name</th>
                     <th scope="col">Quantity</th>
-                    <th scope="col" id="actions-supervisor" style="display:none">Actions</th>
+                    <th id="actions-supervisor" scope="col" style="display:none">Action</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -101,12 +105,12 @@
     </div>
 
     <!-- Inventory Edit Modal -->
-    <div class="modal" tabindex="-1" role="dialog" id="inventory-edit-modal">
+    <div class="modal" id="inventory-edit-modal" role="dialog" tabindex="-1">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title">Update Inventory </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -114,22 +118,27 @@
                     <form id="inventory-edit-form">
                         <div class="form-group">
                             <label>Barcode</label>
-                                <input type="text" maxlength="15" class="form-control" name="barcode" readonly>
+                            <input class="form-control" maxlength="20" name="barcode" readonly type="text">
+                        </div>
+                        <div class="form-group">
+                            <label>Product Name</label>
+                            <input class="form-control" maxlength="20" name="productName" readonly type="text">
                         </div>
                         <div class="form-group">
                             <label>Quantity</label>
-                                <input type="number" min="0" max="9999" onkeypress="return event.charCode >= 48 && event.charCode <= 57 " class="form-control" name="quantity">
+                            <input class="form-control" max="9999" min="0"
+                                   name="quantity"
+                                   onkeypress="return event.charCode >= 48 && event.charCode <= 57 " type="number">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="update-inventory">Update</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-primary" id="update-inventory" type="button">Update</button>
+                    <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancel</button>
                 </div>
             </div>
         </div>
     </div>
-
 
 
     <div th:replace="snippets.html :: name_upload_modal"></div>
@@ -139,7 +148,8 @@
 <div class="space"></div>
 <footer th:replace="snippets.html :: name_footer"></footer>
 
-<script th:src="@{/static/inventory.js}"/></script>
+<script th:src="@{/static/inventory.js}"/>
+</script>
 
 </body>
 

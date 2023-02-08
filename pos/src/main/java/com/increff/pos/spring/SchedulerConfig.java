@@ -9,8 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 public class SchedulerConfig {
     @Bean
-    public ReportScheduler schedule()
-    {
+    public ReportScheduler schedule() {
         return new ReportScheduler();
     }
 }

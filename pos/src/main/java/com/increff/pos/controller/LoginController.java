@@ -1,11 +1,11 @@
 package com.increff.pos.controller;
 
+import com.increff.pos.api.ApiException;
+import com.increff.pos.api.UserApi;
 import com.increff.pos.model.data.InfoData;
 import com.increff.pos.model.form.LoginForm;
 import com.increff.pos.pojo.UserPojo;
-import com.increff.pos.api.ApiException;
-import com.increff.pos.api.UserApi;
-import com.increff.pos.util.Properties;
+import com.increff.pos.spring.ApplicationProperties;
 import com.increff.pos.util.SecurityUtil;
 import com.increff.pos.util.UserPrincipal;
 import io.swagger.annotations.ApiOperation;
@@ -33,7 +33,7 @@ public class LoginController {
     @Autowired
     private InfoData info;
     @Autowired
-    private Properties properties;
+    private ApplicationProperties applicationProperties;
 
     @ApiOperation(value = "Logs in a user")
     @RequestMapping(path = "/session/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -63,9 +63,9 @@ public class LoginController {
         principal.setEmail(userPojo.getEmail());
         principal.setId(userPojo.getUserId());
 
-        String role="operator";
-        if(Objects.equals(properties.getSupervisorEmail(),userPojo.getEmail())){
-            role ="supervisor";
+        String role = "operator";
+        if (Objects.equals(applicationProperties.getSupervisorEmail(), userPojo.getEmail())) {
+            role = "supervisor";
         }
         principal.setRole(role);
         ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();

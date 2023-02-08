@@ -9,14 +9,13 @@ import javax.validation.constraints.*;
 @Setter
 public class InventoryForm {
     @NotBlank
-    @Size(min=1, max=20)
-   private String barcode;
+    @Size(min = 1, max = 20)
+    private String barcode;
     @NotNull
     @Positive
     @Min(1)
     @Max(99)
     private Integer quantity;
-
 
 
 }

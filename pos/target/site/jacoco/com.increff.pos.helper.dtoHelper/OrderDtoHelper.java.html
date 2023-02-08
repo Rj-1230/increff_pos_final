@@ -15,7 +15,7 @@ import static com.increff.pos.util.SecurityUtil.getPrincipal;
 @Service
 <span class="fc" id="L16">public class OrderDtoHelper {</span>
 
-    public static OrderPojo convert(CustomerDetailsForm f){
+    public static OrderPojo convert(CustomerDetailsForm f) {
 <span class="fc" id="L19">        OrderPojo p = new OrderPojo();</span>
 <span class="fc" id="L20">        p.setCustomerPhone(f.getCustomerPhone());</span>
 <span class="fc" id="L21">        p.setCustomerName(f.getCustomerName());</span>
@@ -26,7 +26,7 @@ import static com.increff.pos.util.SecurityUtil.getPrincipal;
 <span class="fc" id="L26">        return p;</span>
     }
 
-    public static OrderData convert(OrderPojo p){
+    public static OrderData convert(OrderPojo p) {
 <span class="fc" id="L30">        OrderData d = new OrderData();</span>
 <span class="fc" id="L31">        d.setOrderId(p.getOrderId());</span>
 <span class="fc" id="L32">        d.setStatus(p.getStatus());</span>
@@ -41,17 +41,17 @@ import static com.increff.pos.util.SecurityUtil.getPrincipal;
 
     public static void normalize(CustomerDetailsForm f) {
 <span class="fc" id="L43">        f.setCustomerName(f.getCustomerName().toLowerCase().trim());</span>
-<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if(f.getCustomerName().length()&gt;15){</span>
-<span class="nc" id="L45">            f.setCustomerName(f.getCustomerName().substring(0,15));</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">        if (f.getCustomerName().length() &gt; 20) {</span>
+<span class="nc" id="L45">            f.setCustomerName(f.getCustomerName().substring(0, 20));</span>
         }
-<span class="pc bpc" id="L47" title="1 of 2 branches missed.">        if(f.getCustomerPhone().length()&gt;10){</span>
-<span class="nc" id="L48">            f.setCustomerPhone(f.getCustomerPhone().substring(0,10));</span>
+<span class="pc bpc" id="L47" title="1 of 2 branches missed.">        if (f.getCustomerPhone().length() &gt; 10) {</span>
+<span class="nc" id="L48">            f.setCustomerPhone(f.getCustomerPhone().substring(0, 10));</span>
         }
 <span class="fc" id="L50">    }</span>
 
-    public static List&lt;OrderData&gt; getAllOrders(List&lt;OrderPojo&gt; list){
+    public static List&lt;OrderData&gt; getAllOrders(List&lt;OrderPojo&gt; list) {
 <span class="fc" id="L53">        List&lt;OrderData&gt; list2 = new ArrayList&lt;OrderData&gt;();</span>
-<span class="fc bfc" id="L54" title="All 2 branches covered.">        for(OrderPojo p: list){</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        for (OrderPojo p : list) {</span>
 <span class="fc" id="L55">            list2.add(convert(p));</span>
 <span class="fc" id="L56">        }</span>
 <span class="fc" id="L57">        return list2;</span>

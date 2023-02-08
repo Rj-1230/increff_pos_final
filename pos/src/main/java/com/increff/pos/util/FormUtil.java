@@ -1,22 +1,21 @@
 package com.increff.pos.util;
 
-import com.increff.pos.model.data.OrderData;
-import com.increff.pos.model.form.*;
-import com.increff.pos.model.data.OrderItemData;
-import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.api.ApiException;
+import com.increff.pos.model.data.OrderData;
+import com.increff.pos.model.data.OrderItemData;
+import com.increff.pos.model.form.*;
 
 import java.util.List;
 
 public class FormUtil {
-    public static BrandForm getBrandForm(String brand, String category){
+    public static BrandForm getBrandForm(String brand, String category) {
         BrandForm brandForm = new BrandForm();
         brandForm.setBrand(brand);
         brandForm.setCategory(category);
         return brandForm;
     }
 
-    public static ProductForm getProductForm(String barcode,String brandName,String categoryName,String name,Double mrp){
+    public static ProductForm getProductForm(String barcode, String brandName, String categoryName, String name, Double mrp) {
         ProductForm productForm = new ProductForm();
         productForm.setBarcode(barcode);
         productForm.setBrandName(brandName);
@@ -27,14 +26,14 @@ public class FormUtil {
     }
 
 
-    public static InventoryForm getInventoryForm(String barcode,Integer quantity){
+    public static InventoryForm getInventoryForm(String barcode, Integer quantity) {
         InventoryForm inventoryForm = new InventoryForm();
         inventoryForm.setBarcode(barcode);
         inventoryForm.setQuantity(quantity);
         return inventoryForm;
     }
 
-    public static CartItemForm getCartItemForm(String barcode,Integer quantity,Double sellingPrice){
+    public static CartItemForm getCartItemForm(String barcode, Integer quantity, Double sellingPrice) {
         CartItemForm cartItemForm = new CartItemForm();
         cartItemForm.setBarcode(barcode);
         cartItemForm.setQuantity(quantity);
@@ -42,21 +41,21 @@ public class FormUtil {
         return cartItemForm;
     }
 
-    public static UserForm getUserForm(String email, String password){
+    public static UserForm getUserForm(String email, String password) {
         UserForm userForm = new UserForm();
         userForm.setEmail(email);
         userForm.setPassword(password);
-        return  userForm;
+        return userForm;
     }
 
-    public static CustomerDetailsForm getCustomerDetailsForm(String customerName, String customerPhone){
+    public static CustomerDetailsForm getCustomerDetailsForm(String customerName, String customerPhone) {
         CustomerDetailsForm customerDetailsForm = new CustomerDetailsForm();
         customerDetailsForm.setCustomerName(customerName);
         customerDetailsForm.setCustomerPhone(customerPhone);
         return customerDetailsForm;
     }
 
-    public static OrderItemForm getOrderItemForm(String barcode, Integer quantity,Double sellingPrice){
+    public static OrderItemForm getOrderItemForm(String barcode, Integer quantity, Double sellingPrice) {
         OrderItemForm orderItemForm = new OrderItemForm();
         orderItemForm.setBarcode(barcode);
         orderItemForm.setQuantity(quantity);
@@ -64,10 +63,24 @@ public class FormUtil {
         return orderItemForm;
     }
 
+    public static DateBrandCategoryFilterForm getDateBrandCategoryFilterForm(String startDate, String endDate, String brand, String category) {
+        DateBrandCategoryFilterForm dateBrandCategoryFilterForm = new DateBrandCategoryFilterForm();
+        dateBrandCategoryFilterForm.setStart(startDate);
+        dateBrandCategoryFilterForm.setEnd(endDate);
+        dateBrandCategoryFilterForm.setBrand(brand);
+        dateBrandCategoryFilterForm.setCategory(category);
+        return dateBrandCategoryFilterForm;
+    }
+
+    public static DateFilterForm getDateFilterForm(String startDate, String endDate) {
+        DateFilterForm dateFilterForm = new DateFilterForm();
+        dateFilterForm.setStart(startDate);
+        dateFilterForm.setEnd(endDate);
+        return dateFilterForm;
+    }
 
 
-    public static InvoiceForm convertToInvoiceForm(OrderData orderData, List<OrderItemData> orderItemDataList) throws ApiException
-    {
+    public static InvoiceForm convertToInvoiceForm(OrderData orderData, List<OrderItemData> orderItemDataList) throws ApiException {
         InvoiceForm invoiceForm = new InvoiceForm();
         invoiceForm.setOrderId(orderData.getOrderId());
         invoiceForm.setCustomerName(orderData.getCustomerName());

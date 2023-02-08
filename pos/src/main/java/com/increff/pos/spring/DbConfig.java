@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.jpa.JpaTransactionManager;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.client.RestTemplate;
 
@@ -71,7 +71,7 @@ public class DbConfig {
         jpaProperties.put("hibernate.show_sql", hibernateShowSql);
         jpaProperties.put("hibernate.hbm2ddl.auto", hibernateHbm2ddl);
         jpaProperties.put("hibernate.jdbc.time_zone", hibernate_time_zone);
-        jpaProperties.put("hibernate.physical_naming_strategy",new SnakeCaseNamingStrategy(""));
+        jpaProperties.put("hibernate.physical_naming_strategy", new SnakeCaseNamingStrategy(""));
         bean.setJpaProperties(jpaProperties);
         return bean;
     }
@@ -84,9 +84,9 @@ public class DbConfig {
         return bean;
     }
 
-
-    @Bean(name="restTemplate")
-    public RestTemplate createRestTemplate(){
+    @Autowired
+    @Bean(name = "restTemplate")
+    public RestTemplate createRestTemplate() {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate;
     }

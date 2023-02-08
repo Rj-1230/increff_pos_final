@@ -1,8 +1,5 @@
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\controller\OrderController.java
-C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\util\Properties.java
-C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\util\NullCheckHelper.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\util\PojoUtil.java
-C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\util\ValidationUtil.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\dto\ProductDto.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\controller\ProductController.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\controller\ReportController.java
@@ -20,6 +17,7 @@ C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\po
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\helper\flowHelper\OrderFlowHelper.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\pojo\OrderPojo.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\spring\ControllerConfig.java
+C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\util\ValidateFormUtil.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\dto\CartItemDto.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\spring\DbConfig.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\spring\WebInitializer.java
@@ -101,6 +99,7 @@ C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\po
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\pojo\AbstractPojo.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\api\DailyReportApi.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\spring\SpringConfig.java
+C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\spring\ApplicationProperties.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\model\form\CustomerDetailsForm.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\pojo\InventoryPojo.java
 C:\Users\Aashish\IdeaProjects\increff_pos_final\pos\src\main\java\com\increff\pos\util\generateRandomString.java

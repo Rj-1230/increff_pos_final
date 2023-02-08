@@ -1,4 +1,5 @@
 package com.increff.invoice_app.model;
+
 import lombok.Getter;
 import lombok.Setter;
 

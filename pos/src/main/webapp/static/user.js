@@ -38,7 +38,7 @@ function addUser(event){
 
 
 function updateUser(event){
-    var id = $("#user-edit-form input[name=id]").val();
+    var id = $("#user-edit-form input[name=userId]").val();
 	var url = getUserUrl() + "/" + id;
 	var $form = $("#user-edit-form");
 	var json = toJson($form);
@@ -104,24 +104,25 @@ function deleteUser(id){
 function displayUserList(data){
 	var $tbody = $('#user-table').find('tbody');
 	$tbody.empty();
+	var j=1;
 	for(var i in data){
 		var e = data[i];
-		var showPassword = ' <button class="btn btn-dark" style="border:1px solid white;" onclick="toggle(' + e.id + ')"> <i class="bi bi-eye"></i></button>'
+		var showPassword = ' <button class="btn btn-dark" style="border:1px solid white;" onclick="toggle(' + e.userId + ')"> <i class="bi bi-eye"></i></button>'
 		var password = '********'
-		if(flagObj.flag==true && flagObj.id==e.id){
+		if(flagObj.flag==true && flagObj.id==e.userId){
 		password = e.password;
-		showPassword = '<button class="btn btn-dark" style="border:1px solid white;" onclick="toggle(' + e.id + ')"> <i class="bi bi-eye-slash"></i></button>'
+		showPassword = '<button class="btn btn-dark" style="border:1px solid white;" onclick="toggle(' + e.userId + ')"> <i class="bi bi-eye-slash"></i></button>'
 		}
-		var buttonHtml ='<button class="btn btn-dark" style="border:1px solid white;" onclick="displayEdituser(' + e.id + ')"> <i class="bi bi-pen"></i></button>'
-		buttonHtml += '&nbsp;&nbsp;&nbsp;&nbsp;<button class="btn btn-danger" onclick="deleteUser(' + e.id + ')"><i class="bi bi-trash"></i></button>'
+		var buttonHtml ='<button class="btn btn-dark" style="border:1px solid white;" onclick="displayEdituser(' + e.userId + ')"> <i class="bi bi-pen"></i></button>'
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
+		+ '<td>' +j+ '</td>'
 		+ '<td>' + e.email + '</td>'
 		+ '<td>'  + password + '</td>'
         + '<td>'  + showPassword + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>'
         $tbody.append(row);
+        j++;
 	}
 	}
 
@@ -151,9 +152,9 @@ function displayEdituser(id){
 }
 
 function displayUser(data){
-	$("#user-edit-form input[name=email]").val(data.user);
-	$("#user-edit-form input[name=password]").val(data.category);
-	$("#user-edit-form input[name=id]").val(data.id);
+	$("#user-edit-form input[name=email]").val(data.email);
+	$("#user-edit-form input[name=password]").val(data.password);
+	$("#user-edit-form input[name=userId]").val(data.userId);
 	$('#edit-user-modal').modal('toggle');
 }
 

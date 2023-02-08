@@ -11,7 +11,7 @@ public class OrderItemForm {
     @NotNull
     private Integer orderId;
     @NotBlank
-    @Size(min=1,max=20)
+    @Size(min = 1, max = 20)
     private String barcode;
     @NotNull
     @Positive

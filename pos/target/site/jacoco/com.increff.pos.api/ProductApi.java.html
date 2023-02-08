@@ -19,10 +19,10 @@ import java.util.Objects;
 
     public Integer add(ProductPojo p) throws ApiException {
 <span class="fc" id="L21">        ProductPojo a = productDao.getProductPojoFromBarcode(p.getBarcode());</span>
-<span class="fc bfc" id="L22" title="All 2 branches covered.">        if(Objects.nonNull(a)){</span>
-<span class="fc" id="L23">            throw new ApiException(&quot;The product with given barcode already exists&quot;);</span>
+<span class="pc bpc" id="L22" title="1 of 2 branches missed.">        if (Objects.nonNull(a)) {</span>
+<span class="nc" id="L23">            throw new ApiException(&quot;The product with given barcode already exists&quot;);</span>
         }
-<span class="fc" id="L25">       return productDao.insert(p);</span>
+<span class="fc" id="L25">        return productDao.insert(p);</span>
 
     }
 
@@ -41,18 +41,18 @@ import java.util.Objects;
 <span class="fc" id="L41">        ex.setMrp(p.getMrp());</span>
 <span class="fc" id="L42">    }</span>
 
-    public  ProductPojo getCheckProduct(Integer id) throws ApiException {
+    public ProductPojo getCheckProduct(Integer id) throws ApiException {
 <span class="fc" id="L45">        ProductPojo a = productDao.select(id);</span>
-<span class="fc bfc" id="L46" title="All 2 branches covered.">        if(Objects.isNull(a)){</span>
-<span class="fc" id="L47">            throw new ApiException(&quot;No such product with given id exists !&quot;);</span>
+<span class="pc bpc" id="L46" title="1 of 2 branches missed.">        if (Objects.isNull(a)) {</span>
+<span class="nc" id="L47">            throw new ApiException(&quot;No such product with given id exists !&quot;);</span>
         }
 <span class="fc" id="L49">        return a;</span>
     }
 
     public ProductPojo getCheckProduct(String barcode) throws ApiException {
 <span class="fc" id="L53">        ProductPojo a = productDao.getProductPojoFromBarcode(barcode);</span>
-<span class="fc bfc" id="L54" title="All 2 branches covered.">        if(Objects.isNull(a)){</span>
-<span class="fc" id="L55">            throw new ApiException(&quot;The product with given barcode doesn't exists&quot;);</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">        if (Objects.isNull(a)) {</span>
+<span class="nc" id="L55">            throw new ApiException(&quot;The product with given barcode doesn't exists&quot;);</span>
         }
 <span class="fc" id="L57">        return a;</span>
     }

@@ -9,12 +9,12 @@
 
     <br>
     <br>
-    <div class="modal" tabindex="-1" role="dialog" id="revenue-report-filter-modal">
+    <div class="modal" id="revenue-report-filter-modal" role="dialog" tabindex="-1">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Filter Revenue Report</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -23,11 +23,13 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="inputStartDate">Start Date</label>
-                                <input type="date" class="form-control" name="start" id="inputStartDate" placeholder="2023/01/01">
+                                <input class="form-control" id="inputStartDate" name="start" placeholder="2023/01/01"
+                                       type="date">
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="inputEndDate" >End Date</label>
-                                <input type="date" class="form-control" name="end" id="inputEndDate" placeholder="2023/01/01">
+                                <label for="inputEndDate">End Date</label>
+                                <input class="form-control" id="inputEndDate" name="end" placeholder="2023/01/01"
+                                       type="date">
                             </div>
                         </div>
                         <div class="half-space">
@@ -36,13 +38,13 @@
                         <div class="form-row">
                             <div class="form-group col-md-6">
                                 <label for="inputFilterBrand">Brand</label>
-                                <select type="text" class="form-control" name="brand" id="inputFilterBrand">
+                                <select class="form-control" id="inputFilterBrand" name="brand" type="text">
                                     <option>All</option>
                                 </select>
                             </div>
                             <div class="form-group col-md-6">
                                 <label for="inputFilterCategory">Category</label>
-                                <select type="text" class="form-control" name="category" id="inputFilterCategory">
+                                <select class="form-control" id="inputFilterCategory" name="category" type="text">
                                     <option>All</option>
                                 </select>
                             </div>
@@ -50,7 +52,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="get-revenue-report"><i class="bi bi-funnel-fill"></i></button>
+                    <button class="btn btn-primary" id="get-revenue-report" type="button" data-placement="bottom" data-toggle="tooltip" title="Filter revenue report"><i
+                            class="bi bi-funnel-fill"></i></button>
                 </div>
             </div>
         </div>
@@ -63,7 +66,8 @@
         <div class="col-12" id="main">
             <h3 class="alignleft">Revenue Report</h3>
             <div class="alignright">
-                <button type="button" class="btn btn-primary" id="open-revenue-report-filter-modal" data-toggle="modal" data-target="#revenue-report-filter-modal" ><i class="bi bi-funnel-fill"></i></button>
+                <button class="btn btn-primary" data-target="#revenue-report-filter-modal" data-toggle="modal" id="open-revenue-report-filter-modal"
+                        type="button"><i class="bi bi-funnel-fill"></i></button>
             </div>
 
         </div>
@@ -72,42 +76,38 @@
             <!--      Blank row -->
         </div>
     </div>
-    <div class="space">
+    <div class="half-space">
         <!--      Blank row-->
     </div>
     <div id="product-div">
-        <!--    brand category filter-->
-
-
-        <div class="space">
-            <!--      Blank row-->
-        </div>
-        <button type="button" class="btn btn-success" style="display:none;" id="download-report">Download report</button>
+        <button class="btn btn-lg btn-success" id="download-report" style="display:none;" type="button" data-placement="bottom" data-toggle="tooltip" title="Download revenue report"><i
+                class="bi bi-file-arrow-down-fill"></i></button>
         <div class="half-space">
             <!--      Blank row-->
         </div>
-    <div id="revenue-report-table-container" style="display:none;">
-        <table class="table table-dark table-striped table-hover" id="product-revenue-list-table">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Brand</th>
-                <th scope="col">Category</th>
-                <th scope="col">Product Name</th>
-                <th scope="col">Quantity</th>
-                <th scope="col">Total</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-    </div>
+        <div id="revenue-report-table-container" style="display:none;">
+            <table class="table table-dark table-striped table-hover" id="product-revenue-list-table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <div class="space"></div>
 <div class="space"></div>
 <footer th:replace="snippets.html :: name_footer"></footer>
-<script th:src="@{/static/report.js}"></script>>
+<script th:src="@{/static/report.js}"></script>
+>
 <script th:src="@{/static/revenue.js}"></script>
 </body>
 

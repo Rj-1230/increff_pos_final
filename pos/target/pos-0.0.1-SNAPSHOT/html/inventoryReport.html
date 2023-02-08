@@ -9,12 +9,12 @@
 
     <br>
     <br>
-    <div class="modal" tabindex="-1" role="dialog" id="inventory-report-filter-modal">
+    <div class="modal" id="inventory-report-filter-modal" role="dialog" tabindex="-1">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
                     <h4 class="modal-title">Filter Inventory Report</h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
@@ -22,20 +22,21 @@
                     <form id="filter-brand-category-form">
                         <div class="form-group">
                             <label for="inputFilterBrand">Brand</label>
-                                <select type="text" class="form-control" name="brand" id="inputFilterBrand">
-                                    <option>All</option>
-                                </select>
+                            <select class="form-control" id="inputFilterBrand" name="brand" type="text">
+                                <option>All</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="inputFilterCategory">Category</label>
-                                <select type="text" class="form-control" name="category" id="inputFilterCategory">
-                                    <option>All</option>
-                                </select>
+                            <select class="form-control" id="inputFilterCategory" name="category" type="text">
+                                <option>All</option>
+                            </select>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="get-inventory-report"><i class="bi bi-funnel-fill"></i></button>
+                    <button class="btn btn-primary" id="get-inventory-report" type="button" data-placement="bottom" data-toggle="tooltip" title="Apply brand category filter"><i
+                            class="bi bi-funnel-fill"></i></button>
                 </div>
             </div>
         </div>
@@ -51,7 +52,9 @@
         <div class="col-12" id="main">
             <h3 class="alignleft">Inventory Report</h3>
             <div class="alignright">
-                <button type="button" class="btn btn-primary" id="open-inventory-report-filter-modal" data-toggle="modal" data-target="#inventory-report-filter-modal" ><i class="bi bi-funnel-fill"></i></button>
+                <button class="btn btn-primary" data-target="#inventory-report-filter-modal" data-toggle="modal"
+                        id="open-inventory-report-filter-modal" type="button"><i
+                        class="bi bi-funnel-fill"></i></button>
             </div>
 
         </div>
@@ -60,37 +63,32 @@
             <!--      Blank row -->
         </div>
     </div>
-    <div class="space">
+    <div class="half-space">
         <!--      Blank row-->
     </div>
 
     <div id="product-div">
-        <!--    brand category filter-->
-
-
-        <div class="space">
-            <!--      Blank row-->
-        </div>
-        <button type="button" class="btn btn-success" style="display:none;" id="download-report">Download report</button>
+        <button class="btn btn-lg btn-success" id="download-report" style="display:none;" type="button" data-placement="bottom" data-toggle="tooltip" title="Download inventory report"><i
+                class="bi bi-file-arrow-down-fill"></i></button>
         <div class="half-space">
             <!--      Blank row-->
         </div>
         <div id="inventory-report-table-container" style="display:none;">
-        <table class="table table-dark table-striped table-hover" id="inventory-report-table">
-            <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Brand</th>
-                <th scope="col">Category</th>
-                <th scope="col">Product Name</th>
-                <th scope="col">Quantity</th>
-            </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+            <table class="table table-dark table-striped table-hover" id="inventory-report-table">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Category</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">Quantity</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
 </div>
 <div class="space"></div>
 <div class="space"></div>

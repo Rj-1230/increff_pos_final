@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Repository
-public class CartItemDao extends AbstractDao{
+public class CartItemDao extends AbstractDao {
     private static String delete_cart_item_pojo_by_id = "delete from CartItemPojo p where cartItemId=:id";
     private static String select_cart_item_pojo_by_id = "select p from CartItemPojo p where cartItemId=:id";
     private static String select_cart_item_pojo_by_product_id_and_counter_id = "select p from CartItemPojo p where productId=:productId and counterId=:counterId";
@@ -24,25 +24,22 @@ public class CartItemDao extends AbstractDao{
     }
 
     public CartItemPojo select(Integer id) {
-        try{
+        try {
             TypedQuery<CartItemPojo> query = getQuery(select_cart_item_pojo_by_id, CartItemPojo.class);
             query.setParameter("id", id);
             return query.getSingleResult();
-        }
-
-         catch (NoResultException e){
+        } catch (NoResultException e) {
             return null;
         }
     }
 
     public CartItemPojo getCartPojoFromProductIdAndCounterId(Integer productId, Integer counterId) {
-        try{
+        try {
             TypedQuery<CartItemPojo> query = getQuery(select_cart_item_pojo_by_product_id_and_counter_id, CartItemPojo.class);
             query.setParameter("productId", productId);
             query.setParameter("counterId", counterId);
             return query.getSingleResult();
-        }
-        catch (NoResultException e){
+        } catch (NoResultException e) {
             return null;
         }
 

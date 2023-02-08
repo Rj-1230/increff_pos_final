@@ -14,35 +14,35 @@ import java.util.Objects;
 @Transactional(rollbackOn = ApiException.class)
 public class DailyReportApi {
     @Autowired
-    private DailyReportDao dao;
+    private DailyReportDao dailyReportDao;
 
-    public void addReport(DailyReportPojo pojo){
-            dao.insert(pojo);
+    public void addReport(DailyReportPojo dailyReportPojo) {
+        dailyReportDao.insert(dailyReportPojo);
     }
 
-    public DailyReportPojo getReportByDate(ZonedDateTime date){
-        return dao.select(date);
+    public DailyReportPojo getReportByDate(ZonedDateTime date) {
+        return dailyReportDao.select(date);
     }
 
 
     public DailyReportPojo getCheckReportByDate(ZonedDateTime invoiceDate) throws ApiException {
-        DailyReportPojo dailyReportPojo = dao.select(invoiceDate);
-        if(Objects.isNull(dailyReportPojo)){
+        DailyReportPojo dailyReportPojo = dailyReportDao.select(invoiceDate);
+        if (Objects.isNull(dailyReportPojo)) {
             throw new ApiException("No such daily report for given date exists !");
         }
         return dailyReportPojo;
     }
 
 
-    public List<DailyReportPojo> selectReportByDateFilter(ZonedDateTime start, ZonedDateTime end){
-    return dao.getReportBetweenDateRange(start, end);
+    public List<DailyReportPojo> selectReportByDateFilter(ZonedDateTime startDate, ZonedDateTime endDate) {
+        return dailyReportDao.getReportBetweenDateRange(startDate, endDate);
     }
 
 
-    public void update(ZonedDateTime date, DailyReportPojo newPojo) throws ApiException {
-        DailyReportPojo pojo = getCheckReportByDate(date);
-        pojo.setInvoicedOrderCount(newPojo.getInvoicedOrderCount());
-        pojo.setTotalRevenue(newPojo.getTotalRevenue());
-        pojo.setInvoicedItemsCount(newPojo.getInvoicedItemsCount());
+    public void updateDailyReport(ZonedDateTime date, DailyReportPojo newReportPojo) throws ApiException {
+        DailyReportPojo dailyReportPojo = getCheckReportByDate(date);
+        dailyReportPojo.setInvoicedOrderCount(newReportPojo.getInvoicedOrderCount());
+        dailyReportPojo.setTotalRevenue(newReportPojo.getTotalRevenue());
+        dailyReportPojo.setInvoicedItemsCount(newReportPojo.getInvoicedItemsCount());
     }
 }

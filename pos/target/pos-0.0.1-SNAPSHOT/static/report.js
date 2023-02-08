@@ -81,6 +81,7 @@ if(data.length>0){
         		+ '</tr>';
                 $tbody.append(row);
                 total_quantity+=e.quantity;
+                j++;
 
         	}
         	var row = '<tr>'
@@ -158,6 +159,7 @@ if(data.length>0){
         		+ '<td>'  + e.totalRevenue.toFixed(2) + '</td>'
         		+ '</tr>';
                 $tbody.append(row);
+                j++;
         	}
 }
 
@@ -221,6 +223,7 @@ if(data.length>0){
             $tbody.append(row);
             total_prod_quantity+=e.quantity;
             total_prod_revenue+=e.total;
+            j++;
     	}
     	var row = '<tr>'
             		+ '<td colspan=4>' + "<font size='+2'><b>Total</b></font>"+ '</td>'
@@ -247,6 +250,7 @@ function getFilteredRevenueReport(event)
            },
     	   success: function(data) {
            $('#revenue-report-filter-modal').modal('hide');
+          data.forEach(function(v){ delete v.productId });
     	   reportData=data;
     	   displayRevenueProductList(data);
     	   },
@@ -307,6 +311,7 @@ function getFilteredBrandReport(event)
            },
     	   success: function(data,fileName) {
            $('#brand-report-filter-modal').modal('hide');
+           data.forEach(function(v){ delete v.id });
            reportData=data;
     	   displayBrandReportList(data);
     	   },

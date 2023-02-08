@@ -2,6 +2,7 @@ package com.increff.pos.api;
 
 import com.increff.pos.dao.UserDao;
 import com.increff.pos.pojo.UserPojo;
+import com.increff.pos.spring.ApplicationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,8 @@ public class UserApi {
 
     @Autowired
     private UserDao userDao;
-
+    @Autowired
+    private ApplicationProperties properties;
 
     public void add(UserPojo userPojo) throws ApiException {
         UserPojo existing = getUserPojoByEmail(userPojo.getEmail());
@@ -36,14 +38,17 @@ public class UserApi {
     }
 
     public void update(Integer id, UserPojo userPojo) throws ApiException {
+        if(Objects.equals(properties.getSupervisorEmail(),userPojo.getEmail())){
+            throw new ApiException("The supervisor can't be edited");
+        }
         UserPojo ex = getCheckUser(id);
         ex.setEmail(userPojo.getEmail());
         ex.setPassword(userPojo.getPassword());
     }
 
-    public  UserPojo getCheckUser(Integer id) throws ApiException {
+    public UserPojo getCheckUser(Integer id) throws ApiException {
         UserPojo userPojo = userDao.selectUserById(id);
-        if(Objects.isNull(userPojo)){
+        if (Objects.isNull(userPojo)) {
             throw new ApiException("No such user with given id exists !");
         }
         return userPojo;

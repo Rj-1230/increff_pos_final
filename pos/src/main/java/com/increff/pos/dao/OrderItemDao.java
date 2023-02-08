@@ -1,15 +1,13 @@
 package com.increff.pos.dao;
 
 import com.increff.pos.pojo.OrderItemPojo;
-import com.increff.pos.pojo.OrderPojo;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.*;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @Repository
-public class OrderItemDao extends AbstractDao{
+public class OrderItemDao extends AbstractDao {
     private static String delete_order_item_pojo_by_id = "delete from OrderItemPojo p where orderItemId=:id";
     private static String select_order_item_pojo_by_id = "select p from OrderItemPojo p where orderItemId=:id";
     private static String select_all_order_item_pojo_by_order_id = "select p from OrderItemPojo p where orderId=:id";
@@ -30,8 +28,7 @@ public class OrderItemDao extends AbstractDao{
             TypedQuery<OrderItemPojo> query = getQuery(select_order_item_pojo_by_id, OrderItemPojo.class);
             query.setParameter("id", id);
             return query.getSingleResult();
-        }
-        catch (NoResultException e){
+        } catch (NoResultException e) {
             return null;
         }
     }
@@ -43,14 +40,13 @@ public class OrderItemDao extends AbstractDao{
         return query.getResultList();
     }
 
-    public OrderItemPojo getOrderItemPojoByProductIdAndOrderId(Integer productId,Integer orderId) {
-        try{
+    public OrderItemPojo getOrderItemPojoByProductIdAndOrderId(Integer productId, Integer orderId) {
+        try {
             TypedQuery<OrderItemPojo> query = getQuery(select_order_item_pojo_by_product_id_and_order_id, OrderItemPojo.class);
             query.setParameter("productId", productId);
             query.setParameter("orderId", orderId);
             return query.getSingleResult();
-        }
-        catch (NoResultException e){
+        } catch (NoResultException e) {
             return null;
         }
     }

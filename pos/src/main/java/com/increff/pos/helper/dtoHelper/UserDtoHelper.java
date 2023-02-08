@@ -29,7 +29,7 @@ public class UserDtoHelper {
         f.setPassword(f.getPassword().trim());
     }
 
-    public static List<UserData> getAllUserData(List<UserPojo> list){
+    public static List<UserData> getAllUserData(List<UserPojo> list) {
         List<UserData> list2 = new ArrayList<UserData>();
         for (UserPojo p : list) {
             list2.add(convert(p));
